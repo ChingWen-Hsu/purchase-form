@@ -476,7 +476,7 @@ function makeDetailRow(cat){
     <label class="fld"><span class="lbl">用途<span class="req">*</span></span>
       <input type="text" class="r-purpose" placeholder="例如：現場施工使用"></label>
     <label class="fld"><span class="lbl">數量<span class="req">*</span></span>
-      <input type="number" class="r-qty" min="1" step="1" inputmode="numeric" placeholder="請輸入大於 0 的整數"></label>
+      <input type="number" class="r-qty" min="0" step="any" inputmode="decimal" placeholder="請輸入大於 0 的數字（可含小數）"></label>
     <label class="fld"><span class="lbl">單位<span class="req">*</span></span>
       <select class="r-unit">${unitOptionsHTML()}</select></label>`;
   div.querySelector(".row-del").onclick=()=>{ div.remove(); renumberRows(); };
@@ -513,7 +513,7 @@ function collectDetailRows(){
     const unit=r.querySelector(".r-unit").value;
     if(!name){ toast(`第 ${i+1} 筆：請選擇貨品名稱`,true); return null; }
     if(!purpose){ toast(`第 ${i+1} 筆：請填寫用途`,true); return null; }
-    if(!/^[1-9][0-9]*$/.test(qty)){ toast(`第 ${i+1} 筆：數量請填大於 0 的整數`,true); return null; }
+    if(!/^\d*\.?\d+$/.test(qty) || parseFloat(qty)<=0){ toast(`第 ${i+1} 筆：數量請填大於 0 的數字（可含小數）`,true); return null; }
     if(!unit){ toast(`第 ${i+1} 筆：請選擇單位`,true); return null; }
     collected.push({category:state.currentCat,name,purpose,quantity:qty,unit});
   }
@@ -529,8 +529,8 @@ function renderAddedList(){
     const li=document.createElement("li");
     li.innerHTML=`<div>
         <span class="cat-tag">${it.category}</span><br>
-        <b>${it.name}</b>
-        <div class="meta">${it.purpose}．${it.quantity} ${it.unit}</div>
+        <b>${it.name}，${it.quantity} ${it.unit}</b>
+        <div class="meta">${it.purpose}</div>
       </div>
       <button class="del" data-i="${i}">移除</button>`;
     ul.appendChild(li);
@@ -555,8 +555,8 @@ function renderReview(){
   $("#reviewCount").textContent=state.items.length;
   $("#reviewItems").innerHTML=state.items.map((it,i)=>`
     <div class="review-item">
-      <div class="ri-name">${i+1}. ${it.name}</div>
-      <div class="ri-meta">類別：${it.category}．用途：${it.purpose}．數量：${it.quantity} ${it.unit}</div>
+      <div class="ri-name">${i+1}. ${it.name}，${it.quantity} ${it.unit}</div>
+      <div class="ri-meta">類別：${it.category}．用途：${it.purpose}</div>
     </div>`).join("");
 }
 
