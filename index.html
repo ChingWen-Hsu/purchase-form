@@ -314,10 +314,12 @@
       <h2>已送出</h2>
       <p class="hint">請購單已寫入廠商紀錄。</p>
       <p>單號：<span class="ordno" id="doneOrderNo"></span></p>
-      <div class="btn-row" style="margin-top:18px">
-        <button class="btn primary" id="againSameVendor">再填一張（同廠商）</button>
-        <button class="btn subtle" id="againNewVendor">回到廠商選擇</button>
-      </div>
+    </div>
+    <div class="card">
+      <div class="review-head">送出內容</div>
+      <div id="doneHeader" style="margin:6px 0 16px"></div>
+      <div class="review-head">品項（共 <b id="doneCount">0</b> 項）</div>
+      <div id="doneItems"></div>
     </div>
   </section>
 
@@ -573,7 +575,7 @@ async function submitForm(){
     });
     const data=await res.json();
     if(!data.ok) throw new Error(data.error||"送出失敗");
-    $("#doneOrderNo").textContent=data.orderNo;
+    renderDone(data.orderNo);
     show("done");
   }catch(err){
     toast("送出失敗："+err.message,true);
@@ -643,20 +645,22 @@ $("#toReview").onclick=()=>{              // 否 → 確認頁
 // 送出
 $("#submitBtn").onclick=submitForm;
 
-// 完成後
-$("#againSameVendor").onclick=()=>{
-  state.items=[]; state.header={};
-  $("#applicant").value=""; $("#department").value=""; $("#reason").value="";
-  $("#needDate").value="";
-  $("#applyDate").value=todayStr(); $("#purchaseDate").value=todayStr();
-  updateAddedCounts();
-  show("header");
-};
-$("#againNewVendor").onclick=()=>{
-  state.items=[]; state.header={}; state.vendor=null;
-  $("#vendorLabel").textContent="";
-  show("vendor"); loadVendors();
-};
+/* ---------- 完成頁：顯示單號與明細 ---------- */
+function renderDone(orderNo){
+  $("#doneOrderNo").textContent=orderNo;
+  const h=state.header;
+  $("#doneHeader").innerHTML=[
+    ["廠商",state.vendor?state.vendor.name:""],
+    ["申請日期",h.applyDate],["請購日期",h.purchaseDate],["需求日期",h.needDate],
+    ["申請人",h.applicant],["申請部門",h.department],["請購事由",h.reason||"—"],
+  ].map(([k,v])=>`<div class="review-row"><span class="k">${k}</span><span class="v">${v}</span></div>`).join("");
+  $("#doneCount").textContent=state.items.length;
+  $("#doneItems").innerHTML=state.items.map((it,i)=>`
+    <div class="review-item">
+      <div class="ri-name">${i+1}. ${it.name}，${it.quantity} ${it.unit}</div>
+      <div class="ri-meta">類別：${it.category}．用途：${it.purpose}</div>
+    </div>`).join("");
+}
 
 /* ---------- 啟動 ---------- */
 renderSteps("vendor");
