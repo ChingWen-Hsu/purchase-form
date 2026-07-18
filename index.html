@@ -166,6 +166,23 @@
   .success-wrap .ordno{font-family:ui-monospace,monospace;background:var(--line-soft);
     padding:3px 10px;border-radius:6px;font-size:14px}
 
+  /* 明細多筆卡片 */
+  .detail-row{
+    border:1px solid var(--line);border-radius:12px;padding:14px 14px 4px;
+    margin-bottom:12px;background:#fbfcfd;position:relative;
+  }
+  .detail-row .row-head{
+    display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;
+  }
+  .detail-row .row-no{font-size:13px;font-weight:700;color:var(--brand)}
+  .detail-row .row-del{
+    border:none;background:none;color:var(--danger);cursor:pointer;font:inherit;
+    font-size:13px;padding:2px 4px;
+  }
+  .detail-row .row-del[disabled]{color:var(--ink-soft);opacity:.4;cursor:not-allowed}
+  .add-row-btn{border:1.5px dashed var(--line);color:var(--brand);background:#fff}
+  .add-row-btn:hover{background:var(--brand-soft);border-color:var(--brand)}
+
   .hidden{display:none !important}
 
   @media (prefers-reduced-motion:reduce){
@@ -210,11 +227,7 @@
       <label class="fld"><span class="lbl">申請人<span class="req">*</span></span>
         <input type="text" id="applicant" placeholder="請輸入姓名" autocomplete="name"></label>
       <label class="fld"><span class="lbl">申請部門<span class="req">*</span></span>
-        <select id="department">
-          <option value="">請選擇</option>
-          <option>1組</option><option>2組</option><option>3組</option>
-          <option>辦公室</option><option>其他</option>
-        </select></label>
+        <input type="text" id="department" placeholder="請輸入申請部門"></label>
       <label class="fld"><span class="lbl">請購事由</span>
         <textarea id="reason" placeholder="例如：部門日常補貨"></textarea></label>
 
@@ -242,29 +255,19 @@
     </div>
   </section>
 
-  <!-- ============ 頁面 4：選貨品＋明細 ============ -->
+  <!-- ============ 頁面 4：選貨品＋明細（同類別可多筆） ============ -->
   <section id="page-detail" class="page hidden">
     <button class="backlink" data-back="category">← 重選類別</button>
     <div class="card">
       <h2>貨品與明細</h2>
       <p class="hint" id="detailCatHint"></p>
 
-      <label class="fld"><span class="lbl">貨品名稱<span class="req">*</span></span>
-        <select id="itemSelect"><option value="">請選擇貨品</option></select></label>
-      <label class="fld"><span class="lbl">用途<span class="req">*</span></span>
-        <input type="text" id="purpose" placeholder="例如：現場施工使用"></label>
-      <label class="fld"><span class="lbl">數量<span class="req">*</span></span>
-        <input type="number" id="quantity" min="1" step="1" inputmode="numeric" placeholder="請輸入大於 0 的整數"></label>
-      <label class="fld"><span class="lbl">單位<span class="req">*</span></span>
-        <select id="unit">
-          <option value="">請選擇</option>
-          <option>支</option><option>組</option><option>瓶</option><option>盒</option>
-          <option>顆</option><option>個</option><option>箱</option><option>包</option>
-          <option>捲</option><option>把</option><option>台</option><option>其他</option>
-        </select></label>
+      <div id="detailRows"></div>
 
-      <div class="btn-row">
-        <button class="btn primary" id="addItemBtn">加入這個品項</button>
+      <button class="btn subtle add-row-btn" id="addRowBtn">＋ 新增一筆同類別品項</button>
+
+      <div class="btn-row" style="margin-top:14px">
+        <button class="btn primary" id="addItemBtn">加入並繼續</button>
       </div>
     </div>
   </section>
@@ -326,7 +329,7 @@
 /* ============================================================
    設定：把下面換成你部署後的 Apps Script「網頁應用程式」網址
    ============================================================ */
-const API_URL = "https://script.google.com/macros/s/AKfycbwJsGELoc91W0-Wo_skYOCC1q6tE6CqvUy56-5ysEyjG2fbixWGIDI64v9Ra-OeelMB/exec";
+const API_URL = "在此貼上你的_Apps_Script_網址";
 
 /* ---------- 狀態 ---------- */
 const state = {
@@ -443,33 +446,78 @@ function validateHeader(){
   return h;
 }
 
-/* ---------- 分類 → 明細 ---------- */
-function fillItemSelect(cat){
+/* ---------- 分類 → 明細（同類別可多筆） ---------- */
+const UNIT_OPTIONS = ["支","組","瓶","盒","顆","個","箱","包","捲","把","台","其他"];
+
+function itemOptionsHTML(cat){
   const found=state.categories.find(c=>c.category===cat);
-  const sel=$("#itemSelect");
-  sel.innerHTML='<option value="">請選擇貨品</option>';
-  (found?found.items:[]).forEach(it=>{
-    const o=document.createElement("option");
-    o.value=it; o.textContent=it; sel.appendChild(o);
-  });
-  $("#detailCatHint").textContent="類別："+cat;
+  const items=found?found.items:[];
+  return '<option value="">請選擇貨品</option>'+
+    items.map(it=>`<option value="${escapeAttr(it)}">${escapeHtml(it)}</option>`).join("");
+}
+function unitOptionsHTML(){
+  return '<option value="">請選擇</option>'+
+    UNIT_OPTIONS.map(u=>`<option>${u}</option>`).join("");
+}
+function escapeHtml(s){return String(s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));}
+function escapeAttr(s){return String(s).replace(/"/g,"&quot;");}
+
+// 建立一張明細列卡片
+function makeDetailRow(cat){
+  const div=document.createElement("div");
+  div.className="detail-row";
+  div.innerHTML=`
+    <div class="row-head">
+      <span class="row-no"></span>
+      <button class="row-del" type="button">移除這筆</button>
+    </div>
+    <label class="fld"><span class="lbl">貨品名稱<span class="req">*</span></span>
+      <select class="r-item">${itemOptionsHTML(cat)}</select></label>
+    <label class="fld"><span class="lbl">用途<span class="req">*</span></span>
+      <input type="text" class="r-purpose" placeholder="例如：現場施工使用"></label>
+    <label class="fld"><span class="lbl">數量<span class="req">*</span></span>
+      <input type="number" class="r-qty" min="1" step="1" inputmode="numeric" placeholder="請輸入大於 0 的整數"></label>
+    <label class="fld"><span class="lbl">單位<span class="req">*</span></span>
+      <select class="r-unit">${unitOptionsHTML()}</select></label>`;
+  div.querySelector(".row-del").onclick=()=>{ div.remove(); renumberRows(); };
+  return div;
 }
 
-/* ---------- 加入品項 ---------- */
-function addCurrentItem(){
-  const name=$("#itemSelect").value;
-  const purpose=$("#purpose").value.trim();
-  const qty=$("#quantity").value.trim();
-  const unit=$("#unit").value;
-  if(!name){ toast("請選擇貨品名稱",true); return false; }
-  if(!purpose){ toast("請填寫用途",true); return false; }
-  if(!/^[1-9][0-9]*$/.test(qty)){ toast("數量請填大於 0 的整數",true); return false; }
-  if(!unit){ toast("請選擇單位",true); return false; }
-  state.items.push({category:state.currentCat,name,purpose,quantity:qty,unit});
-  // 清空明細（保留分類，方便「繼續選此類別」）
-  $("#itemSelect").value=""; $("#purpose").value="";
-  $("#quantity").value=""; $("#unit").value="";
-  return true;
+function renumberRows(){
+  const rows=$$("#detailRows .detail-row");
+  rows.forEach((r,i)=>{ r.querySelector(".row-no").textContent="第 "+(i+1)+" 筆"; });
+  // 只剩一筆時，禁用它的移除鍵（至少保留一筆）
+  rows.forEach(r=>{
+    const del=r.querySelector(".row-del");
+    del.disabled = rows.length<=1;
+  });
+}
+
+// 進入明細頁時：清空並放一張空白列
+function initDetailPage(cat){
+  $("#detailCatHint").textContent="類別："+cat+"（可連續新增多筆）";
+  const box=$("#detailRows"); box.innerHTML="";
+  box.appendChild(makeDetailRow(cat));
+  renumberRows();
+}
+
+// 收集這頁所有列 → 驗證 → 推進 state.items
+function collectDetailRows(){
+  const rows=$$("#detailRows .detail-row");
+  const collected=[];
+  for(let i=0;i<rows.length;i++){
+    const r=rows[i];
+    const name=r.querySelector(".r-item").value;
+    const purpose=r.querySelector(".r-purpose").value.trim();
+    const qty=r.querySelector(".r-qty").value.trim();
+    const unit=r.querySelector(".r-unit").value;
+    if(!name){ toast(`第 ${i+1} 筆：請選擇貨品名稱`,true); return null; }
+    if(!purpose){ toast(`第 ${i+1} 筆：請填寫用途`,true); return null; }
+    if(!/^[1-9][0-9]*$/.test(qty)){ toast(`第 ${i+1} 筆：數量請填大於 0 的整數`,true); return null; }
+    if(!unit){ toast(`第 ${i+1} 筆：請選擇單位`,true); return null; }
+    collected.push({category:state.currentCat,name,purpose,quantity:qty,unit});
+  }
+  return collected;
 }
 
 /* ---------- 已加入品項清單 ---------- */
@@ -554,20 +602,32 @@ $("#categorySelect").onchange=function(){
 };
 $("#toDetailBtn").onclick=()=>{
   if(!state.currentCat){ toast("請先選擇分類",true); return; }
-  fillItemSelect(state.currentCat);
+  initDetailPage(state.currentCat);
   show("detail");
 };
 $("#catViewAddedBtn").onclick=()=>{ renderAddedList(); show("continue"); };
 
-// 加入品項 → 到「是否繼續」頁
+// 明細頁：新增一筆同類別品項
+$("#addRowBtn").onclick=()=>{
+  $("#detailRows").appendChild(makeDetailRow(state.currentCat));
+  renumberRows();
+  // 捲動到新加的那筆
+  const rows=$$("#detailRows .detail-row");
+  rows[rows.length-1].scrollIntoView({behavior:"smooth",block:"center"});
+};
+
+// 加入並繼續 → 收集本頁所有品項 → 「是否繼續」頁
 $("#addItemBtn").onclick=()=>{
-  if(addCurrentItem()){ updateAddedCounts(); renderAddedList(); show("continue"); }
+  const collected=collectDetailRows();
+  if(!collected) return;
+  collected.forEach(it=>state.items.push(it));
+  updateAddedCounts(); renderAddedList(); show("continue");
 };
 
 // 是否繼續：三選項
-$("#contSameCat").onclick=()=>{           // 繼續選同類別 → 直接回明細頁（分類不變）
+$("#contSameCat").onclick=()=>{           // 繼續選同類別 → 回明細頁（分類不變，開新空白列）
   if(!state.currentCat){ show("category"); return; }
-  fillItemSelect(state.currentCat);
+  initDetailPage(state.currentCat);
   show("detail");
 };
 $("#contOtherCat").onclick=()=>{          // 選其他類別 → 回分類頁
