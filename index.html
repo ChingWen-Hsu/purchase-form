@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>請購申請單</title>
+<style>
+  /* ============ 設定：把這行換成你的 Apps Script 網頁應用程式網址 ============ */
+  /* 在 <script> 最下方的 API_URL 設定 */
+
+  :root{
+    --ink:#1c2733;
+    --ink-soft:#5a6b7b;
+    --line:#dce3ea;
+    --line-soft:#eef2f6;
+    --bg:#f4f6f8;
+    --card:#ffffff;
+    --brand:#0f6e5c;        /* 深松綠：沉穩、不像預設藍 */
+    --brand-dark:#0b4a3e;
+    --brand-soft:#e6f2ef;
+    --accent:#c8621f;       /* 燒橙：用於「繼續」等關鍵動作對比 */
+    --danger:#b23a3a;
+    --ok:#0f6e5c;
+    --shadow:0 1px 2px rgba(20,40,60,.06),0 8px 24px rgba(20,40,60,.06);
+    --radius:14px;
+    font-synthesis-weight:none;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    padding-bottom:env(safe-area-inset-bottom);
+  }
+  .wrap{max-width:640px;margin:0 auto;padding:20px 16px 48px}
+
+  /* 頁首 */
+  header.top{
+    display:flex;align-items:baseline;gap:10px;
+    padding:8px 2px 18px;
+  }
+  header.top .mark{
+    font-weight:800;letter-spacing:.02em;font-size:20px;color:var(--brand);
+  }
+  header.top .sub{font-size:13px;color:var(--ink-soft)}
+
+  /* 進度列 */
+  .steps{
+    display:flex;gap:6px;margin:0 2px 18px;font-size:12px;color:var(--ink-soft);
+    flex-wrap:wrap;
+  }
+  .steps .st{display:flex;align-items:center;gap:6px}
+  .steps .dot{width:22px;height:22px;border-radius:50%;background:var(--line);
+    color:#fff;display:grid;place-items:center;font-weight:700;font-size:12px}
+  .steps .st.active .dot{background:var(--brand)}
+  .steps .st.done .dot{background:var(--brand)}
+  .steps .arrow{opacity:.4}
+
+  .card{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:var(--shadow);padding:20px 18px;margin-bottom:16px;
+  }
+  .card h2{margin:0 0 4px;font-size:17px;letter-spacing:.01em}
+  .card .hint{margin:0 0 16px;font-size:13px;color:var(--ink-soft)}
+
+  label.fld{display:block;margin-bottom:14px}
+  label.fld > .lbl{display:block;font-size:13px;font-weight:600;margin-bottom:6px;color:var(--ink)}
+  label.fld > .lbl .req{color:var(--danger);margin-left:3px}
+  input,select,textarea{
+    width:100%;font:inherit;color:var(--ink);
+    padding:11px 12px;border:1px solid var(--line);border-radius:10px;
+    background:#fff;outline:none;transition:border-color .15s,box-shadow .15s;
+  }
+  input:focus,select:focus,textarea:focus{
+    border-color:var(--brand);box-shadow:0 0 0 3px var(--brand-soft);
+  }
+  textarea{resize:vertical;min-height:64px}
+  select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%235a6b7b' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;background-position:right 12px center;padding-right:34px}
+
+  /* 按鈕 */
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    width:100%;padding:13px 16px;border:none;border-radius:11px;
+    font:inherit;font-weight:700;cursor:pointer;transition:transform .05s,background .15s,opacity .15s;
+  }
+  .btn:active{transform:translateY(1px)}
+  .btn.primary{background:var(--brand);color:#fff}
+  .btn.primary:hover{background:#0c5e4f}
+  .btn.accent{background:var(--accent);color:#fff}
+  .btn.accent:hover{background:#b0561a}
+  .btn.ghost{background:#fff;color:var(--brand);border:1.5px solid var(--brand)}
+  .btn.ghost:hover{background:var(--brand-soft)}
+  .btn.subtle{background:var(--line-soft);color:var(--ink)}
+  .btn.subtle:hover{background:#e5ebf1}
+  .btn[disabled]{opacity:.5;cursor:not-allowed}
+  .btn-row{display:flex;flex-direction:column;gap:10px;margin-top:6px}
+
+  /* 廠商卡片 */
+  .vendor-grid{display:grid;gap:12px}
+  .vendor-btn{
+    display:flex;align-items:center;justify-content:space-between;
+    text-align:left;padding:18px 18px;border:1px solid var(--line);
+    background:#fff;border-radius:12px;cursor:pointer;transition:.15s;
+    box-shadow:var(--shadow);
+  }
+  .vendor-btn:hover{border-color:var(--brand);background:var(--brand-soft)}
+  .vendor-btn .vn{font-size:17px;font-weight:700}
+  .vendor-btn .chev{color:var(--brand);font-size:20px}
+
+  /* 已加入品項清單 */
+  .item-list{margin:0 0 14px;padding:0;list-style:none}
+  .item-list li{
+    display:flex;justify-content:space-between;gap:10px;align-items:flex-start;
+    padding:11px 12px;border:1px solid var(--line-soft);border-radius:10px;
+    margin-bottom:8px;background:#fbfcfd;font-size:14px;
+  }
+  .item-list .meta{color:var(--ink-soft);font-size:12.5px}
+  .item-list .cat-tag{
+    display:inline-block;font-size:11px;color:var(--brand);background:var(--brand-soft);
+    padding:1px 8px;border-radius:20px;margin-bottom:3px;
+  }
+  .item-list .del{
+    border:none;background:none;color:var(--danger);cursor:pointer;
+    font-size:13px;padding:2px 4px;white-space:nowrap;
+  }
+  .empty-note{font-size:13px;color:var(--ink-soft);text-align:center;padding:8px 0 14px}
+
+  .counter{font-size:13px;color:var(--ink-soft);margin-bottom:12px}
+  .counter b{color:var(--brand)}
+
+  /* 確認頁 */
+  .review-head{font-size:13px;color:var(--ink-soft);margin-bottom:4px}
+  .review-row{display:flex;gap:10px;padding:6px 0;border-bottom:1px dashed var(--line-soft);font-size:14px}
+  .review-row .k{color:var(--ink-soft);width:88px;flex:none}
+  .review-row .v{font-weight:600}
+  .review-item{border:1px solid var(--line-soft);border-radius:10px;padding:12px;margin-bottom:10px;background:#fbfcfd}
+  .review-item .ri-name{font-weight:700;margin-bottom:4px}
+  .review-item .ri-meta{font-size:13px;color:var(--ink-soft)}
+
+  /* 狀態 / 提示 */
+  .toast{
+    position:fixed;left:50%;bottom:24px;transform:translateX(-50%);
+    background:var(--ink);color:#fff;padding:11px 18px;border-radius:10px;
+    font-size:14px;box-shadow:var(--shadow);opacity:0;pointer-events:none;
+    transition:opacity .25s,transform .25s;z-index:50;max-width:90vw;
+  }
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(-4px)}
+  .toast.err{background:var(--danger)}
+
+  .loading{display:flex;align-items:center;gap:10px;color:var(--ink-soft);font-size:14px;padding:6px 0}
+  .spinner{width:18px;height:18px;border:2.5px solid var(--line);border-top-color:var(--brand);
+    border-radius:50%;animation:spin .8s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  .backlink{background:none;border:none;color:var(--ink-soft);font:inherit;font-size:13px;
+    cursor:pointer;padding:4px 0;margin-bottom:10px;display:inline-flex;gap:5px;align-items:center}
+  .backlink:hover{color:var(--brand)}
+
+  .success-wrap{text-align:center;padding:20px 6px}
+  .success-wrap .big{font-size:40px;margin-bottom:6px}
+  .success-wrap h2{margin:0 0 8px}
+  .success-wrap .ordno{font-family:ui-monospace,monospace;background:var(--line-soft);
+    padding:3px 10px;border-radius:6px;font-size:14px}
+
+  .hidden{display:none !important}
+
+  @media (prefers-reduced-motion:reduce){
+    *{animation-duration:.001ms !important;transition-duration:.001ms !important}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <span class="mark">請購申請單</span>
+    <span class="sub" id="vendorLabel"></span>
+  </header>
+
+  <div class="steps" id="steps"></div>
+
+  <!-- ============ 頁面 1：選廠商 ============ -->
+  <section id="page-vendor" class="page">
+    <div class="card">
+      <h2>選擇廠商</h2>
+      <p class="hint">請先選擇要請購的廠商，再開始填寫。</p>
+      <div id="vendorLoading" class="loading"><span class="spinner"></span>載入廠商清單中…</div>
+      <div id="vendorGrid" class="vendor-grid"></div>
+      <div id="vendorError" class="empty-note hidden"></div>
+    </div>
+  </section>
+
+  <!-- ============ 頁面 2：基本資料 ============ -->
+  <section id="page-header" class="page hidden">
+    <button class="backlink" data-back="vendor">← 重新選擇廠商</button>
+    <div class="card">
+      <h2>基本資料</h2>
+      <p class="hint">這張請購單的共同資訊，只需填一次。</p>
+
+      <label class="fld"><span class="lbl">申請日期<span class="req">*</span></span>
+        <input type="date" id="applyDate"></label>
+      <label class="fld"><span class="lbl">請購日期<span class="req">*</span></span>
+        <input type="date" id="purchaseDate"></label>
+      <label class="fld"><span class="lbl">需求日期<span class="req">*</span></span>
+        <input type="date" id="needDate"></label>
+      <label class="fld"><span class="lbl">申請人<span class="req">*</span></span>
+        <input type="text" id="applicant" placeholder="請輸入姓名" autocomplete="name"></label>
+      <label class="fld"><span class="lbl">申請部門<span class="req">*</span></span>
+        <select id="department">
+          <option value="">請選擇</option>
+          <option>1組</option><option>2組</option><option>3組</option>
+          <option>辦公室</option><option>其他</option>
+        </select></label>
+      <label class="fld"><span class="lbl">請購事由</span>
+        <textarea id="reason" placeholder="例如：部門日常補貨"></textarea></label>
+
+      <div class="btn-row">
+        <button class="btn primary" data-next="items">下一步：新增品項 →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 頁面 3：選分類 ============ -->
+  <section id="page-category" class="page hidden">
+    <button class="backlink" data-back="header">← 回基本資料</button>
+    <div class="card">
+      <h2>選擇品項類別</h2>
+      <p class="hint">先選類別，下一頁再挑貨品與填明細。</p>
+      <div id="catLoading" class="loading"><span class="spinner"></span>載入貨品資料中…</div>
+      <label class="fld" id="catField">
+        <span class="lbl">品項分類<span class="req">*</span></span>
+        <select id="categorySelect"><option value="">請選擇分類</option></select>
+      </label>
+      <div class="btn-row">
+        <button class="btn primary" id="toDetailBtn" data-next="detail" disabled>下一步：選貨品與填明細 →</button>
+        <button class="btn subtle" data-goto-added="1" id="catViewAddedBtn">查看已加入品項 (0)</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 頁面 4：選貨品＋明細 ============ -->
+  <section id="page-detail" class="page hidden">
+    <button class="backlink" data-back="category">← 重選類別</button>
+    <div class="card">
+      <h2>貨品與明細</h2>
+      <p class="hint" id="detailCatHint"></p>
+
+      <label class="fld"><span class="lbl">貨品名稱<span class="req">*</span></span>
+        <select id="itemSelect"><option value="">請選擇貨品</option></select></label>
+      <label class="fld"><span class="lbl">用途<span class="req">*</span></span>
+        <input type="text" id="purpose" placeholder="例如：現場施工使用"></label>
+      <label class="fld"><span class="lbl">數量<span class="req">*</span></span>
+        <input type="number" id="quantity" min="1" step="1" inputmode="numeric" placeholder="請輸入大於 0 的整數"></label>
+      <label class="fld"><span class="lbl">單位<span class="req">*</span></span>
+        <select id="unit">
+          <option value="">請選擇</option>
+          <option>支</option><option>組</option><option>瓶</option><option>盒</option>
+          <option>顆</option><option>個</option><option>箱</option><option>包</option>
+          <option>捲</option><option>把</option><option>台</option><option>其他</option>
+        </select></label>
+
+      <div class="btn-row">
+        <button class="btn primary" id="addItemBtn">加入這個品項</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 頁面 5：是否繼續（已加入品項 + 三選項） ============ -->
+  <section id="page-continue" class="page hidden">
+    <div class="card">
+      <h2>已加入品項</h2>
+      <p class="hint">確認清單，選擇要繼續新增還是前往送出。</p>
+      <ul class="item-list" id="addedList"></ul>
+      <div class="empty-note hidden" id="addedEmpty">目前還沒有品項。</div>
+
+      <div class="btn-row">
+        <button class="btn ghost" id="contSameCat">是，繼續選<span id="sameCatName" style="margin:0 2px"></span>類別品項</button>
+        <button class="btn ghost" id="contOtherCat">是，選擇其他類別品項</button>
+        <button class="btn accent" id="toReview">否，前往確認與送出 →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 頁面 6：確認送出 ============ -->
+  <section id="page-review" class="page hidden">
+    <button class="backlink" data-back="continue">← 返回修改品項</button>
+    <div class="card">
+      <h2>確認請購內容</h2>
+      <p class="hint">送出前請再檢查一次。送出後會寫入廠商的請購紀錄。</p>
+
+      <div class="review-head">基本資料</div>
+      <div id="reviewHeader" style="margin-bottom:16px"></div>
+
+      <div class="review-head">品項（共 <b id="reviewCount">0</b> 項）</div>
+      <div id="reviewItems"></div>
+
+      <div class="btn-row">
+        <button class="btn primary" id="submitBtn">確認無誤，送出申請單</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 頁面 7：完成 ============ -->
+  <section id="page-done" class="page hidden">
+    <div class="card success-wrap">
+      <div class="big">✓</div>
+      <h2>已送出</h2>
+      <p class="hint">請購單已寫入廠商紀錄。</p>
+      <p>單號：<span class="ordno" id="doneOrderNo"></span></p>
+      <div class="btn-row" style="margin-top:18px">
+        <button class="btn primary" id="againSameVendor">再填一張（同廠商）</button>
+        <button class="btn subtle" id="againNewVendor">回到廠商選擇</button>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================================================
+   設定：把下面換成你部署後的 Apps Script「網頁應用程式」網址
+   ============================================================ */
+const API_URL = "https://script.google.com/macros/s/AKfycbwJsGELoc91W0-Wo_skYOCC1q6tE6CqvUy56-5ysEyjG2fbixWGIDI64v9Ra-OeelMB/exec";
+
+/* ---------- 狀態 ---------- */
+const state = {
+  vendor: null,          // {name, sheet}
+  categories: [],        // [{category, items:[...]}]
+  header: {},            // 基本資料
+  items: [],             // 已加入品項
+  currentCat: "",        // 目前選到的分類
+};
+
+/* ---------- 小工具 ---------- */
+const $ = (s)=>document.querySelector(s);
+const $$ = (s)=>document.querySelectorAll(s);
+function show(id){
+  $$(".page").forEach(p=>p.classList.add("hidden"));
+  $("#page-"+id).classList.remove("hidden");
+  window.scrollTo({top:0,behavior:"smooth"});
+  renderSteps(id);
+}
+function toast(msg,isErr){
+  const t=$("#toast"); t.textContent=msg;
+  t.className="toast show"+(isErr?" err":"");
+  clearTimeout(t._t); t._t=setTimeout(()=>t.className="toast",2600);
+}
+function todayStr(){
+  const d=new Date(), p=n=>String(n).padStart(2,"0");
+  return d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate());
+}
+
+/* ---------- 進度列 ---------- */
+const STEP_MAP = {vendor:0,header:1,category:2,detail:2,continue:2,review:3,done:3};
+const STEP_LABELS = ["廠商","基本資料","品項","送出"];
+function renderSteps(id){
+  const cur = STEP_MAP[id] ?? 0;
+  $("#steps").innerHTML = STEP_LABELS.map((lb,i)=>{
+    const cls = i<cur?"st done":(i===cur?"st active":"st");
+    const arrow = i<STEP_LABELS.length-1?'<span class="arrow">›</span>':'';
+    return `<span class="${cls}"><span class="dot">${i+1}</span>${lb}</span>${arrow}`;
+  }).join("");
+}
+
+/* ---------- 載入廠商 ---------- */
+async function loadVendors(){
+  $("#vendorLoading").classList.remove("hidden");
+  $("#vendorError").classList.add("hidden");
+  $("#vendorGrid").innerHTML="";
+  try{
+    const res = await fetch(API_URL+"?action=vendors");
+    const data = await res.json();
+    if(!data.ok) throw new Error(data.error||"讀取失敗");
+    $("#vendorLoading").classList.add("hidden");
+    if(!data.vendors.length){
+      $("#vendorError").textContent="廠商總表沒有資料。";
+      $("#vendorError").classList.remove("hidden"); return;
+    }
+    data.vendors.forEach(v=>{
+      const b=document.createElement("button");
+      b.className="vendor-btn";
+      b.innerHTML=`<span class="vn">${v.name}</span><span class="chev">→</span>`;
+      b.onclick=()=>pickVendor(v);
+      $("#vendorGrid").appendChild(b);
+    });
+  }catch(err){
+    $("#vendorLoading").classList.add("hidden");
+    $("#vendorError").textContent="無法載入廠商清單："+err.message;
+    $("#vendorError").classList.remove("hidden");
+  }
+}
+
+/* ---------- 選廠商 → 載入貨品 ---------- */
+async function pickVendor(v){
+  state.vendor=v; state.items=[]; state.categories=[];
+  $("#vendorLabel").textContent="· "+v.name;
+  // 基本資料日期預設今天
+  $("#applyDate").value=todayStr();
+  $("#purchaseDate").value=todayStr();
+  show("header");
+  // 背景先載入貨品
+  try{
+    const res=await fetch(API_URL+"?action=items&vendor="+encodeURIComponent(v.name));
+    const data=await res.json();
+    if(!data.ok) throw new Error(data.error||"讀取失敗");
+    state.categories=data.categories;
+    fillCategorySelect();
+  }catch(err){
+    toast("貨品載入失敗："+err.message,true);
+  }
+}
+
+function fillCategorySelect(){
+  const sel=$("#categorySelect");
+  sel.innerHTML='<option value="">請選擇分類</option>';
+  state.categories.forEach(c=>{
+    const o=document.createElement("option");
+    o.value=c.category; o.textContent=c.category;
+    sel.appendChild(o);
+  });
+  $("#catLoading").classList.add("hidden");
+}
+
+/* ---------- 基本資料 → 下一步 ---------- */
+function validateHeader(){
+  const h={
+    applyDate:$("#applyDate").value,
+    purchaseDate:$("#purchaseDate").value,
+    needDate:$("#needDate").value,
+    applicant:$("#applicant").value.trim(),
+    department:$("#department").value,
+    reason:$("#reason").value.trim(),
+  };
+  if(!h.applyDate||!h.purchaseDate||!h.needDate||!h.applicant||!h.department){
+    toast("請填寫所有必填欄位（含日期、申請人、部門）",true); return null;
+  }
+  return h;
+}
+
+/* ---------- 分類 → 明細 ---------- */
+function fillItemSelect(cat){
+  const found=state.categories.find(c=>c.category===cat);
+  const sel=$("#itemSelect");
+  sel.innerHTML='<option value="">請選擇貨品</option>';
+  (found?found.items:[]).forEach(it=>{
+    const o=document.createElement("option");
+    o.value=it; o.textContent=it; sel.appendChild(o);
+  });
+  $("#detailCatHint").textContent="類別："+cat;
+}
+
+/* ---------- 加入品項 ---------- */
+function addCurrentItem(){
+  const name=$("#itemSelect").value;
+  const purpose=$("#purpose").value.trim();
+  const qty=$("#quantity").value.trim();
+  const unit=$("#unit").value;
+  if(!name){ toast("請選擇貨品名稱",true); return false; }
+  if(!purpose){ toast("請填寫用途",true); return false; }
+  if(!/^[1-9][0-9]*$/.test(qty)){ toast("數量請填大於 0 的整數",true); return false; }
+  if(!unit){ toast("請選擇單位",true); return false; }
+  state.items.push({category:state.currentCat,name,purpose,quantity:qty,unit});
+  // 清空明細（保留分類，方便「繼續選此類別」）
+  $("#itemSelect").value=""; $("#purpose").value="";
+  $("#quantity").value=""; $("#unit").value="";
+  return true;
+}
+
+/* ---------- 已加入品項清單 ---------- */
+function renderAddedList(){
+  const ul=$("#addedList"); ul.innerHTML="";
+  if(!state.items.length){ $("#addedEmpty").classList.remove("hidden"); }
+  else $("#addedEmpty").classList.add("hidden");
+  state.items.forEach((it,i)=>{
+    const li=document.createElement("li");
+    li.innerHTML=`<div>
+        <span class="cat-tag">${it.category}</span><br>
+        <b>${it.name}</b>
+        <div class="meta">${it.purpose}．${it.quantity} ${it.unit}</div>
+      </div>
+      <button class="del" data-i="${i}">移除</button>`;
+    ul.appendChild(li);
+  });
+  ul.querySelectorAll(".del").forEach(b=>{
+    b.onclick=()=>{ state.items.splice(+b.dataset.i,1); renderAddedList(); updateAddedCounts(); };
+  });
+  // 「繼續選此類別」按鈕顯示目前分類名稱
+  $("#sameCatName").textContent=state.currentCat?("「"+state.currentCat+"」"):"此";
+}
+function updateAddedCounts(){
+  $("#catViewAddedBtn").textContent="查看已加入品項 ("+state.items.length+")";
+}
+
+/* ---------- 確認頁 ---------- */
+function renderReview(){
+  const h=state.header;
+  $("#reviewHeader").innerHTML=[
+    ["申請日期",h.applyDate],["請購日期",h.purchaseDate],["需求日期",h.needDate],
+    ["申請人",h.applicant],["申請部門",h.department],["請購事由",h.reason||"—"],
+  ].map(([k,v])=>`<div class="review-row"><span class="k">${k}</span><span class="v">${v}</span></div>`).join("");
+  $("#reviewCount").textContent=state.items.length;
+  $("#reviewItems").innerHTML=state.items.map((it,i)=>`
+    <div class="review-item">
+      <div class="ri-name">${i+1}. ${it.name}</div>
+      <div class="ri-meta">類別：${it.category}．用途：${it.purpose}．數量：${it.quantity} ${it.unit}</div>
+    </div>`).join("");
+}
+
+/* ---------- 送出 ---------- */
+async function submitForm(){
+  const btn=$("#submitBtn");
+  btn.disabled=true; btn.textContent="送出中…";
+  const payload={vendor:state.vendor.name,header:state.header,items:state.items};
+  try{
+    const res=await fetch(API_URL,{
+      method:"POST",
+      headers:{"Content-Type":"text/plain;charset=utf-8"}, // 避開 CORS preflight
+      body:JSON.stringify(payload),
+    });
+    const data=await res.json();
+    if(!data.ok) throw new Error(data.error||"送出失敗");
+    $("#doneOrderNo").textContent=data.orderNo;
+    show("done");
+  }catch(err){
+    toast("送出失敗："+err.message,true);
+    btn.disabled=false; btn.textContent="確認無誤，送出申請單";
+  }
+}
+
+/* ---------- 事件綁定 ---------- */
+document.addEventListener("click",e=>{
+  const back=e.target.closest("[data-back]");
+  if(back){ show(back.dataset.back); return; }
+});
+
+// 基本資料下一步
+$('[data-next="items"]').onclick=()=>{
+  const h=validateHeader(); if(!h) return;
+  state.header=h;
+  $("#catLoading").classList.toggle("hidden", state.categories.length>0);
+  show("category");
+};
+
+// 分類選擇
+$("#categorySelect").onchange=function(){
+  state.currentCat=this.value;
+  $("#toDetailBtn").disabled=!this.value;
+};
+$("#toDetailBtn").onclick=()=>{
+  if(!state.currentCat){ toast("請先選擇分類",true); return; }
+  fillItemSelect(state.currentCat);
+  show("detail");
+};
+$("#catViewAddedBtn").onclick=()=>{ renderAddedList(); show("continue"); };
+
+// 加入品項 → 到「是否繼續」頁
+$("#addItemBtn").onclick=()=>{
+  if(addCurrentItem()){ updateAddedCounts(); renderAddedList(); show("continue"); }
+};
+
+// 是否繼續：三選項
+$("#contSameCat").onclick=()=>{           // 繼續選同類別 → 直接回明細頁（分類不變）
+  if(!state.currentCat){ show("category"); return; }
+  fillItemSelect(state.currentCat);
+  show("detail");
+};
+$("#contOtherCat").onclick=()=>{          // 選其他類別 → 回分類頁
+  $("#categorySelect").value=""; state.currentCat="";
+  $("#toDetailBtn").disabled=true;
+  show("category");
+};
+$("#toReview").onclick=()=>{              // 否 → 確認頁
+  if(!state.items.length){ toast("請至少加入一個品項",true); return; }
+  renderReview(); show("review");
+};
+
+// 送出
+$("#submitBtn").onclick=submitForm;
+
+// 完成後
+$("#againSameVendor").onclick=()=>{
+  state.items=[]; state.header={};
+  $("#applicant").value=""; $("#department").value=""; $("#reason").value="";
+  $("#needDate").value="";
+  $("#applyDate").value=todayStr(); $("#purchaseDate").value=todayStr();
+  updateAddedCounts();
+  show("header");
+};
+$("#againNewVendor").onclick=()=>{
+  state.items=[]; state.header={}; state.vendor=null;
+  $("#vendorLabel").textContent="";
+  show("vendor"); loadVendors();
+};
+
+/* ---------- 啟動 ---------- */
+renderSteps("vendor");
+if(API_URL.startsWith("在此")||API_URL.startsWith("http")===false){
+  $("#vendorLoading").classList.add("hidden");
+  $("#vendorError").textContent="尚未設定 API 網址：請在 index.html 的 API_URL 貼上你的 Apps Script 網頁應用程式網址。";
+  $("#vendorError").classList.remove("hidden");
+}else{
+  loadVendors();
+}
+</script>
+</body>
+</html>
