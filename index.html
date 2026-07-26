@@ -36,14 +36,14 @@
 
   /* 密碼牆：純淨、無品牌痕跡 */
   .gate-wrap{
-    min-height:100vh;display:flex;align-items:center;justify-content:center;
-    padding:24px;
+    min-height:100vh;display:flex;align-items:flex-start;justify-content:center;
+    padding:56px 24px 24px;
   }
   .gate-card{
     width:100%;max-width:360px;background:#fff;border:1px solid var(--line);
     border-radius:var(--radius);box-shadow:var(--shadow);padding:32px 26px;
   }
-  .gate-card h1{font-size:16px;margin:0 0 18px;color:var(--ink);font-weight:700;text-align:center}
+  .gate-card h1{font-size:17px;margin:0 0 18px;color:var(--ink);font-weight:800;text-align:center}
   .gate-card .gate-err{color:var(--danger);font-size:13px;margin-top:10px;text-align:center;min-height:18px}
 
   /* 頁首（僅登入後畫面出現） */
@@ -71,7 +71,7 @@
     background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
     box-shadow:var(--shadow);padding:20px 18px;margin-bottom:16px;
   }
-  .card h2{margin:0 0 4px;font-size:17px;letter-spacing:.01em}
+  .card h2{margin:0 0 4px;font-size:17px;font-weight:800;letter-spacing:.01em}
   .card .hint{margin:0 0 16px;font-size:13px;color:var(--ink-soft)}
 
   label.fld{display:block;margin-bottom:14px}
@@ -158,9 +158,9 @@
     border-radius:50%;animation:spin .8s linear infinite}
   @keyframes spin{to{transform:rotate(360deg)}}
 
-  .backlink{background:none;border:none;color:var(--brand);font:inherit;font-size:15px;font-weight:600;
-    cursor:pointer;padding:6px 2px;margin-bottom:10px;display:inline-flex;gap:6px;align-items:center}
-  .backlink:hover{color:var(--brand-dark);text-decoration:underline}
+  .backlink{background:#fff;border:1.5px solid var(--brand);color:var(--brand);font:inherit;font-size:16px;font-weight:700;
+    cursor:pointer;padding:9px 16px;margin-bottom:14px;border-radius:10px;display:inline-flex;gap:6px;align-items:center}
+  .backlink:hover{background:var(--brand-soft)}
 
   .success-wrap{text-align:center;padding:20px 6px}
   .success-wrap .big{font-size:40px;margin-bottom:6px;color:var(--brand)}
@@ -184,15 +184,39 @@
   .add-row-btn{border:1.5px dashed var(--line);color:var(--brand);background:#fff}
   .add-row-btn:hover{background:var(--brand-soft);border-color:var(--brand)}
 
-  /* 查詢結果 */
-  .query-result{border:1px solid var(--line-soft);border-radius:10px;padding:12px;margin-bottom:10px;background:#fbfcfd}
-  .query-result .qr-order{font-size:12px;color:var(--ink-soft);margin-bottom:4px}
-  .query-result .qr-name{font-weight:700}
+  .unit-display{
+    display:flex;align-items:baseline;gap:8px;margin-bottom:14px;
+    padding:9px 12px;background:var(--brand-soft);border-radius:10px;
+  }
+  .unit-display .lbl{font-size:13px;font-weight:600;color:var(--ink-soft)}
+  .unit-display .unit-val{font-size:15px;font-weight:700;color:var(--brand)}
+
+  /* 查詢結果：每張單一個明顯區隔的卡片 */
+  .query-result{
+    border:1.5px solid var(--brand);border-left-width:5px;border-radius:10px;
+    padding:14px 14px 12px;margin-bottom:16px;background:#fbfcfd;
+    box-shadow:var(--shadow);
+  }
+  .query-result .qr-order{
+    font-size:12px;color:#fff;background:var(--brand);display:inline-block;
+    padding:3px 10px;border-radius:20px;margin-bottom:8px;font-weight:700;
+  }
+  .query-result .qr-name{font-weight:800;font-size:15px}
   .query-result .qr-meta{font-size:13px;color:var(--ink-soft);margin-top:2px}
   .date-row{display:flex;gap:10px}
   .date-row label.fld{flex:1}
 
   .hidden{display:none !important}
+
+  .page-loading-overlay{
+    position:fixed;inset:0;background:rgba(244,246,248,.92);
+    display:flex;align-items:center;justify-content:center;z-index:60;
+  }
+  .page-loading-box{
+    display:flex;align-items:center;gap:12px;background:#fff;
+    border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);
+    padding:18px 24px;font-size:14px;color:var(--ink-soft);
+  }
 
   @media (prefers-reduced-motion:reduce){
     *{animation-duration:.001ms !important;transition-duration:.001ms !important}
@@ -263,8 +287,6 @@
       <h2>基本資料</h2>
       <p class="hint">這張請購單的共同資訊，只需填一次。</p>
 
-      <div id="headerLoading" class="loading"><span class="spinner"></span>載入資料中…</div>
-
       <label class="fld"><span class="lbl">部門-申請人<span class="req">*</span></span>
         <select id="deptUserSelect"><option value="">請選擇</option></select></label>
       <label class="fld"><span class="lbl">申請日期<span class="req">*</span></span>
@@ -323,8 +345,7 @@
       <div class="empty-note hidden" id="addedEmpty">目前還沒有品項。</div>
 
       <div class="btn-row">
-        <button class="btn ghost" id="contSameCat">是，繼續選<span id="sameCatName" style="margin:0 2px"></span>類別品項</button>
-        <button class="btn ghost" id="contOtherCat">是，選擇其他類別品項</button>
+        <button class="btn ghost" id="contOtherCat">是，繼續新增品項</button>
         <button class="btn accent" id="toReview">否，前往確認與送出 →</button>
       </div>
     </div>
@@ -363,6 +384,9 @@
       <div class="review-head">品項（共 <b id="doneCount">0</b> 項）</div>
       <div id="doneItems"></div>
     </div>
+    <div class="btn-row">
+      <button class="btn primary" id="doneBackBtn">回到申請／查詢選擇頁</button>
+    </div>
   </section>
 
   <!-- ============ 頁面 7：查詢 ============ -->
@@ -371,8 +395,6 @@
     <div class="card">
       <h2>查詢請購紀錄</h2>
       <p class="hint">選擇部門/申請人與日期區間查詢。</p>
-
-      <div id="queryLoading" class="loading"><span class="spinner"></span>載入資料中…</div>
 
       <label class="fld"><span class="lbl">部門-申請人</span>
         <select id="queryDeptUser"><option value="">全部</option></select></label>
@@ -398,6 +420,10 @@
 </div>
 
 <div class="toast" id="toast"></div>
+
+<div class="page-loading-overlay hidden" id="pageLoadingOverlay">
+  <div class="page-loading-box"><span class="spinner"></span><span id="pageLoadingText">載入中…</span></div>
+</div>
 
 <script>
 /* ============================================================
@@ -435,6 +461,13 @@ function todayStr(){
   return d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate());
 }
 function escapeHtml(s){return String(s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));}
+function showPageLoading(text){
+  $("#pageLoadingText").textContent = text || "載入中…";
+  $("#pageLoadingOverlay").classList.remove("hidden");
+}
+function hidePageLoading(){
+  $("#pageLoadingOverlay").classList.add("hidden");
+}
 async function apiPost(action, extra){
   const body = Object.assign({action, sitePw: state.sitePw}, extra||{});
   const res = await fetch(API_URL, {
@@ -488,11 +521,28 @@ $("#sitePwInput").addEventListener("keydown",e=>{ if(e.key==="Enter") $("#sitePw
 /* ============================================================
    入口：新申請 / 查詢
    ============================================================ */
-$("#entryApply").onclick = ()=>{ show("applygate"); };
+$("#entryApply").onclick = async ()=>{
+  if(state.applyPw){
+    // 這個瀏覽階段已驗證過申請密碼，直接進入基本資料，不必重新輸入
+    showPageLoading("載入表單資料中…");
+    $("#modeLabel").textContent="· 新申請";
+    $("#applyDate").value = todayStr();
+    $("#needDate").value = "";
+    $("#reason").value = "";
+    $("#deptUserSelect").value = "";
+    await loadBootstrapForApply();
+    hidePageLoading();
+    show("header");
+    return;
+  }
+  show("applygate");
+};
 $("#entryQuery").onclick = async ()=>{
+  showPageLoading("載入資料中…");
   $("#modeLabel").textContent="· 查詢紀錄";
-  show("query");
   await loadBootstrapForQuery();
+  hidePageLoading();
+  show("query");
 };
 
 /* ---------- 申請密碼 ---------- */
@@ -500,16 +550,22 @@ $("#applyPwBtn").onclick = async ()=>{
   const pw = $("#applyPwInput").value;
   if(!pw){ $("#applyPwErr").textContent="請輸入申請密碼"; return; }
   $("#applyPwBtn").disabled=true; $("#applyPwBtn").textContent="驗證中…";
+  $("#applyPwErr").textContent="";
   try{
     const data = await apiPost("checkApplyLogin", {applyPw: pw});
     if(!data.ok){ $("#applyPwErr").textContent=data.error||"密碼錯誤"; $("#applyPwBtn").disabled=false; $("#applyPwBtn").textContent="確認"; return; }
     state.applyPw = pw;
+    showPageLoading("載入表單資料中…");
     $("#modeLabel").textContent="· 新申請";
     $("#applyDate").value = todayStr();
     $("#needDate").value = "";
-    show("header");
     await loadBootstrapForApply();
+    hidePageLoading();
+    show("header");
+    $("#applyPwBtn").disabled=false; $("#applyPwBtn").textContent="確認";
+    $("#applyPwInput").value="";
   }catch(err){
+    hidePageLoading();
     $("#applyPwErr").textContent="連線失敗："+err.message;
     $("#applyPwBtn").disabled=false; $("#applyPwBtn").textContent="確認";
   }
@@ -520,7 +576,6 @@ $("#applyPwInput").addEventListener("keydown",e=>{ if(e.key==="Enter") $("#apply
    載入資料（bootstrap）：部門/申請人清單 ＋ 彙整貨品分類
    ============================================================ */
 async function loadBootstrapForApply(){
-  $("#headerLoading").classList.remove("hidden");
   try{
     const data = await apiPost("bootstrap", {});
     if(!data.ok) throw new Error(data.error||"讀取失敗");
@@ -528,22 +583,17 @@ async function loadBootstrapForApply(){
     state.categories = data.categories;
     fillDeptUserSelect();
     fillCategorySelect();
-    $("#headerLoading").classList.add("hidden");
   }catch(err){
-    $("#headerLoading").classList.add("hidden");
     toast("資料載入失敗："+err.message,true);
   }
 }
 async function loadBootstrapForQuery(){
-  $("#queryLoading").classList.remove("hidden");
   try{
     const data = await apiPost("bootstrap", {});
     if(!data.ok) throw new Error(data.error||"讀取失敗");
     state.deptUsers = data.deptUsers;
     fillQueryDeptUserSelect();
-    $("#queryLoading").classList.add("hidden");
   }catch(err){
-    $("#queryLoading").classList.add("hidden");
     toast("資料載入失敗："+err.message,true);
   }
 }
@@ -625,17 +675,22 @@ function makeDetailRow(cat){
     </div>
     <label class="fld"><span class="lbl">貨品名稱<span class="req">*</span></span>
       <select class="r-item">${itemOptionsHTML(cat)}</select></label>
-    <label class="fld"><span class="lbl">單位</span>
-      <input type="text" class="r-unit" readonly placeholder="選擇貨品後自動帶出"></label>
+    <div class="unit-display r-unit-display hidden"><span class="lbl">單位</span><span class="unit-val"></span></div>
     <label class="fld"><span class="lbl">用途<span class="req">*</span></span>
       <input type="text" class="r-purpose" placeholder="例如：現場施工使用"></label>
     <label class="fld"><span class="lbl">數量<span class="req">*</span></span>
       <input type="number" class="r-qty" min="0" step="any" inputmode="decimal" placeholder="請輸入大於 0 的數字（可含小數）"></label>`;
   const itemSel=div.querySelector(".r-item");
-  const unitInput=div.querySelector(".r-unit");
+  const unitDisplay=div.querySelector(".r-unit-display");
+  const unitVal=div.querySelector(".unit-val");
   itemSel.onchange=()=>{
     const found=findItemInCat(cat, itemSel.value);
-    unitInput.value = found ? (found.unit || "") : "";
+    if(found && found.unit){
+      unitVal.textContent=found.unit;
+      unitDisplay.classList.remove("hidden");
+    }else{
+      unitDisplay.classList.add("hidden");
+    }
   };
   div.querySelector(".row-del").onclick=()=>{ div.remove(); renumberRows(); };
   return div;
@@ -670,7 +725,6 @@ function collectDetailRows(){
   for(let i=0;i<rows.length;i++){
     const r=rows[i];
     const name=r.querySelector(".r-item").value;
-    const unit=r.querySelector(".r-unit").value;
     const purpose=r.querySelector(".r-purpose").value.trim();
     const qty=r.querySelector(".r-qty").value.trim();
     if(!name){ toast(`第 ${i+1} 筆：請選擇貨品名稱`,true); return null; }
@@ -679,7 +733,7 @@ function collectDetailRows(){
     const found=findItemInCat(state.currentCat, name);
     collected.push({
       category: state.currentCat, name, purpose, quantity: qty,
-      unit: unit || (found?found.unit:"") || "",
+      unit: (found && found.unit) || "",
       vendors: found ? found.vendors.slice() : [],
     });
   }
@@ -717,17 +771,11 @@ function renderAddedList(){
   ul.querySelectorAll(".del").forEach(b=>{
     b.onclick=()=>{ state.items.splice(+b.dataset.i,1); renderAddedList(); updateAddedCounts(); };
   });
-  $("#sameCatName").textContent=state.currentCat?("「"+state.currentCat+"」"):"此";
 }
 function updateAddedCounts(){
   $("#catViewAddedBtn").textContent="查看已加入品項 ("+state.items.length+")";
 }
 
-$("#contSameCat").onclick=()=>{
-  if(!state.currentCat){ show("category"); return; }
-  initDetailPage(state.currentCat);
-  show("detail");
-};
 $("#contOtherCat").onclick=()=>{
   $("#categorySelect").value=""; state.currentCat="";
   $("#toDetailBtn").disabled=true;
@@ -776,6 +824,11 @@ async function submitForm(){
   }
 }
 $("#submitBtn").onclick=submitForm;
+
+$("#doneBackBtn").onclick=()=>{
+  state.header={}; state.items=[]; state.currentCat="";
+  show("entry");
+};
 
 function renderDone(orderNo){
   $("#doneOrderNo").textContent=orderNo;
