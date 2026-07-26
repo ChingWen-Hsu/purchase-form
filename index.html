@@ -5,9 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>請購申請單</title>
 <style>
-  /* ============ 設定：把這行換成你的 Apps Script 網頁應用程式網址 ============ */
-  /* 在 <script> 最下方的 API_URL 設定 */
-
   :root{
     --ink:#1c2733;
     --ink-soft:#5a6b7b;
@@ -15,12 +12,12 @@
     --line-soft:#eef2f6;
     --bg:#f4f6f8;
     --card:#ffffff;
-    --brand:#0f6e5c;        /* 深松綠：沉穩、不像預設藍 */
-    --brand-dark:#0b4a3e;
-    --brand-soft:#e6f2ef;
-    --accent:#c8621f;       /* 燒橙：用於「繼續」等關鍵動作對比 */
+    --brand:#144e8c;        /* 指定藍 */
+    --brand-dark:#0e3966;
+    --brand-soft:#e8f0f9;
+    --accent:#c8621f;
     --danger:#b23a3a;
-    --ok:#0f6e5c;
+    --ok:#144e8c;
     --shadow:0 1px 2px rgba(20,40,60,.06),0 8px 24px rgba(20,40,60,.06);
     --radius:14px;
     font-synthesis-weight:none;
@@ -37,17 +34,28 @@
   }
   .wrap{max-width:640px;margin:0 auto;padding:20px 16px 48px}
 
-  /* 頁首 */
+  /* 密碼牆：純淨、無品牌痕跡 */
+  .gate-wrap{
+    min-height:100vh;display:flex;align-items:center;justify-content:center;
+    padding:24px;
+  }
+  .gate-card{
+    width:100%;max-width:360px;background:#fff;border:1px solid var(--line);
+    border-radius:var(--radius);box-shadow:var(--shadow);padding:32px 26px;
+  }
+  .gate-card h1{font-size:16px;margin:0 0 18px;color:var(--ink);font-weight:700;text-align:center}
+  .gate-card .gate-err{color:var(--danger);font-size:13px;margin-top:10px;text-align:center;min-height:18px}
+
+  /* 頁首（僅登入後畫面出現） */
   header.top{
-    display:flex;align-items:baseline;gap:10px;
+    display:flex;align-items:center;gap:12px;
     padding:8px 2px 18px;
   }
-  header.top .mark{
-    font-weight:800;letter-spacing:.02em;font-size:20px;color:var(--brand);
-  }
-  header.top .sub{font-size:13px;color:var(--ink-soft)}
+  header.top img.logo{height:34px;width:auto;display:block}
+  header.top .titles{display:flex;flex-direction:column}
+  header.top .mark{font-weight:800;letter-spacing:.02em;font-size:19px;color:var(--brand)}
+  header.top .sub{font-size:12.5px;color:var(--ink-soft)}
 
-  /* 進度列 */
   .steps{
     display:flex;gap:6px;margin:0 2px 18px;font-size:12px;color:var(--ink-soft);
     flex-wrap:wrap;
@@ -81,7 +89,6 @@
   select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%235a6b7b' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
     background-repeat:no-repeat;background-position:right 12px center;padding-right:34px}
 
-  /* 按鈕 */
   .btn{
     display:inline-flex;align-items:center;justify-content:center;gap:8px;
     width:100%;padding:13px 16px;border:none;border-radius:11px;
@@ -89,7 +96,7 @@
   }
   .btn:active{transform:translateY(1px)}
   .btn.primary{background:var(--brand);color:#fff}
-  .btn.primary:hover{background:#0c5e4f}
+  .btn.primary:hover{background:var(--brand-dark)}
   .btn.accent{background:var(--accent);color:#fff}
   .btn.accent:hover{background:#b0561a}
   .btn.ghost{background:#fff;color:var(--brand);border:1.5px solid var(--brand)}
@@ -99,19 +106,19 @@
   .btn[disabled]{opacity:.5;cursor:not-allowed}
   .btn-row{display:flex;flex-direction:column;gap:10px;margin-top:6px}
 
-  /* 廠商卡片 */
-  .vendor-grid{display:grid;gap:12px}
-  .vendor-btn{
+  /* 起始選單（新申請／查詢） */
+  .entry-grid{display:grid;gap:12px}
+  .entry-btn{
     display:flex;align-items:center;justify-content:space-between;
-    text-align:left;padding:18px 18px;border:1px solid var(--line);
+    text-align:left;padding:20px 18px;border:1px solid var(--line);
     background:#fff;border-radius:12px;cursor:pointer;transition:.15s;
     box-shadow:var(--shadow);
   }
-  .vendor-btn:hover{border-color:var(--brand);background:var(--brand-soft)}
-  .vendor-btn .vn{font-size:17px;font-weight:700}
-  .vendor-btn .chev{color:var(--brand);font-size:20px}
+  .entry-btn:hover{border-color:var(--brand);background:var(--brand-soft)}
+  .entry-btn .vn{font-size:17px;font-weight:700}
+  .entry-btn .vn small{display:block;font-size:12.5px;font-weight:400;color:var(--ink-soft);margin-top:3px}
+  .entry-btn .chev{color:var(--brand);font-size:20px}
 
-  /* 已加入品項清單 */
   .item-list{margin:0 0 14px;padding:0;list-style:none}
   .item-list li{
     display:flex;justify-content:space-between;gap:10px;align-items:flex-start;
@@ -129,19 +136,14 @@
   }
   .empty-note{font-size:13px;color:var(--ink-soft);text-align:center;padding:8px 0 14px}
 
-  .counter{font-size:13px;color:var(--ink-soft);margin-bottom:12px}
-  .counter b{color:var(--brand)}
-
-  /* 確認頁 */
   .review-head{font-size:13px;color:var(--ink-soft);margin-bottom:4px}
   .review-row{display:flex;gap:10px;padding:6px 0;border-bottom:1px dashed var(--line-soft);font-size:14px}
-  .review-row .k{color:var(--ink-soft);width:88px;flex:none}
+  .review-row .k{color:var(--ink-soft);width:96px;flex:none}
   .review-row .v{font-weight:600}
   .review-item{border:1px solid var(--line-soft);border-radius:10px;padding:12px;margin-bottom:10px;background:#fbfcfd}
   .review-item .ri-name{font-weight:700;margin-bottom:4px}
   .review-item .ri-meta{font-size:13px;color:var(--ink-soft)}
 
-  /* 狀態 / 提示 */
   .toast{
     position:fixed;left:50%;bottom:24px;transform:translateX(-50%);
     background:var(--ink);color:#fff;padding:11px 18px;border-radius:10px;
@@ -156,17 +158,16 @@
     border-radius:50%;animation:spin .8s linear infinite}
   @keyframes spin{to{transform:rotate(360deg)}}
 
-  .backlink{background:none;border:none;color:var(--ink-soft);font:inherit;font-size:13px;
-    cursor:pointer;padding:4px 0;margin-bottom:10px;display:inline-flex;gap:5px;align-items:center}
-  .backlink:hover{color:var(--brand)}
+  .backlink{background:none;border:none;color:var(--brand);font:inherit;font-size:15px;font-weight:600;
+    cursor:pointer;padding:6px 2px;margin-bottom:10px;display:inline-flex;gap:6px;align-items:center}
+  .backlink:hover{color:var(--brand-dark);text-decoration:underline}
 
   .success-wrap{text-align:center;padding:20px 6px}
-  .success-wrap .big{font-size:40px;margin-bottom:6px}
+  .success-wrap .big{font-size:40px;margin-bottom:6px;color:var(--brand)}
   .success-wrap h2{margin:0 0 8px}
   .success-wrap .ordno{font-family:ui-monospace,monospace;background:var(--line-soft);
     padding:3px 10px;border-radius:6px;font-size:14px}
 
-  /* 明細多筆卡片 */
   .detail-row{
     border:1px solid var(--line);border-radius:12px;padding:14px 14px 4px;
     margin-bottom:12px;background:#fbfcfd;position:relative;
@@ -183,6 +184,14 @@
   .add-row-btn{border:1.5px dashed var(--line);color:var(--brand);background:#fff}
   .add-row-btn:hover{background:var(--brand-soft);border-color:var(--brand)}
 
+  /* 查詢結果 */
+  .query-result{border:1px solid var(--line-soft);border-radius:10px;padding:12px;margin-bottom:10px;background:#fbfcfd}
+  .query-result .qr-order{font-size:12px;color:var(--ink-soft);margin-bottom:4px}
+  .query-result .qr-name{font-weight:700}
+  .query-result .qr-meta{font-size:13px;color:var(--ink-soft);margin-top:2px}
+  .date-row{display:flex;gap:10px}
+  .date-row label.fld{flex:1}
+
   .hidden{display:none !important}
 
   @media (prefers-reduced-motion:reduce){
@@ -191,44 +200,78 @@
 </style>
 </head>
 <body>
-<div class="wrap">
+
+<!-- ============ 密碼牆（未登入時只顯示這裡，無任何品牌痕跡） ============ -->
+<div class="gate-wrap" id="gateWrap">
+  <div class="gate-card">
+    <h1>請輸入密碼</h1>
+    <label class="fld"><input type="password" id="sitePwInput" placeholder="密碼" autocomplete="off"></label>
+    <div class="btn-row">
+      <button class="btn primary" id="sitePwBtn">進入</button>
+    </div>
+    <div class="gate-err" id="sitePwErr"></div>
+  </div>
+</div>
+
+<!-- ============ 登入後的正式頁面 ============ -->
+<div class="wrap hidden" id="appWrap">
 
   <header class="top">
-    <span class="mark">請購申請單</span>
-    <span class="sub" id="vendorLabel"></span>
+    <img src="logo.png" alt="" class="logo" id="logoImg">
+    <div class="titles">
+      <span class="mark">請購申請單</span>
+      <span class="sub" id="modeLabel"></span>
+    </div>
   </header>
 
-  <div class="steps" id="steps"></div>
+  <div class="steps hidden" id="steps"></div>
 
-  <!-- ============ 頁面 1：選廠商 ============ -->
-  <section id="page-vendor" class="page">
+  <!-- ============ 頁面 0：新申請 / 查詢 ============ -->
+  <section id="page-entry" class="page">
     <div class="card">
-      <h2>選擇廠商</h2>
-      <p class="hint">請先選擇要請購的廠商，再開始填寫。</p>
-      <div id="vendorLoading" class="loading"><span class="spinner"></span>載入廠商清單中…</div>
-      <div id="vendorGrid" class="vendor-grid"></div>
-      <div id="vendorError" class="empty-note hidden"></div>
+      <h2>請選擇</h2>
+      <p class="hint">要填寫新的請購單，還是查詢先前填過的紀錄？</p>
+      <div class="entry-grid">
+        <button class="entry-btn" id="entryApply">
+          <span class="vn">新申請<small>填寫一張新的請購單</small></span><span class="chev">→</span>
+        </button>
+        <button class="entry-btn" id="entryQuery">
+          <span class="vn">查詢紀錄<small>查詢先前填過的請購內容</small></span><span class="chev">→</span>
+        </button>
+      </div>
     </div>
   </section>
 
-  <!-- ============ 頁面 2：基本資料 ============ -->
+  <!-- ============ 頁面 0-1：申請密碼 ============ -->
+  <section id="page-applygate" class="page hidden">
+    <button class="backlink" data-back="entry">← 返回</button>
+    <div class="card">
+      <h2>輸入申請密碼</h2>
+      <p class="hint">請向採購部門確認目前的申請密碼。</p>
+      <label class="fld"><input type="password" id="applyPwInput" placeholder="申請密碼" autocomplete="off"></label>
+      <div class="btn-row">
+        <button class="btn primary" id="applyPwBtn">確認</button>
+      </div>
+      <div class="gate-err" id="applyPwErr" style="margin-top:8px"></div>
+    </div>
+  </section>
+
+  <!-- ============ 頁面 1：基本資料 ============ -->
   <section id="page-header" class="page hidden">
-    <button class="backlink" data-back="vendor">← 重新選擇廠商</button>
+    <button class="backlink" data-back="entry">← 返回</button>
     <div class="card">
       <h2>基本資料</h2>
       <p class="hint">這張請購單的共同資訊，只需填一次。</p>
 
+      <div id="headerLoading" class="loading"><span class="spinner"></span>載入資料中…</div>
+
+      <label class="fld"><span class="lbl">部門-申請人<span class="req">*</span></span>
+        <select id="deptUserSelect"><option value="">請選擇</option></select></label>
       <label class="fld"><span class="lbl">申請日期<span class="req">*</span></span>
         <input type="date" id="applyDate"></label>
-      <label class="fld"><span class="lbl">請購日期<span class="req">*</span></span>
-        <input type="date" id="purchaseDate"></label>
       <label class="fld"><span class="lbl">需求日期<span class="req">*</span></span>
         <input type="date" id="needDate"></label>
-      <label class="fld"><span class="lbl">申請人<span class="req">*</span></span>
-        <input type="text" id="applicant" placeholder="請輸入姓名" autocomplete="name"></label>
-      <label class="fld"><span class="lbl">申請部門<span class="req">*</span></span>
-        <input type="text" id="department" placeholder="請輸入申請部門"></label>
-      <label class="fld"><span class="lbl">請購事由</span>
+      <label class="fld"><span class="lbl">請購事由<span class="req">*</span></span>
         <textarea id="reason" placeholder="例如：部門日常補貨"></textarea></label>
 
       <div class="btn-row">
@@ -237,25 +280,24 @@
     </div>
   </section>
 
-  <!-- ============ 頁面 3：選分類 ============ -->
+  <!-- ============ 頁面 2：選分類 ============ -->
   <section id="page-category" class="page hidden">
     <button class="backlink" data-back="header">← 回基本資料</button>
     <div class="card">
       <h2>選擇品項類別</h2>
       <p class="hint">先選類別，下一頁再挑貨品與填明細。</p>
-      <div id="catLoading" class="loading"><span class="spinner"></span>載入貨品資料中…</div>
       <label class="fld" id="catField">
         <span class="lbl">品項分類<span class="req">*</span></span>
         <select id="categorySelect"><option value="">請選擇分類</option></select>
       </label>
       <div class="btn-row">
         <button class="btn primary" id="toDetailBtn" data-next="detail" disabled>下一步：選貨品與填明細 →</button>
-        <button class="btn subtle" data-goto-added="1" id="catViewAddedBtn">查看已加入品項 (0)</button>
+        <button class="btn subtle" id="catViewAddedBtn">查看已加入品項 (0)</button>
       </div>
     </div>
   </section>
 
-  <!-- ============ 頁面 4：選貨品＋明細（同類別可多筆） ============ -->
+  <!-- ============ 頁面 3：選貨品＋明細（同類別可多筆） ============ -->
   <section id="page-detail" class="page hidden">
     <button class="backlink" data-back="category">← 重選類別</button>
     <div class="card">
@@ -272,7 +314,7 @@
     </div>
   </section>
 
-  <!-- ============ 頁面 5：是否繼續（已加入品項 + 三選項） ============ -->
+  <!-- ============ 頁面 4：是否繼續 ============ -->
   <section id="page-continue" class="page hidden">
     <div class="card">
       <h2>已加入品項</h2>
@@ -288,12 +330,12 @@
     </div>
   </section>
 
-  <!-- ============ 頁面 6：確認送出 ============ -->
+  <!-- ============ 頁面 5：確認送出 ============ -->
   <section id="page-review" class="page hidden">
     <button class="backlink" data-back="continue">← 返回修改品項</button>
     <div class="card">
       <h2>確認請購內容</h2>
-      <p class="hint">送出前請再檢查一次。送出後會寫入廠商的請購紀錄。</p>
+      <p class="hint">送出前請再檢查一次。送出後會寫入請購紀錄。</p>
 
       <div class="review-head">基本資料</div>
       <div id="reviewHeader" style="margin-bottom:16px"></div>
@@ -307,12 +349,12 @@
     </div>
   </section>
 
-  <!-- ============ 頁面 7：完成 ============ -->
+  <!-- ============ 頁面 6：完成 ============ -->
   <section id="page-done" class="page hidden">
     <div class="card success-wrap">
       <div class="big">✓</div>
       <h2>已送出</h2>
-      <p class="hint">請購單已寫入廠商紀錄。</p>
+      <p class="hint">請購單已寫入請購紀錄。</p>
       <p>單號：<span class="ordno" id="doneOrderNo"></span></p>
     </div>
     <div class="card">
@@ -320,6 +362,36 @@
       <div id="doneHeader" style="margin:6px 0 16px"></div>
       <div class="review-head">品項（共 <b id="doneCount">0</b> 項）</div>
       <div id="doneItems"></div>
+    </div>
+  </section>
+
+  <!-- ============ 頁面 7：查詢 ============ -->
+  <section id="page-query" class="page hidden">
+    <button class="backlink" data-back="entry">← 返回</button>
+    <div class="card">
+      <h2>查詢請購紀錄</h2>
+      <p class="hint">選擇部門/申請人與日期區間查詢。</p>
+
+      <div id="queryLoading" class="loading"><span class="spinner"></span>載入資料中…</div>
+
+      <label class="fld"><span class="lbl">部門-申請人</span>
+        <select id="queryDeptUser"><option value="">全部</option></select></label>
+      <div class="date-row">
+        <label class="fld"><span class="lbl">申請日期（起）</span>
+          <input type="date" id="queryFrom"></label>
+        <label class="fld"><span class="lbl">申請日期（迄）</span>
+          <input type="date" id="queryTo"></label>
+      </div>
+      <div class="btn-row">
+        <button class="btn primary" id="queryBtn">查詢</button>
+      </div>
+    </div>
+
+    <div id="queryResultWrap" class="hidden">
+      <div class="card">
+        <div class="review-head">查詢結果（共 <b id="queryCount">0</b> 筆）</div>
+        <div id="queryResults"></div>
+      </div>
     </div>
   </section>
 
@@ -335,11 +407,13 @@ const API_URL = "https://script.google.com/macros/s/AKfycbwJsGELoc91W0-Wo_skYOCC
 
 /* ---------- 狀態 ---------- */
 const state = {
-  vendor: null,          // {name, sheet}
-  categories: [],        // [{category, items:[...]}]
-  header: {},            // 基本資料
-  items: [],             // 已加入品項
-  currentCat: "",        // 目前選到的分類
+  sitePw: "",
+  applyPw: "",
+  deptUsers: [],
+  categories: [],   // [{category, items:[{name, unit, vendors:[...]}]}]
+  header: {},
+  items: [],
+  currentCat: "",
 };
 
 /* ---------- 小工具 ---------- */
@@ -360,12 +434,24 @@ function todayStr(){
   const d=new Date(), p=n=>String(n).padStart(2,"0");
   return d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate());
 }
+function escapeHtml(s){return String(s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));}
+async function apiPost(action, extra){
+  const body = Object.assign({action, sitePw: state.sitePw}, extra||{});
+  const res = await fetch(API_URL, {
+    method:"POST",
+    headers:{"Content-Type":"text/plain;charset=utf-8"},
+    body: JSON.stringify(body),
+  });
+  return res.json();
+}
 
-/* ---------- 進度列 ---------- */
-const STEP_MAP = {vendor:0,header:1,category:2,detail:2,continue:2,review:3,done:3};
-const STEP_LABELS = ["廠商","基本資料","品項","送出"];
+/* ---------- 進度列（僅新申請流程顯示） ---------- */
+const STEP_MAP = {header:0,category:1,detail:1,continue:1,review:2,done:2};
+const STEP_LABELS = ["基本資料","品項","送出"];
 function renderSteps(id){
-  const cur = STEP_MAP[id] ?? 0;
+  if(!(id in STEP_MAP)){ $("#steps").classList.add("hidden"); return; }
+  $("#steps").classList.remove("hidden");
+  const cur = STEP_MAP[id];
   $("#steps").innerHTML = STEP_LABELS.map((lb,i)=>{
     const cls = i<cur?"st done":(i===cur?"st active":"st");
     const arrow = i<STEP_LABELS.length-1?'<span class="arrow">›</span>':'';
@@ -373,231 +459,134 @@ function renderSteps(id){
   }).join("");
 }
 
-/* ---------- 載入廠商 ---------- */
-async function loadVendors(){
-  $("#vendorLoading").classList.remove("hidden");
-  $("#vendorError").classList.add("hidden");
-  $("#vendorGrid").innerHTML="";
+/* ============================================================
+   密碼牆
+   ============================================================ */
+$("#sitePwBtn").onclick = async ()=>{
+  const pw = $("#sitePwInput").value;
+  if(!pw){ $("#sitePwErr").textContent="請輸入密碼"; return; }
+  $("#sitePwBtn").disabled=true; $("#sitePwBtn").textContent="驗證中…";
   try{
-    const res = await fetch(API_URL+"?action=vendors");
-    const data = await res.json();
-    if(!data.ok) throw new Error(data.error||"讀取失敗");
-    $("#vendorLoading").classList.add("hidden");
-    if(!data.vendors.length){
-      $("#vendorError").textContent="廠商總表沒有資料。";
-      $("#vendorError").classList.remove("hidden"); return;
-    }
-    data.vendors.forEach(v=>{
-      const b=document.createElement("button");
-      b.className="vendor-btn";
-      b.innerHTML=`<span class="vn">${v.name}</span><span class="chev">→</span>`;
-      b.onclick=()=>pickVendor(v);
-      $("#vendorGrid").appendChild(b);
+    const res = await fetch(API_URL,{
+      method:"POST",
+      headers:{"Content-Type":"text/plain;charset=utf-8"},
+      body: JSON.stringify({action:"checkSiteLogin", sitePw: pw}),
     });
+    const data = await res.json();
+    if(!data.ok){ $("#sitePwErr").textContent=data.error||"密碼錯誤"; $("#sitePwBtn").disabled=false; $("#sitePwBtn").textContent="進入"; return; }
+    state.sitePw = pw;
+    $("#gateWrap").classList.add("hidden");
+    $("#appWrap").classList.remove("hidden");
+    show("entry");
   }catch(err){
-    $("#vendorLoading").classList.add("hidden");
-    $("#vendorError").textContent="無法載入廠商清單："+err.message;
-    $("#vendorError").classList.remove("hidden");
+    $("#sitePwErr").textContent="連線失敗："+err.message;
+    $("#sitePwBtn").disabled=false; $("#sitePwBtn").textContent="進入";
   }
-}
+};
+$("#sitePwInput").addEventListener("keydown",e=>{ if(e.key==="Enter") $("#sitePwBtn").click(); });
 
-/* ---------- 選廠商 → 載入貨品 ---------- */
-async function pickVendor(v){
-  state.vendor=v; state.items=[]; state.categories=[];
-  $("#vendorLabel").textContent="· "+v.name;
-  // 基本資料日期預設今天
-  $("#applyDate").value=todayStr();
-  $("#purchaseDate").value=todayStr();
-  show("header");
-  // 背景先載入貨品
+/* ============================================================
+   入口：新申請 / 查詢
+   ============================================================ */
+$("#entryApply").onclick = ()=>{ show("applygate"); };
+$("#entryQuery").onclick = async ()=>{
+  $("#modeLabel").textContent="· 查詢紀錄";
+  show("query");
+  await loadBootstrapForQuery();
+};
+
+/* ---------- 申請密碼 ---------- */
+$("#applyPwBtn").onclick = async ()=>{
+  const pw = $("#applyPwInput").value;
+  if(!pw){ $("#applyPwErr").textContent="請輸入申請密碼"; return; }
+  $("#applyPwBtn").disabled=true; $("#applyPwBtn").textContent="驗證中…";
   try{
-    const res=await fetch(API_URL+"?action=items&vendor="+encodeURIComponent(v.name));
-    const data=await res.json();
-    if(!data.ok) throw new Error(data.error||"讀取失敗");
-    state.categories=data.categories;
-    fillCategorySelect();
+    const data = await apiPost("checkApplyLogin", {applyPw: pw});
+    if(!data.ok){ $("#applyPwErr").textContent=data.error||"密碼錯誤"; $("#applyPwBtn").disabled=false; $("#applyPwBtn").textContent="確認"; return; }
+    state.applyPw = pw;
+    $("#modeLabel").textContent="· 新申請";
+    $("#applyDate").value = todayStr();
+    $("#needDate").value = "";
+    show("header");
+    await loadBootstrapForApply();
   }catch(err){
-    toast("貨品載入失敗："+err.message,true);
+    $("#applyPwErr").textContent="連線失敗："+err.message;
+    $("#applyPwBtn").disabled=false; $("#applyPwBtn").textContent="確認";
+  }
+};
+$("#applyPwInput").addEventListener("keydown",e=>{ if(e.key==="Enter") $("#applyPwBtn").click(); });
+
+/* ============================================================
+   載入資料（bootstrap）：部門/申請人清單 ＋ 彙整貨品分類
+   ============================================================ */
+async function loadBootstrapForApply(){
+  $("#headerLoading").classList.remove("hidden");
+  try{
+    const data = await apiPost("bootstrap", {});
+    if(!data.ok) throw new Error(data.error||"讀取失敗");
+    state.deptUsers = data.deptUsers;
+    state.categories = data.categories;
+    fillDeptUserSelect();
+    fillCategorySelect();
+    $("#headerLoading").classList.add("hidden");
+  }catch(err){
+    $("#headerLoading").classList.add("hidden");
+    toast("資料載入失敗："+err.message,true);
   }
 }
-
+async function loadBootstrapForQuery(){
+  $("#queryLoading").classList.remove("hidden");
+  try{
+    const data = await apiPost("bootstrap", {});
+    if(!data.ok) throw new Error(data.error||"讀取失敗");
+    state.deptUsers = data.deptUsers;
+    fillQueryDeptUserSelect();
+    $("#queryLoading").classList.add("hidden");
+  }catch(err){
+    $("#queryLoading").classList.add("hidden");
+    toast("資料載入失敗："+err.message,true);
+  }
+}
+function fillDeptUserSelect(){
+  const sel=$("#deptUserSelect");
+  sel.innerHTML='<option value="">請選擇</option>'+
+    state.deptUsers.map(d=>`<option>${escapeHtml(d)}</option>`).join("");
+}
+function fillQueryDeptUserSelect(){
+  const sel=$("#queryDeptUser");
+  sel.innerHTML='<option value="">全部</option>'+
+    state.deptUsers.map(d=>`<option>${escapeHtml(d)}</option>`).join("");
+}
 function fillCategorySelect(){
   const sel=$("#categorySelect");
-  sel.innerHTML='<option value="">請選擇分類</option>';
-  state.categories.forEach(c=>{
-    const o=document.createElement("option");
-    o.value=c.category; o.textContent=c.category;
-    sel.appendChild(o);
-  });
-  $("#catLoading").classList.add("hidden");
+  sel.innerHTML='<option value="">請選擇分類</option>'+
+    state.categories.map(c=>`<option value="${escapeHtml(c.category)}">${escapeHtml(c.category)}</option>`).join("");
 }
 
-/* ---------- 基本資料 → 下一步 ---------- */
+/* ============================================================
+   基本資料 → 下一步
+   ============================================================ */
 function validateHeader(){
   const h={
-    applyDate:$("#applyDate").value,
-    purchaseDate:$("#purchaseDate").value,
-    needDate:$("#needDate").value,
-    applicant:$("#applicant").value.trim(),
-    department:$("#department").value,
-    reason:$("#reason").value.trim(),
+    deptUser: $("#deptUserSelect").value,
+    applyDate: $("#applyDate").value,
+    needDate: $("#needDate").value,
+    reason: $("#reason").value.trim(),
   };
-  if(!h.applyDate||!h.purchaseDate||!h.needDate||!h.applicant||!h.department){
-    toast("請填寫所有必填欄位（含日期、申請人、部門）",true); return null;
+  if(!h.deptUser||!h.applyDate||!h.needDate||!h.reason){
+    toast("請填寫所有必填欄位",true); return null;
   }
   return h;
 }
-
-/* ---------- 分類 → 明細（同類別可多筆） ---------- */
-const UNIT_OPTIONS = ["支","組","瓶","盒","顆","個","箱","包","捲","把","台","其他"];
-
-function itemOptionsHTML(cat){
-  const found=state.categories.find(c=>c.category===cat);
-  const items=found?found.items:[];
-  return '<option value="">請選擇貨品</option>'+
-    items.map(it=>`<option value="${escapeAttr(it)}">${escapeHtml(it)}</option>`).join("");
-}
-function unitOptionsHTML(){
-  return '<option value="">請選擇</option>'+
-    UNIT_OPTIONS.map(u=>`<option>${u}</option>`).join("");
-}
-function escapeHtml(s){return String(s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));}
-function escapeAttr(s){return String(s).replace(/"/g,"&quot;");}
-
-// 建立一張明細列卡片
-function makeDetailRow(cat){
-  const div=document.createElement("div");
-  div.className="detail-row";
-  div.innerHTML=`
-    <div class="row-head">
-      <span class="row-no"></span>
-      <button class="row-del" type="button">移除這筆</button>
-    </div>
-    <label class="fld"><span class="lbl">貨品名稱<span class="req">*</span></span>
-      <select class="r-item">${itemOptionsHTML(cat)}</select></label>
-    <label class="fld"><span class="lbl">用途<span class="req">*</span></span>
-      <input type="text" class="r-purpose" placeholder="例如：現場施工使用"></label>
-    <label class="fld"><span class="lbl">數量<span class="req">*</span></span>
-      <input type="number" class="r-qty" min="0" step="any" inputmode="decimal" placeholder="請輸入大於 0 的數字（可含小數）"></label>
-    <label class="fld"><span class="lbl">單位<span class="req">*</span></span>
-      <select class="r-unit">${unitOptionsHTML()}</select></label>`;
-  div.querySelector(".row-del").onclick=()=>{ div.remove(); renumberRows(); };
-  return div;
-}
-
-function renumberRows(){
-  const rows=$$("#detailRows .detail-row");
-  rows.forEach((r,i)=>{ r.querySelector(".row-no").textContent="第 "+(i+1)+" 筆"; });
-  // 只剩一筆時，禁用它的移除鍵（至少保留一筆）
-  rows.forEach(r=>{
-    const del=r.querySelector(".row-del");
-    del.disabled = rows.length<=1;
-  });
-}
-
-// 進入明細頁時：清空並放一張空白列
-function initDetailPage(cat){
-  $("#detailCatHint").textContent="類別："+cat+"（可連續新增多筆）";
-  const box=$("#detailRows"); box.innerHTML="";
-  box.appendChild(makeDetailRow(cat));
-  renumberRows();
-}
-
-// 收集這頁所有列 → 驗證 → 推進 state.items
-function collectDetailRows(){
-  const rows=$$("#detailRows .detail-row");
-  const collected=[];
-  for(let i=0;i<rows.length;i++){
-    const r=rows[i];
-    const name=r.querySelector(".r-item").value;
-    const purpose=r.querySelector(".r-purpose").value.trim();
-    const qty=r.querySelector(".r-qty").value.trim();
-    const unit=r.querySelector(".r-unit").value;
-    if(!name){ toast(`第 ${i+1} 筆：請選擇貨品名稱`,true); return null; }
-    if(!purpose){ toast(`第 ${i+1} 筆：請填寫用途`,true); return null; }
-    if(!/^\d*\.?\d+$/.test(qty) || parseFloat(qty)<=0){ toast(`第 ${i+1} 筆：數量請填大於 0 的數字（可含小數）`,true); return null; }
-    if(!unit){ toast(`第 ${i+1} 筆：請選擇單位`,true); return null; }
-    collected.push({category:state.currentCat,name,purpose,quantity:qty,unit});
-  }
-  return collected;
-}
-
-/* ---------- 已加入品項清單 ---------- */
-function renderAddedList(){
-  const ul=$("#addedList"); ul.innerHTML="";
-  if(!state.items.length){ $("#addedEmpty").classList.remove("hidden"); }
-  else $("#addedEmpty").classList.add("hidden");
-  state.items.forEach((it,i)=>{
-    const li=document.createElement("li");
-    li.innerHTML=`<div>
-        <span class="cat-tag">${it.category}</span><br>
-        <b>${it.name}，${it.quantity} ${it.unit}</b>
-        <div class="meta">${it.purpose}</div>
-      </div>
-      <button class="del" data-i="${i}">移除</button>`;
-    ul.appendChild(li);
-  });
-  ul.querySelectorAll(".del").forEach(b=>{
-    b.onclick=()=>{ state.items.splice(+b.dataset.i,1); renderAddedList(); updateAddedCounts(); };
-  });
-  // 「繼續選此類別」按鈕顯示目前分類名稱
-  $("#sameCatName").textContent=state.currentCat?("「"+state.currentCat+"」"):"此";
-}
-function updateAddedCounts(){
-  $("#catViewAddedBtn").textContent="查看已加入品項 ("+state.items.length+")";
-}
-
-/* ---------- 確認頁 ---------- */
-function renderReview(){
-  const h=state.header;
-  $("#reviewHeader").innerHTML=[
-    ["申請日期",h.applyDate],["請購日期",h.purchaseDate],["需求日期",h.needDate],
-    ["申請人",h.applicant],["申請部門",h.department],["請購事由",h.reason||"—"],
-  ].map(([k,v])=>`<div class="review-row"><span class="k">${k}</span><span class="v">${v}</span></div>`).join("");
-  $("#reviewCount").textContent=state.items.length;
-  $("#reviewItems").innerHTML=state.items.map((it,i)=>`
-    <div class="review-item">
-      <div class="ri-name">${i+1}. ${it.name}，${it.quantity} ${it.unit}</div>
-      <div class="ri-meta">類別：${it.category}．用途：${it.purpose}</div>
-    </div>`).join("");
-}
-
-/* ---------- 送出 ---------- */
-async function submitForm(){
-  const btn=$("#submitBtn");
-  btn.disabled=true; btn.textContent="送出中…";
-  const payload={vendor:state.vendor.name,header:state.header,items:state.items};
-  try{
-    const res=await fetch(API_URL,{
-      method:"POST",
-      headers:{"Content-Type":"text/plain;charset=utf-8"}, // 避開 CORS preflight
-      body:JSON.stringify(payload),
-    });
-    const data=await res.json();
-    if(!data.ok) throw new Error(data.error||"送出失敗");
-    renderDone(data.orderNo);
-    show("done");
-  }catch(err){
-    toast("送出失敗："+err.message,true);
-    btn.disabled=false; btn.textContent="確認無誤，送出申請單";
-  }
-}
-
-/* ---------- 事件綁定 ---------- */
-document.addEventListener("click",e=>{
-  const back=e.target.closest("[data-back]");
-  if(back){ show(back.dataset.back); return; }
-});
-
-// 基本資料下一步
 $('[data-next="items"]').onclick=()=>{
   const h=validateHeader(); if(!h) return;
   state.header=h;
-  $("#catLoading").classList.toggle("hidden", state.categories.length>0);
   show("category");
 };
 
-// 分類選擇
+/* ============================================================
+   分類選擇
+   ============================================================ */
 $("#categorySelect").onchange=function(){
   state.currentCat=this.value;
   $("#toDetailBtn").disabled=!this.value;
@@ -609,16 +598,94 @@ $("#toDetailBtn").onclick=()=>{
 };
 $("#catViewAddedBtn").onclick=()=>{ renderAddedList(); show("continue"); };
 
-// 明細頁：新增一筆同類別品項
+/* ============================================================
+   明細（同類別可多筆）
+   ============================================================ */
+const UNIT_FALLBACK = ["支","組","瓶","盒","顆","個","箱","包","捲","把","台","其他"];
+
+function findItemInCat(cat, name){
+  const found=state.categories.find(c=>c.category===cat);
+  if(!found) return null;
+  return found.items.find(it=>it.name===name) || null;
+}
+function itemOptionsHTML(cat){
+  const found=state.categories.find(c=>c.category===cat);
+  const items=found?found.items:[];
+  return '<option value="">請選擇貨品</option>'+
+    items.map(it=>`<option value="${escapeHtml(it.name)}">${escapeHtml(it.name)}</option>`).join("");
+}
+
+function makeDetailRow(cat){
+  const div=document.createElement("div");
+  div.className="detail-row";
+  div.innerHTML=`
+    <div class="row-head">
+      <span class="row-no"></span>
+      <button class="row-del" type="button">移除這筆</button>
+    </div>
+    <label class="fld"><span class="lbl">貨品名稱<span class="req">*</span></span>
+      <select class="r-item">${itemOptionsHTML(cat)}</select></label>
+    <label class="fld"><span class="lbl">單位</span>
+      <input type="text" class="r-unit" readonly placeholder="選擇貨品後自動帶出"></label>
+    <label class="fld"><span class="lbl">用途<span class="req">*</span></span>
+      <input type="text" class="r-purpose" placeholder="例如：現場施工使用"></label>
+    <label class="fld"><span class="lbl">數量<span class="req">*</span></span>
+      <input type="number" class="r-qty" min="0" step="any" inputmode="decimal" placeholder="請輸入大於 0 的數字（可含小數）"></label>`;
+  const itemSel=div.querySelector(".r-item");
+  const unitInput=div.querySelector(".r-unit");
+  itemSel.onchange=()=>{
+    const found=findItemInCat(cat, itemSel.value);
+    unitInput.value = found ? (found.unit || "") : "";
+  };
+  div.querySelector(".row-del").onclick=()=>{ div.remove(); renumberRows(); };
+  return div;
+}
+
+function renumberRows(){
+  const rows=$$("#detailRows .detail-row");
+  rows.forEach((r,i)=>{ r.querySelector(".row-no").textContent="第 "+(i+1)+" 筆"; });
+  rows.forEach(r=>{
+    const del=r.querySelector(".row-del");
+    del.disabled = rows.length<=1;
+  });
+}
+
+function initDetailPage(cat){
+  $("#detailCatHint").textContent="類別："+cat+"（可連續新增多筆）";
+  const box=$("#detailRows"); box.innerHTML="";
+  box.appendChild(makeDetailRow(cat));
+  renumberRows();
+}
+
 $("#addRowBtn").onclick=()=>{
   $("#detailRows").appendChild(makeDetailRow(state.currentCat));
   renumberRows();
-  // 捲動到新加的那筆
   const rows=$$("#detailRows .detail-row");
   rows[rows.length-1].scrollIntoView({behavior:"smooth",block:"center"});
 };
 
-// 加入並繼續 → 收集本頁所有品項 → 「是否繼續」頁
+function collectDetailRows(){
+  const rows=$$("#detailRows .detail-row");
+  const collected=[];
+  for(let i=0;i<rows.length;i++){
+    const r=rows[i];
+    const name=r.querySelector(".r-item").value;
+    const unit=r.querySelector(".r-unit").value;
+    const purpose=r.querySelector(".r-purpose").value.trim();
+    const qty=r.querySelector(".r-qty").value.trim();
+    if(!name){ toast(`第 ${i+1} 筆：請選擇貨品名稱`,true); return null; }
+    if(!purpose){ toast(`第 ${i+1} 筆：請填寫用途`,true); return null; }
+    if(!/^\d*\.?\d+$/.test(qty) || parseFloat(qty)<=0){ toast(`第 ${i+1} 筆：數量請填大於 0 的數字（可含小數）`,true); return null; }
+    const found=findItemInCat(state.currentCat, name);
+    collected.push({
+      category: state.currentCat, name, purpose, quantity: qty,
+      unit: unit || (found?found.unit:"") || "",
+      vendors: found ? found.vendors.slice() : [],
+    });
+  }
+  return collected;
+}
+
 $("#addItemBtn").onclick=()=>{
   const collected=collectDetailRows();
   if(!collected) return;
@@ -626,51 +693,168 @@ $("#addItemBtn").onclick=()=>{
   updateAddedCounts(); renderAddedList(); show("continue");
 };
 
-// 是否繼續：三選項
-$("#contSameCat").onclick=()=>{           // 繼續選同類別 → 回明細頁（分類不變，開新空白列）
+/* ============================================================
+   已加入品項清單 ＋ 三選頁
+   ============================================================ */
+function vendorLabel(it){
+  if(!it.vendors || !it.vendors.length) return it.vendor||"";
+  return it.vendors.join("/");
+}
+function renderAddedList(){
+  const ul=$("#addedList"); ul.innerHTML="";
+  if(!state.items.length){ $("#addedEmpty").classList.remove("hidden"); }
+  else $("#addedEmpty").classList.add("hidden");
+  state.items.forEach((it,i)=>{
+    const li=document.createElement("li");
+    li.innerHTML=`<div>
+        <span class="cat-tag">${escapeHtml(it.category)}</span><br>
+        <b>${escapeHtml(it.name)}，${escapeHtml(String(it.quantity))} ${escapeHtml(it.unit)}</b>
+        <div class="meta">${escapeHtml(it.purpose)}．廠商：${escapeHtml(vendorLabel(it))}</div>
+      </div>
+      <button class="del" data-i="${i}">移除</button>`;
+    ul.appendChild(li);
+  });
+  ul.querySelectorAll(".del").forEach(b=>{
+    b.onclick=()=>{ state.items.splice(+b.dataset.i,1); renderAddedList(); updateAddedCounts(); };
+  });
+  $("#sameCatName").textContent=state.currentCat?("「"+state.currentCat+"」"):"此";
+}
+function updateAddedCounts(){
+  $("#catViewAddedBtn").textContent="查看已加入品項 ("+state.items.length+")";
+}
+
+$("#contSameCat").onclick=()=>{
   if(!state.currentCat){ show("category"); return; }
   initDetailPage(state.currentCat);
   show("detail");
 };
-$("#contOtherCat").onclick=()=>{          // 選其他類別 → 回分類頁
+$("#contOtherCat").onclick=()=>{
   $("#categorySelect").value=""; state.currentCat="";
   $("#toDetailBtn").disabled=true;
   show("category");
 };
-$("#toReview").onclick=()=>{              // 否 → 確認頁
+$("#toReview").onclick=()=>{
   if(!state.items.length){ toast("請至少加入一個品項",true); return; }
   renderReview(); show("review");
 };
 
-// 送出
+/* ============================================================
+   確認頁
+   ============================================================ */
+function renderReview(){
+  const h=state.header;
+  $("#reviewHeader").innerHTML=[
+    ["部門-申請人",h.deptUser],["申請日期",h.applyDate],["需求日期",h.needDate],
+    ["請購事由",h.reason],
+  ].map(([k,v])=>`<div class="review-row"><span class="k">${k}</span><span class="v">${escapeHtml(v)}</span></div>`).join("");
+  $("#reviewCount").textContent=state.items.length;
+  $("#reviewItems").innerHTML=state.items.map((it,i)=>`
+    <div class="review-item">
+      <div class="ri-name">${i+1}. ${escapeHtml(it.name)}，${escapeHtml(String(it.quantity))} ${escapeHtml(it.unit)}</div>
+      <div class="ri-meta">類別：${escapeHtml(it.category)}．用途：${escapeHtml(it.purpose)}．廠商：${escapeHtml(vendorLabel(it))}</div>
+    </div>`).join("");
+}
+
+/* ============================================================
+   送出
+   ============================================================ */
+async function submitForm(){
+  const btn=$("#submitBtn");
+  btn.disabled=true; btn.textContent="送出中…";
+  try{
+    const data = await apiPost("submit", {
+      applyPw: state.applyPw,
+      header: state.header,
+      items: state.items,
+    });
+    if(!data.ok) throw new Error(data.error||"送出失敗");
+    renderDone(data.orderNo);
+    show("done");
+  }catch(err){
+    toast("送出失敗："+err.message,true);
+    btn.disabled=false; btn.textContent="確認無誤，送出申請單";
+  }
+}
 $("#submitBtn").onclick=submitForm;
 
-/* ---------- 完成頁：顯示單號與明細 ---------- */
 function renderDone(orderNo){
   $("#doneOrderNo").textContent=orderNo;
   const h=state.header;
   $("#doneHeader").innerHTML=[
-    ["廠商",state.vendor?state.vendor.name:""],
-    ["申請日期",h.applyDate],["請購日期",h.purchaseDate],["需求日期",h.needDate],
-    ["申請人",h.applicant],["申請部門",h.department],["請購事由",h.reason||"—"],
-  ].map(([k,v])=>`<div class="review-row"><span class="k">${k}</span><span class="v">${v}</span></div>`).join("");
+    ["部門-申請人",h.deptUser],["申請日期",h.applyDate],["需求日期",h.needDate],
+    ["請購事由",h.reason],
+  ].map(([k,v])=>`<div class="review-row"><span class="k">${k}</span><span class="v">${escapeHtml(v)}</span></div>`).join("");
   $("#doneCount").textContent=state.items.length;
   $("#doneItems").innerHTML=state.items.map((it,i)=>`
     <div class="review-item">
-      <div class="ri-name">${i+1}. ${it.name}，${it.quantity} ${it.unit}</div>
-      <div class="ri-meta">類別：${it.category}．用途：${it.purpose}</div>
+      <div class="ri-name">${i+1}. ${escapeHtml(it.name)}，${escapeHtml(String(it.quantity))} ${escapeHtml(it.unit)}</div>
+      <div class="ri-meta">類別：${escapeHtml(it.category)}．用途：${escapeHtml(it.purpose)}．廠商：${escapeHtml(vendorLabel(it))}</div>
     </div>`).join("");
 }
 
-/* ---------- 啟動 ---------- */
-renderSteps("vendor");
-if(API_URL.startsWith("在此")||API_URL.startsWith("http")===false){
-  $("#vendorLoading").classList.add("hidden");
-  $("#vendorError").textContent="尚未設定 API 網址：請在 index.html 的 API_URL 貼上你的 Apps Script 網頁應用程式網址。";
-  $("#vendorError").classList.remove("hidden");
-}else{
-  loadVendors();
+/* ============================================================
+   查詢
+   ============================================================ */
+$("#queryBtn").onclick=async ()=>{
+  const btn=$("#queryBtn");
+  btn.disabled=true; btn.textContent="查詢中…";
+  try{
+    const data = await apiPost("query", {
+      deptUser: $("#queryDeptUser").value,
+      fromDate: $("#queryFrom").value,
+      toDate: $("#queryTo").value,
+    });
+    if(!data.ok) throw new Error(data.error||"查詢失敗");
+    renderQueryResults(data.records);
+  }catch(err){
+    toast("查詢失敗："+err.message,true);
+  }
+  btn.disabled=false; btn.textContent="查詢";
+};
+
+function renderQueryResults(records){
+  $("#queryResultWrap").classList.remove("hidden");
+  $("#queryCount").textContent=records.length;
+  if(!records.length){
+    $("#queryResults").innerHTML='<div class="empty-note">沒有符合的紀錄。</div>';
+    return;
+  }
+  // 依單號分組顯示
+  const byOrder={};
+  const orderList=[];
+  records.forEach(r=>{
+    if(!byOrder[r.orderNo]){ byOrder[r.orderNo]=[]; orderList.push(r.orderNo); }
+    byOrder[r.orderNo].push(r);
+  });
+  $("#queryResults").innerHTML=orderList.map(ordNo=>{
+    const rs=byOrder[ordNo];
+    const head=rs[0];
+    const itemsHtml=rs.map(r=>`
+      <div class="review-item">
+        <div class="ri-name">${r.seq}. ${escapeHtml(r.name)}，${escapeHtml(String(r.quantity))} ${escapeHtml(r.unit)}</div>
+        <div class="ri-meta">類別：${escapeHtml(r.category)}．用途：${escapeHtml(r.purpose)}．廠商：${escapeHtml(r.vendor)}</div>
+      </div>`).join("");
+    return `<div class="query-result">
+      <div class="qr-order">單號 ${escapeHtml(ordNo)}．申請日期 ${escapeHtml(head.applyDate)}．需求日期 ${escapeHtml(head.needDate)}</div>
+      <div class="qr-name">${escapeHtml(head.deptUser)}</div>
+      <div class="qr-meta">事由：${escapeHtml(head.reason)}</div>
+      <div style="margin-top:8px">${itemsHtml}</div>
+    </div>`;
+  }).join("");
 }
+
+/* ============================================================
+   返回按鈕
+   ============================================================ */
+document.addEventListener("click",e=>{
+  const back=e.target.closest("[data-back]");
+  if(back){ show(back.dataset.back); return; }
+});
+
+/* ---------- Logo 載入失敗時優雅隱藏 ---------- */
+$("#logoImg").addEventListener("error",function(){ this.style.display="none"; });
+
+/* ---------- 啟動：只顯示密碼牆，其餘什麼都不做 ---------- */
 </script>
 </body>
 </html>
