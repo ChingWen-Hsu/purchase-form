@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>請購申請單</title>
-
 <style>
   :root{
     --ink:#1c2733;
@@ -38,97 +37,63 @@
 
   .wrap{max-width:640px;margin:0 auto;padding:20px 16px 48px}
 
-  /* 密碼牆 */
+  /* 密碼牆：純淨、無品牌痕跡 */
   .gate-wrap{
-    min-height:100vh;
-    display:flex;
-    align-items:flex-start;
-    justify-content:center;
+    min-height:100vh;display:flex;align-items:flex-start;justify-content:center;
     padding:56px 24px 24px;
   }
 
   .gate-card{
-    width:100%;
-    max-width:360px;
-    background:#fff;
-    border:1px solid var(--line);
-    border-radius:var(--radius);
-    box-shadow:var(--shadow);
-    padding:32px 26px;
+    width:100%;max-width:360px;background:#fff;border:1px solid var(--line);
+    border-radius:var(--radius);box-shadow:var(--shadow);padding:32px 26px;
   }
 
   .gate-card h1{
-    font-size:17px;
-    margin:0 0 18px;
-    color:var(--ink);
-    font-weight:800;
-    text-align:center
+    font-size:17px;margin:0 0 18px;color:var(--ink);
+    font-weight:800;text-align:center
   }
 
   .gate-card .gate-err{
-    color:var(--danger);
-    font-size:13px;
-    margin-top:10px;
-    text-align:center;
-    min-height:18px
+    color:var(--danger);font-size:13px;margin-top:10px;
+    text-align:center;min-height:18px
   }
 
   /* 頁首 */
   header.top{
-    display:flex;
-    align-items:center;
-    gap:12px;
+    display:flex;align-items:center;gap:12px;
     padding:8px 2px 18px;
   }
 
-  header.top img.logo{
-    height:34px;
-    width:auto;
-    display:block
-  }
+  header.top img.logo{height:34px;width:auto;display:block}
 
   header.top .titles{
-    display:flex;
-    flex-direction:column
+    display:flex;flex-direction:column
   }
 
   header.top .mark{
-    font-weight:800;
-    letter-spacing:.02em;
-    font-size:19px;
-    color:var(--brand)
+    font-weight:800;letter-spacing:.02em;
+    font-size:19px;color:var(--brand)
   }
 
   header.top .sub{
-    font-size:12.5px;
-    color:var(--ink-soft)
+    font-size:12.5px;color:var(--ink-soft)
   }
 
   .steps{
-    display:flex;
-    gap:6px;
-    margin:0 2px 18px;
-    font-size:12px;
-    color:var(--ink-soft);
+    display:flex;gap:6px;margin:0 2px 18px;
+    font-size:12px;color:var(--ink-soft);
     flex-wrap:wrap;
   }
 
   .steps .st{
-    display:flex;
-    align-items:center;
-    gap:6px
+    display:flex;align-items:center;gap:6px
   }
 
   .steps .dot{
-    width:22px;
-    height:22px;
-    border-radius:50%;
-    background:var(--line);
-    color:#fff;
-    display:grid;
-    place-items:center;
-    font-weight:700;
-    font-size:12px
+    width:22px;height:22px;border-radius:50%;
+    background:var(--line);color:#fff;
+    display:grid;place-items:center;
+    font-weight:700;font-size:12px
   }
 
   .steps .st.active .dot{background:var(--brand)}
@@ -136,54 +101,35 @@
   .steps .arrow{opacity:.4}
 
   .card{
-    background:var(--card);
-    border:1px solid var(--line);
-    border-radius:var(--radius);
-    box-shadow:var(--shadow);
-    padding:20px 18px;
-    margin-bottom:16px;
+    background:var(--card);border:1px solid var(--line);
+    border-radius:var(--radius);box-shadow:var(--shadow);
+    padding:20px 18px;margin-bottom:16px;
   }
 
   .card h2{
-    margin:0 0 4px;
-    font-size:17px;
-    font-weight:800;
-    letter-spacing:.01em
+    margin:0 0 4px;font-size:17px;
+    font-weight:800;letter-spacing:.01em
   }
 
   .card .hint{
-    margin:0 0 16px;
-    font-size:13px;
-    color:var(--ink-soft)
+    margin:0 0 16px;font-size:13px;color:var(--ink-soft)
   }
 
-  label.fld{
-    display:block;
-    margin-bottom:14px
-  }
+  label.fld{display:block;margin-bottom:14px}
 
   label.fld > .lbl{
-    display:block;
-    font-size:13px;
-    font-weight:600;
-    margin-bottom:6px;
-    color:var(--ink)
+    display:block;font-size:13px;
+    font-weight:600;margin-bottom:6px;color:var(--ink)
   }
 
   label.fld > .lbl .req{
-    color:var(--danger);
-    margin-left:3px
+    color:var(--danger);margin-left:3px
   }
 
   input,select,textarea{
-    width:100%;
-    font:inherit;
-    color:var(--ink);
-    padding:11px 12px;
-    border:1px solid var(--line);
-    border-radius:10px;
-    background:#fff;
-    outline:none;
+    width:100%;font:inherit;color:var(--ink);
+    padding:11px 12px;border:1px solid var(--line);
+    border-radius:10px;background:#fff;outline:none;
     transition:border-color .15s,box-shadow .15s;
   }
 
@@ -192,10 +138,7 @@
     box-shadow:0 0 0 3px var(--brand-soft);
   }
 
-  textarea{
-    resize:vertical;
-    min-height:64px
-  }
+  textarea{resize:vertical;min-height:64px}
 
   select{
     appearance:none;
@@ -206,17 +149,10 @@
   }
 
   .btn{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    gap:8px;
-    width:100%;
-    padding:13px 16px;
-    border:none;
-    border-radius:11px;
-    font:inherit;
-    font-weight:700;
-    cursor:pointer;
+    display:inline-flex;align-items:center;justify-content:center;
+    gap:8px;width:100%;padding:13px 16px;
+    border:none;border-radius:11px;font:inherit;
+    font-weight:700;cursor:pointer;
     transition:transform .05s,background .15s,opacity .15s;
   }
 
@@ -225,41 +161,21 @@
   .btn.primary:hover{background:var(--brand-dark)}
   .btn.accent{background:var(--accent);color:#fff}
   .btn.accent:hover{background:#b0561a}
-  .btn.ghost{
-    background:#fff;
-    color:var(--brand);
-    border:1.5px solid var(--brand)
-  }
-
+  .btn.ghost{background:#fff;color:var(--brand);border:1.5px solid var(--brand)}
   .btn.ghost:hover{background:var(--brand-soft)}
   .btn.subtle{background:var(--line-soft);color:var(--ink)}
   .btn.subtle:hover{background:#e5ebf1}
   .btn[disabled]{opacity:.5;cursor:not-allowed}
-
-  .btn-row{
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-    margin-top:6px
-  }
+  .btn-row{display:flex;flex-direction:column;gap:10px;margin-top:6px}
 
   /* 起始選單 */
-  .entry-grid{
-    display:grid;
-    gap:12px
-  }
+  .entry-grid{display:grid;gap:12px}
 
   .entry-btn{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    text-align:left;
-    padding:20px 18px;
-    border:1px solid var(--line);
-    background:#fff;
-    border-radius:12px;
-    cursor:pointer;
-    transition:.15s;
+    display:flex;align-items:center;justify-content:space-between;
+    text-align:left;padding:20px 18px;
+    border:1px solid var(--line);background:#fff;
+    border-radius:12px;cursor:pointer;transition:.15s;
     box-shadow:var(--shadow);
   }
 
@@ -268,133 +184,87 @@
     background:var(--brand-soft)
   }
 
-  .entry-btn .vn{
-    font-size:17px;
-    font-weight:700
-  }
+  .entry-btn .vn{font-size:17px;font-weight:700}
 
   .entry-btn .vn small{
-    display:block;
-    font-size:12.5px;
-    font-weight:400;
-    color:var(--ink-soft);
+    display:block;font-size:12.5px;
+    font-weight:400;color:var(--ink-soft);
     margin-top:3px
   }
 
-  .entry-btn .chev{
-    color:var(--brand);
-    font-size:20px
-  }
+  .entry-btn .chev{color:var(--brand);font-size:20px}
 
   .item-list{
-    margin:0 0 14px;
-    padding:0;
-    list-style:none
+    margin:0 0 14px;padding:0;list-style:none
   }
 
   .item-list li{
-    display:flex;
-    justify-content:space-between;
-    gap:10px;
-    align-items:flex-start;
-    padding:11px 12px;
-    border:1px solid var(--line-soft);
-    border-radius:10px;
-    margin-bottom:8px;
-    background:#fbfcfd;
-    font-size:14px;
+    display:flex;justify-content:space-between;gap:10px;
+    align-items:flex-start;padding:11px 12px;
+    border:1px solid var(--line-soft);border-radius:10px;
+    margin-bottom:8px;background:#fbfcfd;font-size:14px;
   }
 
   .item-list .meta{
-    color:var(--ink-soft);
-    font-size:12.5px
+    color:var(--ink-soft);font-size:12.5px
   }
 
   .item-list .cat-tag{
-    display:inline-block;
-    font-size:11px;
-    color:var(--brand);
-    background:var(--brand-soft);
-    padding:1px 8px;
-    border-radius:20px;
-    margin-bottom:3px;
+    display:inline-block;font-size:11px;color:var(--brand);
+    background:var(--brand-soft);padding:1px 8px;
+    border-radius:20px;margin-bottom:3px;
   }
 
   .item-list .del{
-    border:none;
-    background:none;
-    color:var(--danger);
-    cursor:pointer;
-    font-size:13px;
-    padding:2px 4px;
+    border:none;background:none;color:var(--danger);
+    cursor:pointer;font-size:13px;padding:2px 4px;
     white-space:nowrap;
   }
 
   .empty-note{
-    font-size:13px;
-    color:var(--ink-soft);
-    text-align:center;
-    padding:8px 0 14px
+    font-size:13px;color:var(--ink-soft);
+    text-align:center;padding:8px 0 14px
   }
 
   .review-head{
-    font-size:13px;
-    color:var(--ink-soft);
-    margin-bottom:4px
+    font-size:13px;color:var(--ink-soft);margin-bottom:4px
   }
 
   .review-row{
-    display:flex;
-    gap:10px;
-    padding:6px 0;
+    display:flex;gap:10px;padding:6px 0;
     border-bottom:1px dashed var(--line-soft);
     font-size:14px
   }
 
   .review-row .k{
-    color:var(--ink-soft);
-    width:96px;
-    flex:none
+    color:var(--ink-soft);width:96px;flex:none
   }
 
-  .review-row .v{
-    font-weight:600
-  }
+  .review-row .v{font-weight:600}
 
   .review-item{
     border:1px solid var(--line-soft);
-    border-radius:10px;
-    padding:12px;
-    margin-bottom:10px;
-    background:#fbfcfd
+    border-radius:10px;padding:12px;
+    margin-bottom:10px;background:#fbfcfd
   }
 
   .review-item .ri-name{
-    font-weight:700;
-    margin-bottom:4px
+    font-weight:700;margin-bottom:4px
   }
 
   .review-item .ri-meta{
-    font-size:13px;
-    color:var(--ink-soft)
+    font-size:13px;color:var(--ink-soft)
   }
 
   .toast{
-    position:fixed;
-    left:50%;
-    bottom:24px;
+    position:fixed;left:50%;bottom:24px;
     transform:translateX(-50%);
-    background:var(--ink);
-    color:#fff;
-    padding:11px 18px;
-    border-radius:10px;
-    font-size:14px;
-    box-shadow:var(--shadow);
-    opacity:0;
-    pointer-events:none;
+    background:var(--ink);color:#fff;
+    padding:11px 18px;border-radius:10px;
+    font-size:14px;box-shadow:var(--shadow);
+    opacity:0;pointer-events:none;
     transition:opacity .25s,transform .25s;
-    z-index:50;
-    max-width:90vw;
+    z-index:50;max-width:90vw;
   }
 
   .toast.show{
@@ -405,110 +275,69 @@
   .toast.err{background:var(--danger)}
 
   .loading{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    color:var(--ink-soft);
-    font-size:14px;
-    padding:6px 0
+    display:flex;align-items:center;gap:10px;
+    color:var(--ink-soft);font-size:14px;padding:6px 0
   }
 
   .spinner{
-    width:18px;
-    height:18px;
-    border:2.5px solid var(--line);
+    width:18px;height:18px;border:2.5px solid var(--line);
     border-top-color:var(--brand);
-    border-radius:50%;
-    animation:spin .8s linear infinite
+    border-radius:50%;animation:spin .8s linear infinite
   }
 
-  @keyframes spin{
-    to{transform:rotate(360deg)}
-  }
+  @keyframes spin{to{transform:rotate(360deg)}}
 
   .backlink{
-    background:#fff;
-    border:1.5px solid var(--brand);
-    color:var(--brand);
-    font:inherit;
-    font-size:16px;
-    font-weight:700;
-    cursor:pointer;
-    padding:9px 16px;
-    margin-bottom:14px;
-    border-radius:10px;
-    display:inline-flex;
-    gap:6px;
-    align-items:center
+    background:#fff;border:1.5px solid var(--brand);
+    color:var(--brand);font:inherit;font-size:16px;
+    font-weight:700;cursor:pointer;padding:9px 16px;
+    margin-bottom:14px;border-radius:10px;
+    display:inline-flex;gap:6px;align-items:center
   }
 
   .backlink:hover{background:var(--brand-soft)}
 
-  .success-wrap{
-    text-align:center;
-    padding:20px 6px
-  }
-
+  .success-wrap{text-align:center;padding:20px 6px}
   .success-wrap .big{
-    font-size:40px;
-    margin-bottom:6px;
-    color:var(--brand)
+    font-size:40px;margin-bottom:6px;color:var(--brand)
   }
 
-  .success-wrap h2{
-    margin:0 0 8px
-  }
+  .success-wrap h2{margin:0 0 8px}
 
   .success-wrap .ordno{
     font-family:ui-monospace,monospace;
-    background:var(--line-soft);
-    padding:3px 10px;
-    border-radius:6px;
-    font-size:14px
+    background:var(--line-soft);padding:3px 10px;
+    border-radius:6px;font-size:14px
   }
 
   .detail-row{
-    border:1px solid var(--line);
-    border-radius:12px;
-    padding:14px 14px 4px;
-    margin-bottom:12px;
-    background:#fbfcfd;
-    position:relative;
+    border:1px solid var(--line);border-radius:12px;
+    padding:14px 14px 4px;margin-bottom:12px;
+    background:#fbfcfd;position:relative;
   }
 
   .detail-row .row-head{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:10px;
+    display:flex;justify-content:space-between;
+    align-items:center;margin-bottom:10px;
   }
 
   .detail-row .row-no{
-    font-size:13px;
-    font-weight:700;
-    color:var(--brand)
+    font-size:13px;font-weight:700;color:var(--brand)
   }
 
   .detail-row .row-del{
-    border:none;
-    background:none;
-    color:var(--danger);
-    cursor:pointer;
-    font:inherit;
-    font-size:13px;
+    border:none;background:none;color:var(--danger);
+    cursor:pointer;font:inherit;font-size:13px;
     padding:2px 4px;
   }
 
   .detail-row .row-del[disabled]{
-    color:var(--ink-soft);
-    opacity:.4;
-    cursor:not-allowed
+    color:var(--ink-soft);opacity:.4;cursor:not-allowed
   }
 
   .add-row-btn{
     border:1.5px dashed var(--line);
-    color:var(--brand);
-    background:#fff
+    color:var(--brand);background:#fff
   }
 
   .add-row-btn:hover{
@@ -517,180 +346,212 @@
   }
 
   .unit-display{
-    display:flex;
-    align-items:baseline;
-    gap:8px;
-    margin-bottom:14px;
-    padding:9px 12px;
-    background:var(--brand-soft);
-    border-radius:10px;
+    display:flex;align-items:baseline;gap:8px;
+    margin-bottom:14px;padding:9px 12px;
+    background:var(--brand-soft);border-radius:10px;
   }
 
   .unit-display .lbl{
-    font-size:13px;
-    font-weight:600;
-    color:var(--ink-soft)
+    font-size:13px;font-weight:600;color:var(--ink-soft)
   }
 
   .unit-display .unit-val{
-    font-size:15px;
-    font-weight:700;
-    color:var(--brand)
+    font-size:15px;font-weight:700;color:var(--brand)
   }
 
+  /* 查詢結果 */
   .query-result{
     border:1.5px solid var(--brand);
-    border-left-width:5px;
-    border-radius:10px;
-    padding:14px 14px 12px;
-    margin-bottom:16px;
-    background:#fbfcfd;
-    box-shadow:var(--shadow);
+    border-left-width:5px;border-radius:10px;
+    padding:14px 14px 12px;margin-bottom:16px;
+    background:#fbfcfd;box-shadow:var(--shadow);
   }
 
   .query-result .qr-order{
-    font-size:12px;
-    color:#fff;
-    background:var(--brand);
-    display:inline-block;
-    padding:3px 10px;
-    border-radius:20px;
-    margin-bottom:8px;
-    font-weight:700;
+    font-size:12px;color:#fff;background:var(--brand);
+    display:inline-block;padding:3px 10px;
+    border-radius:20px;margin-bottom:8px;font-weight:700;
   }
 
   .query-result .qr-name{
-    font-weight:800;
-    font-size:15px
+    font-weight:800;font-size:15px
   }
 
   .query-result .qr-meta{
-    font-size:13px;
-    color:var(--ink-soft);
-    margin-top:2px
+    font-size:13px;color:var(--ink-soft);margin-top:2px
   }
 
-  .date-row{
-    display:flex;
-    gap:10px
-  }
+  .date-row{display:flex;gap:10px}
+  .date-row label.fld{flex:1}
 
-  .date-row label.fld{
-    flex:1
-  }
-
-  .hidden{
-    display:none !important
-  }
+  .hidden{display:none !important}
 
   .page-loading-overlay{
-    position:fixed;
-    inset:0;
-    background:rgba(244,246,248,.92);
-    display:flex;
-    align-items:center;
-    justify-content:center;
+    position:fixed;inset:0;background:rgba(244,246,248,.92);
+    display:flex;align-items:center;justify-content:center;
     z-index:60;
   }
 
   .page-loading-box{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    background:#fff;
-    border:1px solid var(--line);
-    border-radius:12px;
-    box-shadow:var(--shadow);
-    padding:18px 24px;
-    font-size:14px;
-    color:var(--ink-soft);
+    display:flex;align-items:center;gap:12px;background:#fff;
+    border:1px solid var(--line);border-radius:12px;
+    box-shadow:var(--shadow);padding:18px 24px;
+    font-size:14px;color:var(--ink-soft);
   }
 
   /* ============================================================
      搜尋式下拉選單
      ============================================================ */
 
-  .search-select-wrap{
+  .search-select{
     position:relative;
     width:100%;
   }
 
-  .search-select-input{
+  .search-select-trigger{
     width:100%;
-    padding:11px 38px 11px 12px;
+    min-height:46px;
+    padding:11px 40px 11px 12px;
     border:1px solid var(--line);
     border-radius:10px;
     background:#fff;
     color:var(--ink);
     font:inherit;
+    text-align:left;
+    cursor:pointer;
+    position:relative;
     outline:none;
     transition:border-color .15s,box-shadow .15s;
   }
 
-  .search-select-input:focus{
+  .search-select-trigger::after{
+    content:"";
+    position:absolute;
+    right:14px;
+    top:50%;
+    width:8px;
+    height:8px;
+    border-right:2px solid var(--ink-soft);
+    border-bottom:2px solid var(--ink-soft);
+    transform:translateY(-65%) rotate(45deg);
+    transition:transform .15s;
+  }
+
+  .search-select.open .search-select-trigger{
     border-color:var(--brand);
     box-shadow:0 0 0 3px var(--brand-soft);
   }
 
-  .search-select-input::placeholder{
+  .search-select.open .search-select-trigger::after{
+    transform:translateY(-20%) rotate(225deg);
+  }
+
+  .search-select-trigger.placeholder{
     color:var(--ink-soft);
   }
 
-  .search-select-arrow{
-    position:absolute;
-    right:12px;
-    top:50%;
-    transform:translateY(-50%);
-    color:var(--ink-soft);
-    font-size:13px;
-    pointer-events:none;
-  }
-
-  .search-select-list{
+  .search-select-panel{
     position:absolute;
     left:0;
     right:0;
-    top:calc(100% + 4px);
-    max-height:240px;
-    overflow-y:auto;
-    -webkit-overflow-scrolling:touch;
+    top:calc(100% + 6px);
     background:#fff;
     border:1px solid var(--line);
-    border-radius:10px;
-    box-shadow:var(--shadow);
+    border-radius:12px;
+    box-shadow:0 8px 24px rgba(20,40,60,.14);
     z-index:100;
-    display:none;
+    overflow:hidden;
   }
 
-  .search-select-list.show{
-    display:block;
+  .search-select-search{
+    padding:10px;
+    border-bottom:1px solid var(--line-soft);
+    background:#fff;
+  }
+
+  .search-select-search input{
+    width:100%;
+    margin:0;
+    padding:10px 12px 10px 36px;
+    border:1px solid var(--line);
+    border-radius:9px;
+    background:#f8fafc;
+    font:inherit;
+    outline:none;
+  }
+
+  .search-select-search{
+    position:relative;
+  }
+
+  .search-select-search::before{
+    content:"⌕";
+    position:absolute;
+    left:22px;
+    top:50%;
+    transform:translateY(-53%);
+    color:var(--ink-soft);
+    font-size:18px;
+    z-index:1;
+    pointer-events:none;
+  }
+
+  .search-select-search input:focus{
+    border-color:var(--brand);
+    box-shadow:0 0 0 2px var(--brand-soft);
+    background:#fff;
+  }
+
+  .search-select-options{
+    max-height:260px;
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+    overscroll-behavior:contain;
   }
 
   .search-select-option{
-    padding:11px 12px;
-    cursor:pointer;
-    font-size:14px;
-    border-bottom:1px solid var(--line-soft);
+    width:100%;
+    border:none;
     background:#fff;
-    user-select:none;
-    -webkit-user-select:none;
-    touch-action:manipulation;
+    color:var(--ink);
+    font:inherit;
+    text-align:left;
+    padding:11px 13px;
+    cursor:pointer;
+    display:block;
+    min-height:44px;
   }
 
-  .search-select-option:last-child{
-    border-bottom:none;
+  .search-select-option + .search-select-option{
+    border-top:1px solid var(--line-soft);
   }
 
   .search-select-option:hover,
-  .search-select-option.active{
+  .search-select-option:active{
     background:var(--brand-soft);
+  }
+
+  .search-select-option.selected{
     color:var(--brand);
+    font-weight:700;
+    background:var(--brand-soft);
   }
 
   .search-select-empty{
-    padding:11px 12px;
+    padding:18px 12px;
+    text-align:center;
     color:var(--ink-soft);
     font-size:13px;
+  }
+
+  @media (max-width:600px){
+    .search-select-options{
+      max-height:230px;
+    }
+
+    .search-select-panel{
+      box-shadow:0 6px 20px rgba(20,40,60,.16);
+    }
   }
 
   @media (prefers-reduced-motion:reduce){
@@ -704,34 +565,25 @@
 
 <body>
 
-<!-- ============================================================
-     密碼牆
-     ============================================================ -->
+<!-- ============ 密碼牆 ============ -->
 <div class="gate-wrap" id="gateWrap">
   <div class="gate-card">
     <h1>請輸入密碼</h1>
 
     <label class="fld">
-      <input
-        type="password"
-        id="sitePwInput"
-        placeholder="密碼"
-        autocomplete="off">
+      <input type="password" id="sitePwInput" placeholder="密碼" autocomplete="off">
     </label>
 
     <div class="btn-row">
-      <button class="btn primary" id="sitePwBtn">
-        進入
-      </button>
+      <button class="btn primary" id="sitePwBtn">進入</button>
     </div>
 
     <div class="gate-err" id="sitePwErr"></div>
   </div>
 </div>
 
-<!-- ============================================================
-     登入後
-     ============================================================ -->
+
+<!-- ============ 登入後正式頁面 ============ -->
 <div class="wrap hidden" id="appWrap">
 
   <header class="top">
@@ -743,20 +595,16 @@
     </div>
   </header>
 
+
   <div class="steps hidden" id="steps"></div>
 
-  <!-- ============================================================
-       頁面 0：新申請 / 查詢
-       ============================================================ -->
+
+  <!-- ============ 頁面 0：新申請 / 查詢 ============ -->
   <section id="page-entry" class="page">
 
     <div class="card">
-
       <h2>請選擇</h2>
-
-      <p class="hint">
-        要填寫新的請購單，還是查詢先前填過的紀錄？
-      </p>
+      <p class="hint">要填寫新的請購單，還是查詢先前填過的紀錄？</p>
 
       <div class="entry-grid">
 
@@ -765,7 +613,6 @@
             新申請
             <small>填寫一張新的請購單</small>
           </span>
-
           <span class="chev">→</span>
         </button>
 
@@ -774,32 +621,25 @@
             查詢紀錄
             <small>查詢先前填過的請購內容</small>
           </span>
-
           <span class="chev">→</span>
         </button>
 
       </div>
-
     </div>
 
   </section>
 
-  <!-- ============================================================
-       頁面 0-1：申請密碼
-       ============================================================ -->
+
+  <!-- ============ 頁面 0-1：申請密碼 ============ -->
   <section id="page-applygate" class="page hidden">
 
-    <button class="backlink" data-back="entry">
-      ← 返回
-    </button>
+    <button class="backlink" data-back="entry">← 返回</button>
 
     <div class="card">
 
       <h2>輸入申請密碼</h2>
 
-      <p class="hint">
-        請向採購部門確認目前的申請密碼。
-      </p>
+      <p class="hint">請向採購部門確認目前的申請密碼。</p>
 
       <label class="fld">
         <input
@@ -810,40 +650,28 @@
       </label>
 
       <div class="btn-row">
-        <button class="btn primary" id="applyPwBtn">
-          確認
-        </button>
+        <button class="btn primary" id="applyPwBtn">確認</button>
       </div>
 
-      <div
-        class="gate-err"
-        id="applyPwErr"
-        style="margin-top:8px">
-      </div>
+      <div class="gate-err" id="applyPwErr" style="margin-top:8px"></div>
 
     </div>
 
   </section>
 
-  <!-- ============================================================
-       頁面 1：基本資料
-       ============================================================ -->
+
+  <!-- ============ 頁面 1：基本資料 ============ -->
   <section id="page-header" class="page hidden">
 
-    <button class="backlink" data-back="entry">
-      ← 返回
-    </button>
+    <button class="backlink" data-back="entry">← 返回</button>
 
     <div class="card">
 
       <h2>基本資料</h2>
 
-      <p class="hint">
-        這張請購單的共同資訊，只需填一次。
-      </p>
+      <p class="hint">這張請購單的共同資訊，只需填一次。</p>
 
       <label class="fld">
-
         <span class="lbl">
           部門-申請人<span class="req">*</span>
         </span>
@@ -851,57 +679,50 @@
         <select id="deptUserSelect">
           <option value="">請選擇</option>
         </select>
-
       </label>
 
-      <label class="fld">
 
+      <label class="fld">
         <span class="lbl">
           申請日期<span class="req">*</span>
         </span>
 
         <input type="date" id="applyDate">
-
       </label>
 
-      <label class="fld">
 
+      <label class="fld">
         <span class="lbl">
           需求日期<span class="req">*</span>
         </span>
 
         <input type="date" id="needDate">
-
       </label>
 
-      <label class="fld">
 
+      <label class="fld">
         <span class="lbl">
           請購事由<span class="req">*</span>
         </span>
 
         <textarea
           id="reason"
-          placeholder="例如：部門日常補貨">
-        </textarea>
-
+          placeholder="例如：部門日常補貨"></textarea>
       </label>
 
-      <div class="btn-row">
 
+      <div class="btn-row">
         <button class="btn primary" data-next="items">
           下一步：新增品項 →
         </button>
-
       </div>
 
     </div>
 
   </section>
 
-  <!-- ============================================================
-       頁面 2：選分類
-       ============================================================ -->
+
+  <!-- ============ 頁面 2：選分類 ============ -->
   <section id="page-category" class="page hidden">
 
     <button class="backlink" data-back="header">
@@ -916,35 +737,51 @@
         先選類別，下一頁再挑貨品與填明細。
       </p>
 
+
       <label class="fld" id="catField">
 
         <span class="lbl">
           品項分類<span class="req">*</span>
         </span>
 
+
+        <!-- 搜尋式分類選單 -->
         <div
-          class="search-select-wrap"
-          id="categorySearchWrap">
+          class="search-select"
+          id="categorySearchSelect">
 
-          <input
-            type="text"
-            id="categorySearchInput"
-            class="search-select-input"
-            placeholder="請選擇或輸入分類名稱"
-            autocomplete="off">
-
-          <span class="search-select-arrow">
-            ⌄
-          </span>
+          <button
+            type="button"
+            class="search-select-trigger placeholder"
+            id="categorySelectTrigger">
+            請選擇分類
+          </button>
 
           <div
-            class="search-select-list"
-            id="categorySearchList">
+            class="search-select-panel hidden"
+            id="categorySelectPanel">
+
+            <div class="search-select-search">
+
+              <input
+                type="text"
+                id="categorySearchInput"
+                placeholder="搜尋分類..."
+                autocomplete="off">
+
+            </div>
+
+            <div
+              class="search-select-options"
+              id="categorySelectOptions">
+            </div>
+
           </div>
 
         </div>
 
       </label>
+
 
       <div class="btn-row">
 
@@ -953,17 +790,13 @@
           id="toDetailBtn"
           data-next="detail"
           disabled>
-
           下一步：選貨品與填明細 →
-
         </button>
 
         <button
           class="btn subtle"
           id="catViewAddedBtn">
-
           查看已加入品項 (0)
-
         </button>
 
       </div>
@@ -972,9 +805,8 @@
 
   </section>
 
-  <!-- ============================================================
-       頁面 3：選貨品＋明細
-       ============================================================ -->
+
+  <!-- ============ 頁面 3：選貨品＋明細 ============ -->
   <section id="page-detail" class="page hidden">
 
     <button class="backlink" data-back="category">
@@ -989,24 +821,20 @@
 
       <div id="detailRows"></div>
 
+
       <button
         class="btn subtle add-row-btn"
         id="addRowBtn">
-
         ＋ 新增一筆同類別品項
-
       </button>
 
-      <div
-        class="btn-row"
-        style="margin-top:14px">
+
+      <div class="btn-row" style="margin-top:14px">
 
         <button
           class="btn primary"
           id="addItemBtn">
-
           加入並繼續
-
         </button>
 
       </div>
@@ -1015,9 +843,8 @@
 
   </section>
 
-  <!-- ============================================================
-       頁面 4：是否繼續
-       ============================================================ -->
+
+  <!-- ============ 頁面 4：是否繼續 ============ -->
   <section id="page-continue" class="page hidden">
 
     <div class="card">
@@ -1033,27 +860,22 @@
       <div
         class="empty-note hidden"
         id="addedEmpty">
-
         目前還沒有品項。
-
       </div>
+
 
       <div class="btn-row">
 
         <button
           class="btn ghost"
           id="contOtherCat">
-
           是，繼續新增品項
-
         </button>
 
         <button
           class="btn accent"
           id="toReview">
-
           否，前往確認與送出 →
-
         </button>
 
       </div>
@@ -1062,17 +884,12 @@
 
   </section>
 
-  <!-- ============================================================
-       頁面 5：確認送出
-       ============================================================ -->
+
+  <!-- ============ 頁面 5：確認送出 ============ -->
   <section id="page-review" class="page hidden">
 
-    <button
-      class="backlink"
-      data-back="continue">
-
+    <button class="backlink" data-back="continue">
       ← 返回修改品項
-
     </button>
 
     <div class="card">
@@ -1083,6 +900,7 @@
         送出前請再檢查一次。送出後會寫入請購紀錄。
       </p>
 
+
       <div class="review-head">
         基本資料
       </div>
@@ -1092,20 +910,20 @@
         style="margin-bottom:16px">
       </div>
 
+
       <div class="review-head">
         品項（共 <b id="reviewCount">0</b> 項）
       </div>
 
       <div id="reviewItems"></div>
 
+
       <div class="btn-row">
 
         <button
           class="btn primary"
           id="submitBtn">
-
           確認無誤，送出申請單
-
         </button>
 
       </div>
@@ -1114,9 +932,8 @@
 
   </section>
 
-  <!-- ============================================================
-       頁面 6：完成
-       ============================================================ -->
+
+  <!-- ============ 頁面 6：完成 ============ -->
   <section id="page-done" class="page hidden">
 
     <div class="card success-wrap">
@@ -1139,6 +956,7 @@
 
     </div>
 
+
     <div class="card">
 
       <div class="review-head">
@@ -1158,23 +976,21 @@
 
     </div>
 
+
     <div class="btn-row">
 
       <button
         class="btn primary"
         id="doneBackBtn">
-
         回到申請／查詢選擇頁
-
       </button>
 
     </div>
 
   </section>
 
-  <!-- ============================================================
-       頁面 7：查詢
-       ============================================================ -->
+
+  <!-- ============ 頁面 7：查詢 ============ -->
   <section id="page-query" class="page hidden">
 
     <button class="backlink" data-back="entry">
@@ -1189,6 +1005,7 @@
         選擇部門/申請人與日期區間查詢。
       </p>
 
+
       <label class="fld">
 
         <span class="lbl">
@@ -1200,6 +1017,7 @@
         </select>
 
       </label>
+
 
       <div class="date-row">
 
@@ -1215,6 +1033,7 @@
 
         </label>
 
+
         <label class="fld">
 
           <span class="lbl">
@@ -1229,19 +1048,19 @@
 
       </div>
 
+
       <div class="btn-row">
 
         <button
           class="btn primary"
           id="queryBtn">
-
           查詢
-
         </button>
 
       </div>
 
     </div>
+
 
     <div
       id="queryResultWrap"
@@ -1263,7 +1082,9 @@
 
 </div>
 
+
 <div class="toast" id="toast"></div>
+
 
 <div
   class="page-loading-overlay hidden"
@@ -1281,52 +1102,46 @@
 
 </div>
 
+
 <script>
 
 /* ============================================================
-   API
+   設定
    ============================================================ */
 
-const API_URL =
-"https://script.google.com/macros/s/AKfycbwJsGELoc91W0-Wo_skYOCC1q6tE6CqvUy56-5ysEyjG2fbixWGIDI64v9Ra-OeelMB/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbwJsGELoc91W0-Wo_skYOCC1q6tE6CqvUy56-5ysEyjG2fbixWGIDI64v9Ra-OeelMB/exec";
 
 
-/* ============================================================
-   狀態
-   ============================================================ */
+/* ---------- 狀態 ---------- */
 
 const state = {
 
-  sitePw:"",
-  applyPw:"",
+  sitePw: "",
+  applyPw: "",
 
-  deptUsers:[],
+  deptUsers: [],
 
-  categories:[],
+  categories: [],
 
-  header:{},
+  header: {},
 
-  items:[],
+  items: [],
 
-  currentCat:"",
+  currentCat: "",
 
 };
 
 
-/* ============================================================
-   小工具
-   ============================================================ */
+/* ---------- 小工具 ---------- */
 
-const $ = s => document.querySelector(s);
+const $ = (s)=>document.querySelector(s);
 
-const $$ = s => document.querySelectorAll(s);
+const $$ = (s)=>document.querySelectorAll(s);
 
 
 function show(id){
 
-  $$(".page").forEach(p =>
-    p.classList.add("hidden")
-  );
+  $$(".page").forEach(p=>p.classList.add("hidden"));
 
   $("#page-"+id).classList.remove("hidden");
 
@@ -1345,14 +1160,12 @@ function toast(msg,isErr){
 
   t.textContent=msg;
 
-  t.className =
-    "toast show"+
-    (isErr ? " err" : "");
+  t.className="toast show"+(isErr?" err":"");
 
   clearTimeout(t._t);
 
   t._t=setTimeout(
-    () => t.className="toast",
+    ()=>t.className="toast",
     2600
   );
 }
@@ -1362,28 +1175,24 @@ function todayStr(){
 
   const d=new Date();
 
-  const p=n =>
-    String(n).padStart(2,"0");
+  const p=n=>String(n).padStart(2,"0");
 
-  return d.getFullYear()+
-    "-"+
-    p(d.getMonth()+1)+
-    "-"+
-    p(d.getDate());
+  return d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate());
+
 }
 
 
 function escapeHtml(s){
 
   return String(s).replace(
-    /[&<>"]/g,
-    c => ({
+    /[&<>]/g,
+    c=>({
       "&":"&amp;",
       "<":"&lt;",
-      ">":"&gt;",
-      '"':"&quot;"
+      ">":"&gt;"
     }[c])
   );
+
 }
 
 
@@ -1394,6 +1203,7 @@ function showPageLoading(text){
 
   $("#pageLoadingOverlay")
     .classList.remove("hidden");
+
 }
 
 
@@ -1401,20 +1211,21 @@ function hidePageLoading(){
 
   $("#pageLoadingOverlay")
     .classList.add("hidden");
+
 }
 
 
-async function apiPost(action,extra){
+async function apiPost(action, extra){
 
-  const body=Object.assign(
+  const body = Object.assign(
     {
       action,
-      sitePw:state.sitePw
+      sitePw: state.sitePw
     },
-    extra || {}
+    extra||{}
   );
 
-  const res=await fetch(
+  const res = await fetch(
     API_URL,
     {
       method:"POST",
@@ -1422,11 +1233,415 @@ async function apiPost(action,extra){
         "Content-Type":
           "text/plain;charset=utf-8"
       },
-      body:JSON.stringify(body)
+      body:JSON.stringify(body),
     }
   );
 
   return res.json();
+
+}
+
+
+/* ============================================================
+   搜尋式下拉選單共用元件
+   ============================================================ */
+
+/*
+  這裡是這次新增的主要功能。
+
+  使用方式：
+  - 點外框 → 開啟
+  - 開啟後可以直接滑
+  - 也可以搜尋
+  - 點選後立即關閉
+  - 點其他地方也會關閉
+*/
+
+
+function closeSearchSelect(wrapper){
+
+  if(!wrapper) return;
+
+  wrapper.classList.remove("open");
+
+  const panel =
+    wrapper.querySelector(".search-select-panel");
+
+  if(panel){
+    panel.classList.add("hidden");
+  }
+
+  const input =
+    wrapper.querySelector(".search-select-search input");
+
+  if(input){
+    input.value="";
+  }
+
+}
+
+
+function closeAllSearchSelect(except){
+
+  $$(".search-select").forEach(el=>{
+
+    if(el!==except){
+      closeSearchSelect(el);
+    }
+
+  });
+
+}
+
+
+function openSearchSelect(wrapper){
+
+  closeAllSearchSelect(wrapper);
+
+  wrapper.classList.add("open");
+
+  const panel =
+    wrapper.querySelector(".search-select-panel");
+
+  if(panel){
+    panel.classList.remove("hidden");
+  }
+
+  const input =
+    wrapper.querySelector(".search-select-search input");
+
+  if(input){
+
+    setTimeout(()=>{
+      input.focus();
+    },50);
+
+  }
+
+}
+
+
+document.addEventListener("click",function(e){
+
+  if(!e.target.closest(".search-select")){
+
+    closeAllSearchSelect();
+
+  }
+
+});
+
+
+/* ============================================================
+   建立搜尋式下拉選單
+   ============================================================ */
+
+function createSearchSelect(config){
+
+  const wrapper =
+    document.createElement("div");
+
+  wrapper.className="search-select";
+
+
+  const trigger =
+    document.createElement("button");
+
+  trigger.type="button";
+
+  trigger.className=
+    "search-select-trigger placeholder";
+
+  trigger.textContent=
+    config.placeholder || "請選擇";
+
+
+  const panel =
+    document.createElement("div");
+
+  panel.className=
+    "search-select-panel hidden";
+
+
+  const searchBox =
+    document.createElement("div");
+
+  searchBox.className=
+    "search-select-search";
+
+
+  const searchInput =
+    document.createElement("input");
+
+  searchInput.type="text";
+
+  searchInput.placeholder=
+    config.searchPlaceholder || "搜尋...";
+
+  searchInput.autocomplete="off";
+
+
+  searchBox.appendChild(searchInput);
+
+
+  const optionsBox =
+    document.createElement("div");
+
+  optionsBox.className=
+    "search-select-options";
+
+
+  panel.appendChild(searchBox);
+
+  panel.appendChild(optionsBox);
+
+  wrapper.appendChild(trigger);
+
+  wrapper.appendChild(panel);
+
+
+  let currentValue="";
+
+
+  function renderOptions(keyword=""){
+
+    const kw =
+      String(keyword)
+        .trim()
+        .toLowerCase();
+
+
+    const filtered =
+      config.getOptions()
+        .filter(item=>{
+
+          const text =
+            String(item.label);
+
+          return !kw ||
+            text.toLowerCase().includes(kw);
+
+        });
+
+
+    optionsBox.innerHTML="";
+
+
+    if(!filtered.length){
+
+      const empty =
+        document.createElement("div");
+
+      empty.className=
+        "search-select-empty";
+
+      empty.textContent=
+        kw ? "沒有符合的選項" : "目前沒有可選項目";
+
+      optionsBox.appendChild(empty);
+
+      return;
+
+    }
+
+
+    filtered.forEach(item=>{
+
+      const option =
+        document.createElement("button");
+
+      option.type="button";
+
+      option.className=
+        "search-select-option";
+
+
+      if(item.value===currentValue){
+
+        option.classList.add("selected");
+
+      }
+
+
+      option.textContent=item.label;
+
+
+      option.addEventListener("click",function(e){
+
+        e.preventDefault();
+
+        e.stopPropagation();
+
+
+        currentValue=
+          String(item.value);
+
+
+        trigger.textContent=
+          item.label;
+
+
+        trigger.classList.remove(
+          "placeholder"
+        );
+
+
+        closeSearchSelect(wrapper);
+
+
+        if(config.onChange){
+
+          config.onChange(
+            currentValue,
+            item
+          );
+
+        }
+
+      });
+
+
+      optionsBox.appendChild(option);
+
+    });
+
+  }
+
+
+  trigger.addEventListener(
+    "click",
+    function(e){
+
+      e.preventDefault();
+
+      e.stopPropagation();
+
+
+      if(wrapper.classList.contains("open")){
+
+        closeSearchSelect(wrapper);
+
+      }else{
+
+        renderOptions(
+          searchInput.value
+        );
+
+        openSearchSelect(wrapper);
+
+      }
+
+    }
+  );
+
+
+  searchInput.addEventListener(
+    "input",
+    function(){
+
+      renderOptions(
+        searchInput.value
+      );
+
+    }
+  );
+
+
+  searchInput.addEventListener(
+    "keydown",
+    function(e){
+
+      if(e.key==="Escape"){
+
+        closeSearchSelect(wrapper);
+
+        trigger.focus();
+
+      }
+
+    }
+  );
+
+
+  /*
+    防止搜尋框的點擊事件往外冒泡，
+    避免被 document click 提前關掉。
+  */
+
+  searchInput.addEventListener(
+    "click",
+    function(e){
+
+      e.stopPropagation();
+
+    }
+  );
+
+
+  /*
+    提供給外部使用的 API
+  */
+
+  wrapper._getValue=function(){
+
+    return currentValue;
+
+  };
+
+
+  wrapper._setValue=function(value,label){
+
+    currentValue =
+      value == null ? "" : String(value);
+
+
+    if(currentValue){
+
+      trigger.textContent =
+        label != null
+          ? label
+          : currentValue;
+
+      trigger.classList.remove(
+        "placeholder"
+      );
+
+    }else{
+
+      trigger.textContent =
+        config.placeholder || "請選擇";
+
+      trigger.classList.add(
+        "placeholder"
+      );
+
+    }
+
+  };
+
+
+  wrapper._refresh=function(){
+
+    if(wrapper.classList.contains("open")){
+
+      renderOptions(
+        searchInput.value
+      );
+
+    }
+
+  };
+
+
+  wrapper._close=function(){
+
+    closeSearchSelect(wrapper);
+
+  };
+
+
+  return wrapper;
+
 }
 
 
@@ -1434,19 +1649,16 @@ async function apiPost(action,extra){
    進度列
    ============================================================ */
 
-const STEP_MAP={
-
+const STEP_MAP = {
   header:0,
   category:1,
   detail:1,
   continue:1,
   review:2,
   done:2
-
 };
 
-
-const STEP_LABELS=[
+const STEP_LABELS = [
   "基本資料",
   "品項",
   "送出"
@@ -1457,31 +1669,34 @@ function renderSteps(id){
 
   if(!(id in STEP_MAP)){
 
-    $("#steps")
-      .classList.add("hidden");
+    $("#steps").classList.add("hidden");
 
     return;
+
   }
 
-  $("#steps")
-    .classList.remove("hidden");
+
+  $("#steps").classList.remove("hidden");
 
   const cur=STEP_MAP[id];
+
 
   $("#steps").innerHTML =
     STEP_LABELS.map((lb,i)=>{
 
       const cls =
         i<cur
-        ? "st done"
-        : i===cur
-        ? "st active"
-        : "st";
+          ? "st done"
+          : (i===cur
+            ? "st active"
+            : "st");
+
 
       const arrow =
         i<STEP_LABELS.length-1
-        ? '<span class="arrow">›</span>'
-        : "";
+          ? '<span class="arrow">›</span>'
+          : '';
+
 
       return `
         <span class="${cls}">
@@ -1492,6 +1707,7 @@ function renderSteps(id){
       `;
 
     }).join("");
+
 }
 
 
@@ -1499,9 +1715,10 @@ function renderSteps(id){
    密碼牆
    ============================================================ */
 
-$("#sitePwBtn").onclick=async()=>{
+$("#sitePwBtn").onclick = async ()=>{
 
-  const pw=$("#sitePwInput").value;
+  const pw =
+    $("#sitePwInput").value;
 
   if(!pw){
 
@@ -1509,43 +1726,51 @@ $("#sitePwBtn").onclick=async()=>{
       "請輸入密碼";
 
     return;
+
   }
+
 
   $("#sitePwBtn").disabled=true;
 
   $("#sitePwBtn").textContent=
     "驗證中…";
 
+
   try{
 
-    const res=await fetch(
-      API_URL,
-      {
-        method:"POST",
-        headers:{
-          "Content-Type":
-            "text/plain;charset=utf-8"
-        },
-        body:JSON.stringify({
-          action:"checkSiteLogin",
-          sitePw:pw
-        })
-      }
-    );
+    const res =
+      await fetch(
+        API_URL,
+        {
+          method:"POST",
+          headers:{
+            "Content-Type":
+              "text/plain;charset=utf-8"
+          },
+          body:JSON.stringify({
+            action:"checkSiteLogin",
+            sitePw:pw
+          }),
+        }
+      );
+
 
     const data=await res.json();
+
 
     if(!data.ok){
 
       $("#sitePwErr").textContent=
-        data.error || "密碼錯誤";
+        data.error||"密碼錯誤";
 
       $("#sitePwBtn").disabled=false;
 
       $("#sitePwBtn").textContent="進入";
 
       return;
+
     }
+
 
     state.sitePw=pw;
 
@@ -1557,6 +1782,7 @@ $("#sitePwBtn").onclick=async()=>{
 
     show("entry");
 
+
   }catch(err){
 
     $("#sitePwErr").textContent=
@@ -1565,7 +1791,9 @@ $("#sitePwBtn").onclick=async()=>{
     $("#sitePwBtn").disabled=false;
 
     $("#sitePwBtn").textContent="進入";
+
   }
+
 };
 
 
@@ -1579,10 +1807,10 @@ $("#sitePwInput").addEventListener(
 
 
 /* ============================================================
-   入口
+   入口：新申請 / 查詢
    ============================================================ */
 
-$("#entryApply").onclick=async()=>{
+$("#entryApply").onclick = async ()=>{
 
   if(state.applyPw){
 
@@ -1602,20 +1830,25 @@ $("#entryApply").onclick=async()=>{
 
     $("#deptUserSelect").value="";
 
+
     await loadBootstrapForApply();
+
 
     hidePageLoading();
 
     show("header");
 
     return;
+
   }
 
+
   show("applygate");
+
 };
 
 
-$("#entryQuery").onclick=async()=>{
+$("#entryQuery").onclick = async ()=>{
 
   showPageLoading(
     "載入資料中…"
@@ -1629,6 +1862,7 @@ $("#entryQuery").onclick=async()=>{
   hidePageLoading();
 
   show("query");
+
 };
 
 
@@ -1636,9 +1870,10 @@ $("#entryQuery").onclick=async()=>{
    申請密碼
    ============================================================ */
 
-$("#applyPwBtn").onclick=async()=>{
+$("#applyPwBtn").onclick = async ()=>{
 
-  const pw=$("#applyPwInput").value;
+  const pw =
+    $("#applyPwInput").value;
 
   if(!pw){
 
@@ -1646,7 +1881,9 @@ $("#applyPwBtn").onclick=async()=>{
       "請輸入申請密碼";
 
     return;
+
   }
+
 
   $("#applyPwBtn").disabled=true;
 
@@ -1655,32 +1892,37 @@ $("#applyPwBtn").onclick=async()=>{
 
   $("#applyPwErr").textContent="";
 
+
   try{
 
-    const data=await apiPost(
-      "checkApplyLogin",
-      {
-        applyPw:pw
-      }
-    );
+    const data =
+      await apiPost(
+        "checkApplyLogin",
+        {applyPw:pw}
+      );
+
 
     if(!data.ok){
 
       $("#applyPwErr").textContent=
-        data.error || "密碼錯誤";
+        data.error||"密碼錯誤";
 
       $("#applyPwBtn").disabled=false;
 
-      $("#applyPwBtn").textContent="確認";
+      $("#applyPwBtn").textContent=
+        "確認";
 
       return;
+
     }
+
 
     state.applyPw=pw;
 
     showPageLoading(
       "載入表單資料中…"
     );
+
 
     $("#modeLabel").textContent=
       "· 新申請";
@@ -1690,17 +1932,22 @@ $("#applyPwBtn").onclick=async()=>{
 
     $("#needDate").value="";
 
+
     await loadBootstrapForApply();
+
 
     hidePageLoading();
 
     show("header");
 
+
     $("#applyPwBtn").disabled=false;
 
-    $("#applyPwBtn").textContent="確認";
+    $("#applyPwBtn").textContent=
+      "確認";
 
     $("#applyPwInput").value="";
+
 
   }catch(err){
 
@@ -1711,8 +1958,11 @@ $("#applyPwBtn").onclick=async()=>{
 
     $("#applyPwBtn").disabled=false;
 
-    $("#applyPwBtn").textContent="確認";
+    $("#applyPwBtn").textContent=
+      "確認";
+
   }
+
 };
 
 
@@ -1726,20 +1976,25 @@ $("#applyPwInput").addEventListener(
 
 
 /* ============================================================
-   Bootstrap
+   載入資料
    ============================================================ */
 
 async function loadBootstrapForApply(){
 
   try{
 
-    const data=
-      await apiPost("bootstrap",{});
+    const data =
+      await apiPost(
+        "bootstrap",
+        {}
+      );
+
 
     if(!data.ok)
       throw new Error(
-        data.error || "讀取失敗"
+        data.error||"讀取失敗"
       );
+
 
     state.deptUsers=
       data.deptUsers;
@@ -1747,9 +2002,11 @@ async function loadBootstrapForApply(){
     state.categories=
       data.categories;
 
+
     fillDeptUserSelect();
 
     fillCategorySelect();
+
 
   }catch(err){
 
@@ -1757,7 +2014,9 @@ async function loadBootstrapForApply(){
       "資料載入失敗："+err.message,
       true
     );
+
   }
+
 }
 
 
@@ -1765,18 +2024,25 @@ async function loadBootstrapForQuery(){
 
   try{
 
-    const data=
-      await apiPost("bootstrap",{});
+    const data =
+      await apiPost(
+        "bootstrap",
+        {}
+      );
+
 
     if(!data.ok)
       throw new Error(
-        data.error || "讀取失敗"
+        data.error||"讀取失敗"
       );
+
 
     state.deptUsers=
       data.deptUsers;
 
+
     fillQueryDeptUserSelect();
+
 
   }catch(err){
 
@@ -1784,7 +2050,9 @@ async function loadBootstrapForQuery(){
       "資料載入失敗："+err.message,
       true
     );
+
   }
+
 }
 
 
@@ -1793,12 +2061,16 @@ function fillDeptUserSelect(){
   const sel=
     $("#deptUserSelect");
 
+
   sel.innerHTML=
     '<option value="">請選擇</option>'+
-    state.deptUsers.map(
-      d =>
-        `<option>${escapeHtml(d)}</option>`
-    ).join("");
+    state.deptUsers
+      .map(
+        d=>
+          `<option>${escapeHtml(d)}</option>`
+      )
+      .join("");
+
 }
 
 
@@ -1807,222 +2079,78 @@ function fillQueryDeptUserSelect(){
   const sel=
     $("#queryDeptUser");
 
+
   sel.innerHTML=
     '<option value="">全部</option>'+
-    state.deptUsers.map(
-      d =>
-        `<option>${escapeHtml(d)}</option>`
-    ).join("");
+    state.deptUsers
+      .map(
+        d=>
+          `<option>${escapeHtml(d)}</option>`
+      )
+      .join("");
+
 }
 
 
 /* ============================================================
-   ★ 搜尋式分類下拉
-   ★ 這裡是本次主要修改
+   搜尋式「分類」選單
    ============================================================ */
 
-function closeCategoryList(){
-
-  const list=
-    $("#categorySearchList");
-
-  if(list){
-    list.classList.remove("show");
-  }
-}
-
-
-function openCategoryList(){
-
-  const list=
-    $("#categorySearchList");
-
-  if(list){
-    list.classList.add("show");
-  }
-}
+let categorySearchSelect=null;
 
 
 function fillCategorySelect(){
 
-  const input=
-    $("#categorySearchInput");
-
-  const list=
-    $("#categorySearchList");
+  const container =
+    $("#categorySearchSelect");
 
 
-  /* 重置狀態 */
+  /*
+    如果已經建立過，先清除
+  */
 
-  input.value="";
-
-  state.currentCat="";
-
-  $("#toDetailBtn").disabled=true;
-
-  closeCategoryList();
+  container.innerHTML="";
 
 
-  /* ----------------------------------------------------------
-     顯示分類
-     ---------------------------------------------------------- */
+  categorySearchSelect =
+    createSearchSelect({
 
-  function renderCategorySearchList(keyword){
+      placeholder:"請選擇分類",
 
-    const kw=
-      String(keyword || "")
-        .trim()
-        .toLowerCase();
+      searchPlaceholder:"搜尋分類...",
 
-    const categories=
-      state.categories.filter(c =>
-        String(c.category)
-          .toLowerCase()
-          .includes(kw)
-      );
+      getOptions:()=>{
 
-
-    if(!categories.length){
-
-      list.innerHTML=
-        '<div class="search-select-empty">找不到符合的分類</div>';
-
-      openCategoryList();
-
-      return;
-    }
-
-
-    list.innerHTML=
-      categories.map(c=>`
-
-        <div
-          class="search-select-option"
-          data-value="${escapeHtml(c.category)}">
-
-          ${escapeHtml(c.category)}
-
-        </div>
-
-      `).join("");
-
-
-    /* --------------------------------------------------------
-       ★ 使用 pointerdown，不用 click
-       手機觸控時可以避免 focus → click → focus
-       造成下拉選單重新打開
-       -------------------------------------------------------- */
-
-    list
-      .querySelectorAll(".search-select-option")
-      .forEach(opt=>{
-
-        opt.addEventListener(
-          "pointerdown",
-          e=>{
-
-            e.preventDefault();
-            e.stopPropagation();
-
-            const value=
-              opt.dataset.value;
-
-
-            /* 設定選取結果 */
-
-            input.value=value;
-
-            state.currentCat=value;
-
-            $("#toDetailBtn").disabled=false;
-
-
-            /* ★ 先關閉 */
-
-            closeCategoryList();
-
-
-            /* ★ 讓輸入框失去 focus */
-
-            input.blur();
-
-          }
+        return state.categories.map(
+          c=>({
+            value:c.category,
+            label:c.category
+          })
         );
 
-      });
-  }
+      },
 
 
-  /* ----------------------------------------------------------
-     點輸入框
-     ---------------------------------------------------------- */
+      onChange:(value)=>{
 
-  input.onfocus=()=>{
+        state.currentCat=value;
 
-    renderCategorySearchList(
-      input.value
-    );
+        $("#toDetailBtn").disabled=
+          !value;
 
-    openCategoryList();
+      }
 
-  };
+    });
 
 
-  /* ----------------------------------------------------------
-     輸入文字
-     ---------------------------------------------------------- */
-
-  input.oninput=()=>{
-
-    /*
-     * 使用者開始修改文字時，
-     * 代表原本選取的分類已經不再有效。
-     */
-
-    state.currentCat="";
-
-    $("#toDetailBtn").disabled=true;
+  categorySearchSelect.id=
+    "categorySearchSelect";
 
 
-    renderCategorySearchList(
-      input.value
-    );
-
-    openCategoryList();
-
-  };
-
-
-  /*
-   * blur 時也關閉。
-   *
-   * 使用 200ms 是因為手機點選選項時，
-   * blur 可能會比 pointerdown/click 事件先發生。
-   */
-
-  input.addEventListener(
-    "blur",
-    ()=>{
-
-      setTimeout(
-        ()=>{
-          closeCategoryList();
-        },
-        200
-      );
-
-    }
+  container.appendChild(
+    categorySearchSelect
   );
 
-
-  /*
-   * 第一次載入時先畫一次內容，
-   * 但不要顯示。
-   */
-
-  renderCategorySearchList("");
-
-  closeCategoryList();
 }
 
 
@@ -2050,9 +2178,9 @@ function validateHeader(){
 
 
   if(
-    !h.deptUser ||
-    !h.applyDate ||
-    !h.needDate ||
+    !h.deptUser||
+    !h.applyDate||
+    !h.needDate||
     !h.reason
   ){
 
@@ -2062,9 +2190,12 @@ function validateHeader(){
     );
 
     return null;
+
   }
 
+
   return h;
+
 }
 
 
@@ -2078,6 +2209,7 @@ $('[data-next="items"]').onclick=()=>{
   state.header=h;
 
   show("category");
+
 };
 
 
@@ -2095,25 +2227,26 @@ $("#toDetailBtn").onclick=()=>{
     );
 
     return;
+
   }
 
-  closeCategoryList();
 
   initDetailPage(
     state.currentCat
   );
 
+
   show("detail");
+
 };
 
 
 $("#catViewAddedBtn").onclick=()=>{
 
-  closeCategoryList();
-
   renderAddedList();
 
   show("continue");
+
 };
 
 
@@ -2121,21 +2254,10 @@ $("#catViewAddedBtn").onclick=()=>{
    明細
    ============================================================ */
 
-const UNIT_FALLBACK=[
-
-  "支",
-  "組",
-  "瓶",
-  "盒",
-  "顆",
-  "個",
-  "箱",
-  "包",
-  "捲",
-  "把",
-  "台",
-  "其他"
-
+const UNIT_FALLBACK = [
+  "支","組","瓶","盒","顆",
+  "個","箱","包","捲","把",
+  "台","其他"
 ];
 
 
@@ -2146,35 +2268,20 @@ function findItemInCat(cat,name){
       c=>c.category===cat
     );
 
+
   if(!found)
     return null;
+
 
   return found.items.find(
     it=>it.name===name
   ) || null;
-}
 
-
-function itemOptionsHTML(cat){
-
-  const found=
-    state.categories.find(
-      c=>c.category===cat
-    );
-
-  const items=
-    found ? found.items : [];
-
-  return '<option value="">請選擇貨品</option>'+
-    items.map(
-      it=>
-        `<option value="${escapeHtml(it.name)}">${escapeHtml(it.name)}</option>`
-    ).join("");
 }
 
 
 /* ============================================================
-   ★ 貨品搜尋式下拉
+   搜尋式「貨品」選單
    ============================================================ */
 
 function makeDetailRow(cat){
@@ -2195,9 +2302,7 @@ function makeDetailRow(cat){
       <button
         class="row-del"
         type="button">
-
         移除這筆
-
       </button>
 
     </div>
@@ -2206,34 +2311,10 @@ function makeDetailRow(cat){
     <label class="fld">
 
       <span class="lbl">
-
         貨品名稱<span class="req">*</span>
-
       </span>
 
-
-      <div
-        class="search-select-wrap r-item-wrap">
-
-
-        <input
-          type="text"
-          class="search-select-input r-item"
-          placeholder="請選擇或搜尋貨品"
-          autocomplete="off">
-
-
-        <span class="search-select-arrow">
-          ⌄
-        </span>
-
-
-        <div
-          class="search-select-list r-item-list">
-        </div>
-
-
-      </div>
+      <div class="r-item-search"></div>
 
     </label>
 
@@ -2283,270 +2364,187 @@ function makeDetailRow(cat){
   `;
 
 
-  const itemInput=
-    div.querySelector(".r-item");
-
-  const itemList=
-    div.querySelector(".r-item-list");
-
-  const itemWrap=
-    div.querySelector(".r-item-wrap");
-
-
-  const unitDisplay=
-    div.querySelector(".r-unit-display");
-
-  const unitVal=
-    div.querySelector(".unit-val");
-
-
-  const foundCat=
-    state.categories.find(
-      c=>c.category===cat
+  const itemContainer =
+    div.querySelector(
+      ".r-item-search"
     );
 
-  const items=
-    foundCat
-      ? foundCat.items
-      : [];
+
+  /*
+    每一筆 detail-row 都建立
+    自己獨立的搜尋式貨品選單
+  */
+
+  const itemSearch =
+    createSearchSelect({
+
+      placeholder:
+        "請選擇貨品",
+
+      searchPlaceholder:
+        "搜尋貨品...",
 
 
-  /* ----------------------------------------------------------
-     關閉這一列的貨品下拉
-     ---------------------------------------------------------- */
+      getOptions:()=>{
 
-  function closeItemList(){
-
-    itemList.classList.remove(
-      "show"
-    );
-
-  }
+        const found =
+          state.categories.find(
+            c=>c.category===cat
+          );
 
 
-  /* ----------------------------------------------------------
-     開啟這一列的貨品下拉
-     ---------------------------------------------------------- */
-
-  function openItemList(){
-
-    itemList.classList.add(
-      "show"
-    );
-
-  }
+        const items =
+          found
+            ? found.items
+            : [];
 
 
-  /* ----------------------------------------------------------
-     顯示單位
-     ---------------------------------------------------------- */
-
-  function updateUnit(value){
-
-    const found=
-      findItemInCat(
-        cat,
-        value
-      );
-
-
-    if(found && found.unit){
-
-      unitVal.textContent=
-        found.unit;
-
-      unitDisplay
-        .classList
-        .remove("hidden");
-
-    }else{
-
-      unitDisplay
-        .classList
-        .add("hidden");
-
-    }
-
-  }
-
-
-  /* ----------------------------------------------------------
-     渲染貨品選單
-     ---------------------------------------------------------- */
-
-  function renderItemList(keyword){
-
-    const kw=
-      String(keyword || "")
-        .trim()
-        .toLowerCase();
-
-
-    const filtered=
-      items.filter(it =>
-        String(it.name)
-          .toLowerCase()
-          .includes(kw)
-      );
-
-
-    if(!filtered.length){
-
-      itemList.innerHTML=
-        '<div class="search-select-empty">找不到符合的貨品</div>';
-
-      openItemList();
-
-      return;
-    }
-
-
-    itemList.innerHTML=
-      filtered.map(it=>`
-
-        <div
-          class="search-select-option"
-          data-value="${escapeHtml(it.name)}">
-
-          ${escapeHtml(it.name)}
-
-        </div>
-
-      `).join("");
-
-
-    /* --------------------------------------------------------
-       ★ 貨品選項使用 pointerdown
-       -------------------------------------------------------- */
-
-    itemList
-      .querySelectorAll(
-        ".search-select-option"
-      )
-      .forEach(opt=>{
-
-        opt.addEventListener(
-          "pointerdown",
-          e=>{
-
-            e.preventDefault();
-            e.stopPropagation();
-
-
-            const value=
-              opt.dataset.value;
-
-
-            /* 設定貨品 */
-
-            itemInput.value=
-              value;
-
-
-            /* 更新單位 */
-
-            updateUnit(value);
-
-
-            /* ★ 關閉下拉 */
-
-            closeItemList();
-
-
-            /* ★ 取消輸入框 focus */
-
-            itemInput.blur();
-
-          }
+        return items.map(
+          it=>({
+            value:it.name,
+            label:it.name
+          })
         );
 
-      });
-
-  }
+      },
 
 
-  /* ----------------------------------------------------------
-     點擊／focus 輸入框
-     ---------------------------------------------------------- */
+      onChange:(value)=>{
 
-  itemInput.onfocus=()=>{
-
-    renderItemList(
-      itemInput.value
-    );
-
-    openItemList();
-
-  };
+        const found =
+          findItemInCat(
+            cat,
+            value
+          );
 
 
-  /* ----------------------------------------------------------
-     輸入文字
-     ---------------------------------------------------------- */
-
-  itemInput.oninput=()=>{
-
-    /*
-     * 使用者開始輸入新的文字時，
-     * 如果不是完整有效貨品，先隱藏單位。
-     */
-
-    const found=
-      findItemInCat(
-        cat,
-        itemInput.value
-      );
+        const unitDisplay =
+          div.querySelector(
+            ".r-unit-display"
+          );
 
 
-    if(found && found.unit){
-
-      unitVal.textContent=
-        found.unit;
-
-      unitDisplay
-        .classList
-        .remove("hidden");
-
-    }else{
-
-      unitDisplay
-        .classList
-        .add("hidden");
-
-    }
+        const unitVal =
+          div.querySelector(
+            ".unit-val"
+          );
 
 
-    renderItemList(
-      itemInput.value
-    );
+        if(found && found.unit){
 
-    openItemList();
+          unitVal.textContent=
+            found.unit;
 
-  };
+          unitDisplay
+            .classList
+            .remove("hidden");
+
+        }else{
+
+          unitDisplay
+            .classList
+            .add("hidden");
+
+        }
+
+      }
+
+    });
 
 
-  /* ----------------------------------------------------------
-     blur 保險機制
-     ---------------------------------------------------------- */
+  itemContainer.appendChild(
+    itemSearch
+  );
 
-  itemInput.addEventListener(
-    "blur",
-    ()=>{
 
-      setTimeout(
-        ()=>{
-          closeItemList();
-        },
-        200
-      );
+  /*
+    為了維持原本：
+      r.querySelector(".r-item").value
 
+    的資料流程，
+
+    這裡讓 detail row 擁有一個
+    隱藏的 input.r-item。
+
+    它的 value 永遠同步目前選到的貨品。
+  */
+
+  const hiddenItemInput =
+    document.createElement("input");
+
+  hiddenItemInput.type="hidden";
+
+  hiddenItemInput.className=
+    "r-item";
+
+  hiddenItemInput.value="";
+
+
+  itemSearch._syncHiddenValue=
+    function(){
+
+      hiddenItemInput.value=
+        itemSearch._getValue();
+
+    };
+
+
+  /*
+    包裝 onChange，
+    每次選擇後同步 hidden input。
+  */
+
+  const originalSearchOnChange =
+    itemSearch._syncHiddenValue;
+
+
+  /*
+    透過 Mutation/選擇事件不方便，
+    因此在這裡直接監聽 trigger 的內容
+    並以 getter 保持 value 最新。
+
+    同時覆寫 querySelector 回傳的
+    hidden input value 已經可以正常使用。
+  */
+
+
+  Object.defineProperty(
+    hiddenItemInput,
+    "value",
+    {
+      get:function(){
+
+        return itemSearch._getValue();
+
+      },
+
+      set:function(v){
+
+        this._manualValue =
+          v == null ? "" : String(v);
+
+      }
     }
   );
 
 
-  /* ----------------------------------------------------------
-     移除這一筆
-     ---------------------------------------------------------- */
+  div.appendChild(
+    hiddenItemInput
+  );
+
+
+  /*
+    將搜尋元件的目前值同步到
+    hidden input 的實際屬性。
+  */
+
+  itemSearch._getItemValue=
+    function(){
+
+      return itemSearch._getValue();
+
+    };
+
 
   div.querySelector(
     ".row-del"
@@ -2560,11 +2558,12 @@ function makeDetailRow(cat){
 
 
   return div;
+
 }
 
 
 /* ============================================================
-   明細編號
+   明細列編號
    ============================================================ */
 
 function renumberRows(){
@@ -2590,22 +2589,23 @@ function renumberRows(){
         ".row-del"
       );
 
+
     del.disabled=
       rows.length<=1;
 
   });
+
 }
 
 
 /* ============================================================
-   初始化明細
+   初始化明細頁
    ============================================================ */
 
 function initDetailPage(cat){
 
   $("#detailCatHint").textContent=
-    "類別："+cat+
-    "（可連續新增多筆）";
+    "類別："+cat+"（可連續新增多筆）";
 
 
   const box=
@@ -2621,6 +2621,7 @@ function initDetailPage(cat){
 
 
   renumberRows();
+
 }
 
 
@@ -2630,14 +2631,12 @@ function initDetailPage(cat){
 
 $("#addRowBtn").onclick=()=>{
 
-  const newRow=
-    makeDetailRow(
-      state.currentCat
-    );
-
-
   $("#detailRows")
-    .appendChild(newRow);
+    .appendChild(
+      makeDetailRow(
+        state.currentCat
+      )
+    );
 
 
   renumberRows();
@@ -2669,24 +2668,38 @@ function collectDetailRows(){
   const collected=[];
 
 
-  for(let i=0;i<rows.length;i++){
+  for(
+    let i=0;
+    i<rows.length;
+    i++
+  ){
 
     const r=rows[i];
 
 
-    const name=
+    /*
+      新的搜尋式選單
+    */
+
+    const searchSelect =
       r.querySelector(
-        ".r-item"
-      ).value;
+        ".r-item-search .search-select"
+      );
 
 
-    const purpose=
+    const name =
+      searchSelect
+        ? searchSelect._getValue()
+        : "";
+
+
+    const purpose =
       r.querySelector(
         ".r-purpose"
       ).value.trim();
 
 
-    const qty=
+    const qty =
       r.querySelector(
         ".r-qty"
       ).value.trim();
@@ -2700,24 +2713,7 @@ function collectDetailRows(){
       );
 
       return null;
-    }
 
-
-    const found=
-      findItemInCat(
-        state.currentCat,
-        name
-      );
-
-
-    if(!found){
-
-      toast(
-        `第 ${i+1} 筆：請從下拉選單選擇有效的貨品`,
-        true
-      );
-
-      return null;
     }
 
 
@@ -2729,6 +2725,7 @@ function collectDetailRows(){
       );
 
       return null;
+
     }
 
 
@@ -2743,7 +2740,15 @@ function collectDetailRows(){
       );
 
       return null;
+
     }
+
+
+    const found=
+      findItemInCat(
+        state.currentCat,
+        name
+      );
 
 
     collected.push({
@@ -2772,12 +2777,9 @@ function collectDetailRows(){
 
 
   return collected;
+
 }
 
-
-/* ============================================================
-   加入品項
-   ============================================================ */
 
 $("#addItemBtn").onclick=()=>{
 
@@ -2789,8 +2791,8 @@ $("#addItemBtn").onclick=()=>{
     return;
 
 
-  collected.forEach(it =>
-    state.items.push(it)
+  collected.forEach(
+    it=>state.items.push(it)
   );
 
 
@@ -2804,7 +2806,7 @@ $("#addItemBtn").onclick=()=>{
 
 
 /* ============================================================
-   已加入品項
+   已加入品項清單
    ============================================================ */
 
 function vendorLabel(it){
@@ -2813,10 +2815,11 @@ function vendorLabel(it){
     !it.vendors ||
     !it.vendors.length
   )
-    return it.vendor || "";
+    return it.vendor||"";
 
 
   return it.vendors.join("/");
+
 }
 
 
@@ -2844,73 +2847,70 @@ function renderAddedList(){
   }
 
 
-  state.items.forEach((it,i)=>{
+  state.items.forEach(
+    (it,i)=>{
 
-    const li=
-      document.createElement("li");
+      const li=
+        document.createElement("li");
 
 
-    li.innerHTML=`
+      li.innerHTML=`
 
-      <div>
+        <div>
 
-        <span class="cat-tag">
-          ${escapeHtml(it.category)}
-        </span>
+          <span class="cat-tag">
+            ${escapeHtml(it.category)}
+          </span>
 
-        <br>
+          <br>
 
-        <b>
-          ${escapeHtml(it.name)}，
-          ${escapeHtml(String(it.quantity))}
-          ${escapeHtml(it.unit)}
-        </b>
+          <b>
+            ${escapeHtml(it.name)}，
+            ${escapeHtml(String(it.quantity))}
+            ${escapeHtml(it.unit)}
+          </b>
 
-        <div class="meta">
-
-          ${escapeHtml(it.purpose)}
-          ．廠商：
-          ${escapeHtml(vendorLabel(it))}
+          <div class="meta">
+            ${escapeHtml(it.purpose)}
+            ．廠商：
+            ${escapeHtml(vendorLabel(it))}
+          </div>
 
         </div>
 
-      </div>
+
+        <button
+          class="del"
+          data-i="${i}">
+          移除
+        </button>
+
+      `;
 
 
-      <button
-        class="del"
-        data-i="${i}">
+      ul.appendChild(li);
 
-        移除
-
-      </button>
-
-    `;
+    }
+  );
 
 
-    ul.appendChild(li);
+  ul.querySelectorAll(".del")
+    .forEach(b=>{
 
-  });
+      b.onclick=()=>{
 
+        state.items.splice(
+          +b.dataset.i,
+          1
+        );
 
-  ul.querySelectorAll(
-    ".del"
-  ).forEach(b=>{
+        renderAddedList();
 
-    b.onclick=()=>{
+        updateAddedCounts();
 
-      state.items.splice(
-        +b.dataset.i,
-        1
-      );
+      };
 
-      renderAddedList();
-
-      updateAddedCounts();
-
-    };
-
-  });
+    });
 
 }
 
@@ -2925,15 +2925,15 @@ function updateAddedCounts(){
 }
 
 
-/* ============================================================
-   繼續新增
-   ============================================================ */
-
 $("#contOtherCat").onclick=()=>{
 
-  closeCategoryList();
+  if(categorySearchSelect){
 
-  $("#categorySearchInput").value="";
+    categorySearchSelect
+      ._setValue("");
+
+  }
+
 
   state.currentCat="";
 
@@ -2943,10 +2943,6 @@ $("#contOtherCat").onclick=()=>{
 
 };
 
-
-/* ============================================================
-   前往確認
-   ============================================================ */
 
 $("#toReview").onclick=()=>{
 
@@ -2958,6 +2954,7 @@ $("#toReview").onclick=()=>{
     );
 
     return;
+
   }
 
 
@@ -2981,25 +2978,20 @@ function renderReview(){
   $("#reviewHeader").innerHTML=[
 
     ["部門-申請人",h.deptUser],
+
     ["申請日期",h.applyDate],
+
     ["需求日期",h.needDate],
+
     ["請購事由",h.reason],
 
-  ].map(([k,v])=>`
-
-    <div class="review-row">
-
-      <span class="k">
-        ${k}
-      </span>
-
-      <span class="v">
-        ${escapeHtml(v)}
-      </span>
-
-    </div>
-
-  `).join("");
+  ].map(
+    ([k,v])=>
+      `<div class="review-row">
+        <span class="k">${k}</span>
+        <span class="v">${escapeHtml(v)}</span>
+      </div>`
+  ).join("");
 
 
   $("#reviewCount").textContent=
@@ -3007,33 +2999,31 @@ function renderReview(){
 
 
   $("#reviewItems").innerHTML=
-    state.items.map((it,i)=>`
+    state.items.map(
+      (it,i)=>`
 
-      <div class="review-item">
+        <div class="review-item">
 
-        <div class="ri-name">
+          <div class="ri-name">
+            ${i+1}.
+            ${escapeHtml(it.name)}，
+            ${escapeHtml(String(it.quantity))}
+            ${escapeHtml(it.unit)}
+          </div>
 
-          ${i+1}.
-          ${escapeHtml(it.name)}，
-          ${escapeHtml(String(it.quantity))}
-          ${escapeHtml(it.unit)}
+          <div class="ri-meta">
+            類別：
+            ${escapeHtml(it.category)}
+            ．用途：
+            ${escapeHtml(it.purpose)}
+            ．廠商：
+            ${escapeHtml(vendorLabel(it))}
+          </div>
 
         </div>
 
-        <div class="ri-meta">
-
-          類別：
-          ${escapeHtml(it.category)}
-          ．用途：
-          ${escapeHtml(it.purpose)}
-          ．廠商：
-          ${escapeHtml(vendorLabel(it))}
-
-        </div>
-
-      </div>
-
-    `).join("");
+      `
+    ).join("");
 
 }
 
@@ -3074,7 +3064,7 @@ async function submitForm(){
 
     if(!data.ok)
       throw new Error(
-        data.error || "送出失敗"
+        data.error||"送出失敗"
       );
 
 
@@ -3108,10 +3098,6 @@ $("#submitBtn").onclick=
   submitForm;
 
 
-/* ============================================================
-   完成
-   ============================================================ */
-
 $("#doneBackBtn").onclick=()=>{
 
   state.header={};
@@ -3120,12 +3106,23 @@ $("#doneBackBtn").onclick=()=>{
 
   state.currentCat="";
 
-  closeCategoryList();
+
+  if(categorySearchSelect){
+
+    categorySearchSelect
+      ._setValue("");
+
+  }
+
 
   show("entry");
 
 };
 
+
+/* ============================================================
+   完成頁
+   ============================================================ */
 
 function renderDone(orderNo){
 
@@ -3140,25 +3137,20 @@ function renderDone(orderNo){
   $("#doneHeader").innerHTML=[
 
     ["部門-申請人",h.deptUser],
+
     ["申請日期",h.applyDate],
+
     ["需求日期",h.needDate],
+
     ["請購事由",h.reason],
 
-  ].map(([k,v])=>`
-
-    <div class="review-row">
-
-      <span class="k">
-        ${k}
-      </span>
-
-      <span class="v">
-        ${escapeHtml(v)}
-      </span>
-
-    </div>
-
-  `).join("");
+  ].map(
+    ([k,v])=>
+      `<div class="review-row">
+        <span class="k">${k}</span>
+        <span class="v">${escapeHtml(v)}</span>
+      </div>`
+  ).join("");
 
 
   $("#doneCount").textContent=
@@ -3166,33 +3158,31 @@ function renderDone(orderNo){
 
 
   $("#doneItems").innerHTML=
-    state.items.map((it,i)=>`
+    state.items.map(
+      (it,i)=>`
 
-      <div class="review-item">
+        <div class="review-item">
 
-        <div class="ri-name">
+          <div class="ri-name">
+            ${i+1}.
+            ${escapeHtml(it.name)}，
+            ${escapeHtml(String(it.quantity))}
+            ${escapeHtml(it.unit)}
+          </div>
 
-          ${i+1}.
-          ${escapeHtml(it.name)}，
-          ${escapeHtml(String(it.quantity))}
-          ${escapeHtml(it.unit)}
+          <div class="ri-meta">
+            類別：
+            ${escapeHtml(it.category)}
+            ．用途：
+            ${escapeHtml(it.purpose)}
+            ．廠商：
+            ${escapeHtml(vendorLabel(it))}
+          </div>
 
         </div>
 
-        <div class="ri-meta">
-
-          類別：
-          ${escapeHtml(it.category)}
-          ．用途：
-          ${escapeHtml(it.purpose)}
-          ．廠商：
-          ${escapeHtml(vendorLabel(it))}
-
-        </div>
-
-      </div>
-
-    `).join("");
+      `
+    ).join("");
 
 }
 
@@ -3201,7 +3191,7 @@ function renderDone(orderNo){
    查詢
    ============================================================ */
 
-$("#queryBtn").onclick=async()=>{
+$("#queryBtn").onclick=async ()=>{
 
   const btn=
     $("#queryBtn");
@@ -3219,7 +3209,6 @@ $("#queryBtn").onclick=async()=>{
       await apiPost(
         "query",
         {
-
           deptUser:
             $("#queryDeptUser").value,
 
@@ -3235,7 +3224,7 @@ $("#queryBtn").onclick=async()=>{
 
     if(!data.ok)
       throw new Error(
-        data.error || "查詢失敗"
+        data.error||"查詢失敗"
       );
 
 
@@ -3278,6 +3267,7 @@ function renderQueryResults(records){
       '<div class="empty-note">沒有符合的紀錄。</div>';
 
     return;
+
   }
 
 
@@ -3298,93 +3288,83 @@ function renderQueryResults(records){
 
     }
 
+
     byOrder[r.orderNo].push(r);
 
   });
 
 
   $("#queryResults").innerHTML=
-    orderList.map(ordNo=>{
+    orderList.map(
+      ordNo=>{
 
-      const rs=
-        byOrder[ordNo];
+        const rs=
+          byOrder[ordNo];
 
-      const head=
-        rs[0];
+        const head=
+          rs[0];
 
 
-      const itemsHtml=
-        rs.map(r=>`
+        const itemsHtml=
+          rs.map(
+            r=>`
 
-          <div class="review-item">
+              <div class="review-item">
 
-            <div class="ri-name">
+                <div class="ri-name">
+                  ${r.seq}.
+                  ${escapeHtml(r.name)}，
+                  ${escapeHtml(String(r.quantity))}
+                  ${escapeHtml(r.unit)}
+                </div>
 
-              ${r.seq}.
-              ${escapeHtml(r.name)}，
-              ${escapeHtml(String(r.quantity))}
-              ${escapeHtml(r.unit)}
+                <div class="ri-meta">
+                  類別：
+                  ${escapeHtml(r.category)}
+                  ．用途：
+                  ${escapeHtml(r.purpose)}
+                  ．廠商：
+                  ${escapeHtml(r.vendor)}
+                </div>
 
+              </div>
+
+            `
+          ).join("");
+
+
+        return `
+
+          <div class="query-result">
+
+            <div class="qr-order">
+              單號
+              ${escapeHtml(ordNo)}
+              ．申請日期
+              ${escapeHtml(head.applyDate)}
+              ．需求日期
+              ${escapeHtml(head.needDate)}
             </div>
 
-            <div class="ri-meta">
+            <div class="qr-name">
+              ${escapeHtml(head.deptUser)}
+            </div>
 
-              類別：
-              ${escapeHtml(r.category)}
-              ．用途：
-              ${escapeHtml(r.purpose)}
-              ．廠商：
-              ${escapeHtml(r.vendor)}
+            <div class="qr-meta">
+              事由：
+              ${escapeHtml(head.reason)}
+            </div>
 
+            <div style="margin-top:8px">
+              ${itemsHtml}
             </div>
 
           </div>
 
-        `).join("");
+        `;
 
-
-      return `
-
-        <div class="query-result">
-
-          <div class="qr-order">
-
-            單號
-            ${escapeHtml(ordNo)}
-            ．申請日期
-            ${escapeHtml(head.applyDate)}
-            ．需求日期
-            ${escapeHtml(head.needDate)}
-
-          </div>
-
-
-          <div class="qr-name">
-
-            ${escapeHtml(head.deptUser)}
-
-          </div>
-
-
-          <div class="qr-meta">
-
-            事由：
-            ${escapeHtml(head.reason)}
-
-          </div>
-
-
-          <div style="margin-top:8px">
-
-            ${itemsHtml}
-
-          </div>
-
-        </div>
-
-      `;
-
-    }).join("");
+      }
+    ).join("");
 
 }
 
@@ -3405,37 +3385,11 @@ document.addEventListener(
 
     if(back){
 
-      closeCategoryList();
-
       show(
         back.dataset.back
       );
 
       return;
-    }
-
-  }
-);
-
-
-/* ============================================================
-   ★ 點擊頁面其他地方 → 關閉分類下拉
-   ============================================================ */
-
-document.addEventListener(
-  "pointerdown",
-  e=>{
-
-    const categoryWrap=
-      $("#categorySearchWrap");
-
-
-    if(
-      categoryWrap &&
-      !categoryWrap.contains(e.target)
-    ){
-
-      closeCategoryList();
 
     }
 
@@ -3464,4 +3418,4 @@ $("#logoImg").addEventListener(
 </script>
 
 </body>
-</html>
+  </html>
