@@ -218,6 +218,25 @@
     padding:18px 24px;font-size:14px;color:var(--ink-soft);
   }
 
+  /* 貨品名稱可搜尋 combobox */
+  .combo{position:relative}
+  .combo input.combo-input{width:100%}
+  .combo input.combo-input.is-invalid{border-color:var(--danger);box-shadow:0 0 0 3px rgba(178,58,58,.12)}
+  .combo-panel{
+    position:absolute;left:0;right:0;top:calc(100% + 4px);z-index:30;
+    background:#fff;border:1px solid var(--line);border-radius:10px;
+    box-shadow:var(--shadow);max-height:280px;overflow-y:auto;
+  }
+  .combo-panel .combo-opt{
+    padding:11px 12px;font-size:14px;cursor:pointer;border-bottom:1px solid var(--line-soft);
+  }
+  .combo-panel .combo-opt:last-child{border-bottom:none}
+  .combo-panel .combo-opt:hover,.combo-panel .combo-opt.active{background:var(--brand-soft);color:var(--brand)}
+  .combo-panel .combo-empty{padding:11px 12px;font-size:13px;color:var(--ink-soft)}
+  .combo-panel .combo-more{padding:8px 12px;font-size:12px;color:var(--ink-soft);background:#fbfcfd;text-align:center}
+  .combo-hint{font-size:12px;color:var(--ink-soft);margin-top:6px}
+  .combo-hint.err{color:var(--danger)}
+
   @media (prefers-reduced-motion:reduce){
     *{animation-duration:.001ms !important;transition-duration:.001ms !important}
   }
@@ -652,17 +671,114 @@ $("#catViewAddedBtn").onclick=()=>{ renderAddedList(); show("continue"); };
    明細（同類別可多筆）
    ============================================================ */
 const UNIT_FALLBACK = ["支","組","瓶","盒","顆","個","箱","包","捲","把","台","其他"];
+const COMBO_MAX_RESULTS = 8; // 貨品搜尋下拉最多顯示幾筆
 
 function findItemInCat(cat, name){
   const found=state.categories.find(c=>c.category===cat);
   if(!found) return null;
   return found.items.find(it=>it.name===name) || null;
 }
-function itemOptionsHTML(cat){
-  const found=state.categories.find(c=>c.category===cat);
-  const items=found?found.items:[];
-  return '<option value="">請選擇貨品</option>'+
-    items.map(it=>`<option value="${escapeHtml(it.name)}">${escapeHtml(it.name)}</option>`).join("");
+
+/* ---------- 貨品名稱 combobox（可搜尋、僅能選清單內項目） ---------- */
+let comboIdSeq = 0;
+function makeItemCombo(cat, onSelect){
+  const wrap = document.createElement("div");
+  wrap.className = "combo";
+  const comboId = "combo" + (++comboIdSeq);
+  wrap.innerHTML = `
+    <input type="text" class="combo-input r-item-input" autocomplete="off"
+           placeholder="輸入關鍵字搜尋貨品名稱" aria-expanded="false">
+    <input type="hidden" class="r-item-value">
+    <div class="combo-panel hidden" id="${comboId}"></div>
+    <div class="combo-hint">請從清單中選擇貨品，無法自行輸入清單以外的名稱</div>
+  `;
+  const input = wrap.querySelector(".combo-input");
+  const hidden = wrap.querySelector(".r-item-value");
+  const panel = wrap.querySelector(".combo-panel");
+  const hint = wrap.querySelector(".combo-hint");
+
+  function getItems(){
+    const found = state.categories.find(c=>c.category===cat);
+    return found ? found.items : [];
+  }
+
+  function closePanel(){
+    panel.classList.add("hidden");
+    panel.innerHTML = "";
+    input.setAttribute("aria-expanded","false");
+  }
+
+  function markInvalid(isInvalid){
+    input.classList.toggle("is-invalid", !!isInvalid);
+    hint.classList.toggle("err", !!isInvalid);
+    hint.textContent = isInvalid
+      ? "請從清單中選擇貨品，目前輸入的內容不在清單內"
+      : "請從清單中選擇貨品，無法自行輸入清單以外的名稱";
+  }
+
+  function selectItem(it){
+    input.value = it.name;
+    hidden.value = it.name;
+    markInvalid(false);
+    closePanel();
+    if (onSelect) onSelect(it);
+  }
+
+  function renderPanel(keyword){
+    const items = getItems();
+    const kw = keyword.trim().toLowerCase();
+    const matched = kw
+      ? items.filter(it => it.name.toLowerCase().includes(kw))
+      : items;
+
+    if (!matched.length){
+      panel.innerHTML = '<div class="combo-empty">找不到符合的貨品，請換個關鍵字試試</div>';
+      panel.classList.remove("hidden");
+      input.setAttribute("aria-expanded","true");
+      return;
+    }
+
+    const shown = matched.slice(0, COMBO_MAX_RESULTS);
+    panel.innerHTML = shown.map(it =>
+      `<div class="combo-opt" data-name="${escapeHtml(it.name)}">${escapeHtml(it.name)}</div>`
+    ).join("") + (matched.length > COMBO_MAX_RESULTS
+      ? `<div class="combo-more">還有 ${matched.length - COMBO_MAX_RESULTS} 筆，請輸入更精確的關鍵字</div>`
+      : "");
+
+    panel.querySelectorAll(".combo-opt").forEach(opt=>{
+      opt.onclick = ()=>{
+        const it = items.find(i=>i.name===opt.dataset.name);
+        if (it) selectItem(it);
+      };
+    });
+    panel.classList.remove("hidden");
+    input.setAttribute("aria-expanded","true");
+  }
+
+  input.addEventListener("input", ()=>{
+    hidden.value = ""; // 打字中尚未確定選項，先清空已選值
+    markInvalid(false);
+    renderPanel(input.value);
+  });
+  input.addEventListener("focus", ()=>{ renderPanel(input.value); });
+  input.addEventListener("blur", ()=>{
+    // 延遲關閉，讓 click 事件能先觸發選取
+    setTimeout(()=>{
+      closePanel();
+      if (!hidden.value){
+        // 使用者打了字但沒有選任何清單項目
+        if (input.value.trim()) markInvalid(true);
+      }
+    }, 150);
+  });
+  document.addEventListener("click", (e)=>{
+    if (!wrap.contains(e.target)) closePanel();
+  });
+
+  wrap.getValue = ()=> hidden.value;
+  wrap.setInvalid = markInvalid;
+  wrap.querySelector_input = input;
+  return wrap;
 }
 
 function makeDetailRow(cat){
@@ -673,25 +789,27 @@ function makeDetailRow(cat){
       <span class="row-no"></span>
       <button class="row-del" type="button">移除這筆</button>
     </div>
-    <label class="fld"><span class="lbl">貨品名稱<span class="req">*</span></span>
-      <select class="r-item">${itemOptionsHTML(cat)}</select></label>
+    <label class="fld"><span class="lbl">貨品名稱<span class="req">*</span></span></label>
+    <div class="r-item-combo-slot"></div>
     <div class="unit-display r-unit-display hidden"><span class="lbl">單位</span><span class="unit-val"></span></div>
     <label class="fld"><span class="lbl">用途<span class="req">*</span></span>
       <input type="text" class="r-purpose" placeholder="例如：現場施工使用"></label>
     <label class="fld"><span class="lbl">數量<span class="req">*</span></span>
       <input type="number" class="r-qty" min="0" step="any" inputmode="decimal" placeholder="請輸入大於 0 的數字（可含小數）"></label>`;
-  const itemSel=div.querySelector(".r-item");
+
   const unitDisplay=div.querySelector(".r-unit-display");
   const unitVal=div.querySelector(".unit-val");
-  itemSel.onchange=()=>{
-    const found=findItemInCat(cat, itemSel.value);
-    if(found && found.unit){
-      unitVal.textContent=found.unit;
+  const combo = makeItemCombo(cat, (it)=>{
+    if (it && it.unit){
+      unitVal.textContent = it.unit;
       unitDisplay.classList.remove("hidden");
     }else{
       unitDisplay.classList.add("hidden");
     }
-  };
+  });
+  div.querySelector(".r-item-combo-slot").replaceWith(combo);
+  div._combo = combo; // 供 collectDetailRows 讀取
+
   div.querySelector(".row-del").onclick=()=>{ div.remove(); renumberRows(); };
   return div;
 }
@@ -724,10 +842,13 @@ function collectDetailRows(){
   const collected=[];
   for(let i=0;i<rows.length;i++){
     const r=rows[i];
-    const name=r.querySelector(".r-item").value;
+    const name=r._combo ? r._combo.getValue() : "";
     const purpose=r.querySelector(".r-purpose").value.trim();
     const qty=r.querySelector(".r-qty").value.trim();
-    if(!name){ toast(`第 ${i+1} 筆：請選擇貨品名稱`,true); return null; }
+    if(!name){
+      if (r._combo) r._combo.setInvalid(true);
+      toast(`第 ${i+1} 筆：請從清單中選擇貨品名稱`,true); return null;
+    }
     if(!purpose){ toast(`第 ${i+1} 筆：請填寫用途`,true); return null; }
     if(!/^\d*\.?\d+$/.test(qty) || parseFloat(qty)<=0){ toast(`第 ${i+1} 筆：數量請填大於 0 的數字（可含小數）`,true); return null; }
     const found=findItemInCat(state.currentCat, name);
