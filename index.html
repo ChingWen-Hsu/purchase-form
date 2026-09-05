@@ -1901,12 +1901,9 @@ function renderCategorySearchList(keyword){
 
 
   /*
-     重要：
-     使用 pointerdown 而不是 click。
-
-     手機上可以避免：
-     pointerdown → blur → click
-     的事件順序造成下拉選單又重新打開。
+     選取後立即關閉下拉。
+     使用正常 click，避免手機上的
+     pointerdown + preventDefault 造成無法點選。
   */
 
   list
@@ -1915,30 +1912,25 @@ function renderCategorySearchList(keyword){
     )
     .forEach(opt=>{
 
-      opt.addEventListener(
-        "pointerdown",
-        e=>{
+      opt.onclick=()=>{
 
-          e.preventDefault();
+        const value=
+          opt.dataset.value;
 
-          const value=
-            opt.dataset.value;
+        input.value=value;
 
-          input.value=value;
+        state.currentCat=value;
 
-          state.currentCat=value;
+        $("#toDetailBtn")
+          .disabled=false;
 
-          $("#toDetailBtn")
-            .disabled=false;
+        /* 立即關閉下拉 */
+        list.classList.remove("show");
 
-          /* 立即關閉 */
-          list.classList.remove("show");
+        /* 選取完成後失去焦點 */
+        input.blur();
 
-          /* 確保其他下拉也關閉 */
-          closeAllSearchLists();
-
-        }
-      );
+      };
 
     });
 }
@@ -2292,14 +2284,9 @@ function makeDetailRow(cat){
 
 
     /*
-       ★ 核心修正 ★
-
-       不再使用 onclick。
-
-       改用 pointerdown，
-       選到後直接關閉下拉。
-
-       這對手機尤其重要。
+       選取後立即關閉下拉。
+       使用正常 click，避免手機上的
+       pointerdown + preventDefault 造成無法點選。
     */
 
     itemList
@@ -2308,45 +2295,40 @@ function makeDetailRow(cat){
       )
       .forEach(opt=>{
 
-        opt.addEventListener(
-          "pointerdown",
-          e=>{
+        opt.onclick=()=>{
 
-            e.preventDefault();
-
-            const value=
-              opt.dataset.value;
+          const value=
+            opt.dataset.value;
 
 
-            /* 設定選取值 */
+          /* 設定選取值 */
 
-            itemInput.value=
-              value;
-
-
-            /* 更新單位 */
-
-            updateUnit(value);
+          itemInput.value=
+            value;
 
 
-            /*
-               ★ 立即關閉目前下拉
-            */
+          /* 更新單位 */
 
-            itemList
-              .classList
-              .remove("show");
+          updateUnit(value);
 
 
-            /*
-               確保其他搜尋下拉
-               也一起關閉
-            */
+          /* 立即關閉目前下拉 */
 
-            closeAllSearchLists();
+          itemList
+            .classList
+            .remove("show");
 
-          }
-        );
+
+          /* 確保其他搜尋下拉也關閉 */
+
+          closeAllSearchLists();
+
+
+          /* 選取完成後失去焦點 */
+
+          itemInput.blur();
+
+        };
 
       });
   }
@@ -2412,8 +2394,8 @@ function makeDetailRow(cat){
   /*
      blur 時關閉。
 
-     使用較短延遲是為了確保
-     pointerdown 選項事件完成。
+     保留原本的延遲，
+     確保 click 選項事件可以正常完成。
   */
 
   itemInput.addEventListener(
@@ -3334,7 +3316,7 @@ document.addEventListener(
        如果點到搜尋選單本身，
        不要關閉。
 
-       選項自己的 pointerdown
+       選項自己的 click
        會負責處理選取。
     */
 
