@@ -36,12 +36,9 @@
     padding-bottom:env(safe-area-inset-bottom);
   }
 
-  .wrap{
-    max-width:640px;
-    margin:0 auto;
-    padding:20px 16px 48px
-  }
+  .wrap{max-width:640px;margin:0 auto;padding:20px 16px 48px}
 
+  /* 密碼牆 */
   .gate-wrap{
     min-height:100vh;
     display:flex;
@@ -76,6 +73,7 @@
     min-height:18px
   }
 
+  /* 頁首 */
   header.top{
     display:flex;
     align-items:center;
@@ -232,16 +230,11 @@
     color:var(--brand);
     border:1.5px solid var(--brand)
   }
+
   .btn.ghost:hover{background:var(--brand-soft)}
-  .btn.subtle{
-    background:var(--line-soft);
-    color:var(--ink)
-  }
+  .btn.subtle{background:var(--line-soft);color:var(--ink)}
   .btn.subtle:hover{background:#e5ebf1}
-  .btn[disabled]{
-    opacity:.5;
-    cursor:not-allowed
-  }
+  .btn[disabled]{opacity:.5;cursor:not-allowed}
 
   .btn-row{
     display:flex;
@@ -250,6 +243,7 @@
     margin-top:6px
   }
 
+  /* 起始選單 */
   .entry-grid{
     display:grid;
     gap:12px
@@ -333,7 +327,7 @@
     cursor:pointer;
     font-size:13px;
     padding:2px 4px;
-    white-space:nowrap
+    white-space:nowrap;
   }
 
   .empty-note{
@@ -408,9 +402,7 @@
     transform:translateX(-50%) translateY(-4px)
   }
 
-  .toast.err{
-    background:var(--danger)
-  }
+  .toast.err{background:var(--danger)}
 
   .loading{
     display:flex;
@@ -450,9 +442,7 @@
     align-items:center
   }
 
-  .backlink:hover{
-    background:var(--brand-soft)
-  }
+  .backlink:hover{background:var(--brand-soft)}
 
   .success-wrap{
     text-align:center;
@@ -663,11 +653,12 @@
     top:calc(100% + 4px);
     max-height:240px;
     overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
     background:#fff;
     border:1px solid var(--line);
     border-radius:10px;
     box-shadow:var(--shadow);
-    z-index:30;
+    z-index:100;
     display:none;
   }
 
@@ -680,10 +671,10 @@
     cursor:pointer;
     font-size:14px;
     border-bottom:1px solid var(--line-soft);
-
-    /* 手機觸控優化 */
-    -webkit-tap-highlight-color:transparent;
+    background:#fff;
     user-select:none;
+    -webkit-user-select:none;
+    touch-action:manipulation;
   }
 
   .search-select-option:last-child{
@@ -713,7 +704,9 @@
 
 <body>
 
-<!-- 密碼牆 -->
+<!-- ============================================================
+     密碼牆
+     ============================================================ -->
 <div class="gate-wrap" id="gateWrap">
   <div class="gate-card">
     <h1>請輸入密碼</h1>
@@ -736,7 +729,9 @@
   </div>
 </div>
 
-<!-- 登入後正式頁面 -->
+<!-- ============================================================
+     登入後
+     ============================================================ -->
 <div class="wrap hidden" id="appWrap">
 
   <header class="top">
@@ -750,7 +745,9 @@
 
   <div class="steps hidden" id="steps"></div>
 
-  <!-- 頁面 0 -->
+  <!-- ============================================================
+       頁面 0：新申請 / 查詢
+       ============================================================ -->
   <section id="page-entry" class="page">
 
     <div class="card">
@@ -782,10 +779,14 @@
         </button>
 
       </div>
+
     </div>
+
   </section>
 
-  <!-- 申請密碼 -->
+  <!-- ============================================================
+       頁面 0-1：申請密碼
+       ============================================================ -->
   <section id="page-applygate" class="page hidden">
 
     <button class="backlink" data-back="entry">
@@ -821,9 +822,12 @@
       </div>
 
     </div>
+
   </section>
 
-  <!-- 基本資料 -->
+  <!-- ============================================================
+       頁面 1：基本資料
+       ============================================================ -->
   <section id="page-header" class="page hidden">
 
     <button class="backlink" data-back="entry">
@@ -839,6 +843,7 @@
       </p>
 
       <label class="fld">
+
         <span class="lbl">
           部門-申請人<span class="req">*</span>
         </span>
@@ -846,25 +851,31 @@
         <select id="deptUserSelect">
           <option value="">請選擇</option>
         </select>
+
       </label>
 
       <label class="fld">
+
         <span class="lbl">
           申請日期<span class="req">*</span>
         </span>
 
         <input type="date" id="applyDate">
+
       </label>
 
       <label class="fld">
+
         <span class="lbl">
           需求日期<span class="req">*</span>
         </span>
 
         <input type="date" id="needDate">
+
       </label>
 
       <label class="fld">
+
         <span class="lbl">
           請購事由<span class="req">*</span>
         </span>
@@ -873,22 +884,24 @@
           id="reason"
           placeholder="例如：部門日常補貨">
         </textarea>
+
       </label>
 
       <div class="btn-row">
 
-        <button
-          class="btn primary"
-          data-next="items">
+        <button class="btn primary" data-next="items">
           下一步：新增品項 →
         </button>
 
       </div>
 
     </div>
+
   </section>
 
-  <!-- 選分類 -->
+  <!-- ============================================================
+       頁面 2：選分類
+       ============================================================ -->
   <section id="page-category" class="page hidden">
 
     <button class="backlink" data-back="header">
@@ -930,6 +943,7 @@
           </div>
 
         </div>
+
       </label>
 
       <div class="btn-row">
@@ -939,21 +953,28 @@
           id="toDetailBtn"
           data-next="detail"
           disabled>
+
           下一步：選貨品與填明細 →
+
         </button>
 
         <button
           class="btn subtle"
           id="catViewAddedBtn">
+
           查看已加入品項 (0)
+
         </button>
 
       </div>
 
     </div>
+
   </section>
 
-  <!-- 貨品明細 -->
+  <!-- ============================================================
+       頁面 3：選貨品＋明細
+       ============================================================ -->
   <section id="page-detail" class="page hidden">
 
     <button class="backlink" data-back="category">
@@ -971,7 +992,9 @@
       <button
         class="btn subtle add-row-btn"
         id="addRowBtn">
+
         ＋ 新增一筆同類別品項
+
       </button>
 
       <div
@@ -981,15 +1004,20 @@
         <button
           class="btn primary"
           id="addItemBtn">
+
           加入並繼續
+
         </button>
 
       </div>
 
     </div>
+
   </section>
 
-  <!-- 是否繼續 -->
+  <!-- ============================================================
+       頁面 4：是否繼續
+       ============================================================ -->
   <section id="page-continue" class="page hidden">
 
     <div class="card">
@@ -1005,7 +1033,9 @@
       <div
         class="empty-note hidden"
         id="addedEmpty">
+
         目前還沒有品項。
+
       </div>
 
       <div class="btn-row">
@@ -1013,27 +1043,36 @@
         <button
           class="btn ghost"
           id="contOtherCat">
+
           是，繼續新增品項
+
         </button>
 
         <button
           class="btn accent"
           id="toReview">
+
           否，前往確認與送出 →
+
         </button>
 
       </div>
 
     </div>
+
   </section>
 
-  <!-- 確認送出 -->
+  <!-- ============================================================
+       頁面 5：確認送出
+       ============================================================ -->
   <section id="page-review" class="page hidden">
 
     <button
       class="backlink"
       data-back="continue">
+
       ← 返回修改品項
+
     </button>
 
     <div class="card">
@@ -1064,15 +1103,20 @@
         <button
           class="btn primary"
           id="submitBtn">
+
           確認無誤，送出申請單
+
         </button>
 
       </div>
 
     </div>
+
   </section>
 
-  <!-- 完成 -->
+  <!-- ============================================================
+       頁面 6：完成
+       ============================================================ -->
   <section id="page-done" class="page hidden">
 
     <div class="card success-wrap">
@@ -1119,14 +1163,18 @@
       <button
         class="btn primary"
         id="doneBackBtn">
+
         回到申請／查詢選擇頁
+
       </button>
 
     </div>
 
   </section>
 
-  <!-- 查詢 -->
+  <!-- ============================================================
+       頁面 7：查詢
+       ============================================================ -->
   <section id="page-query" class="page hidden">
 
     <button class="backlink" data-back="entry">
@@ -1186,7 +1234,9 @@
         <button
           class="btn primary"
           id="queryBtn">
+
           查詢
+
         </button>
 
       </div>
@@ -1200,9 +1250,7 @@
       <div class="card">
 
         <div class="review-head">
-          查詢結果（共
-          <b id="queryCount">0</b>
-          筆）
+          查詢結果（共 <b id="queryCount">0</b> 筆）
         </div>
 
         <div id="queryResults"></div>
@@ -1210,6 +1258,7 @@
       </div>
 
     </div>
+
   </section>
 
 </div>
@@ -1235,7 +1284,7 @@
 <script>
 
 /* ============================================================
-   設定
+   API
    ============================================================ */
 
 const API_URL =
@@ -1268,11 +1317,9 @@ const state = {
    小工具
    ============================================================ */
 
-const $ = s =>
-  document.querySelector(s);
+const $ = s => document.querySelector(s);
 
-const $$ = s =>
-  document.querySelectorAll(s);
+const $$ = s => document.querySelectorAll(s);
 
 
 function show(id){
@@ -1281,8 +1328,7 @@ function show(id){
     p.classList.add("hidden")
   );
 
-  $("#page-"+id)
-    .classList.remove("hidden");
+  $("#page-"+id).classList.remove("hidden");
 
   window.scrollTo({
     top:0,
@@ -1299,14 +1345,14 @@ function toast(msg,isErr){
 
   t.textContent=msg;
 
-  t.className=
+  t.className =
     "toast show"+
     (isErr ? " err" : "");
 
   clearTimeout(t._t);
 
   t._t=setTimeout(
-    ()=>t.className="toast",
+    () => t.className="toast",
     2600
   );
 }
@@ -1330,13 +1376,12 @@ function todayStr(){
 function escapeHtml(s){
 
   return String(s).replace(
-    /[&<>]/g,
-    c=>({
-
+    /[&<>"]/g,
+    c => ({
       "&":"&amp;",
       "<":"&lt;",
-      ">":"&gt;"
-
+      ">":"&gt;",
+      '"':"&quot;"
     }[c])
   );
 }
@@ -1366,39 +1411,22 @@ async function apiPost(action,extra){
       action,
       sitePw:state.sitePw
     },
-    extra||{}
+    extra || {}
   );
 
   const res=await fetch(
     API_URL,
     {
       method:"POST",
-
       headers:{
         "Content-Type":
           "text/plain;charset=utf-8"
       },
-
       body:JSON.stringify(body)
     }
   );
 
   return res.json();
-}
-
-
-/* ============================================================
-   搜尋式下拉：統一關閉所有清單
-   ============================================================ */
-
-function closeAllSearchLists(){
-
-  document
-    .querySelectorAll(".search-select-list.show")
-    .forEach(list=>{
-      list.classList.remove("show");
-    });
-
 }
 
 
@@ -1440,20 +1468,20 @@ function renderSteps(id){
 
   const cur=STEP_MAP[id];
 
-  $("#steps").innerHTML=
+  $("#steps").innerHTML =
     STEP_LABELS.map((lb,i)=>{
 
-      const cls=
+      const cls =
         i<cur
-          ? "st done"
-          : i===cur
-            ? "st active"
-            : "st";
+        ? "st done"
+        : i===cur
+        ? "st active"
+        : "st";
 
-      const arrow=
+      const arrow =
         i<STEP_LABELS.length-1
-          ? '<span class="arrow">›</span>'
-          : "";
+        ? '<span class="arrow">›</span>'
+        : "";
 
       return `
         <span class="${cls}">
@@ -1471,10 +1499,9 @@ function renderSteps(id){
    密碼牆
    ============================================================ */
 
-$("#sitePwBtn").onclick=async ()=>{
+$("#sitePwBtn").onclick=async()=>{
 
-  const pw=
-    $("#sitePwInput").value;
+  const pw=$("#sitePwInput").value;
 
   if(!pw){
 
@@ -1495,12 +1522,10 @@ $("#sitePwBtn").onclick=async ()=>{
       API_URL,
       {
         method:"POST",
-
         headers:{
           "Content-Type":
             "text/plain;charset=utf-8"
         },
-
         body:JSON.stringify({
           action:"checkSiteLogin",
           sitePw:pw
@@ -1513,12 +1538,11 @@ $("#sitePwBtn").onclick=async ()=>{
     if(!data.ok){
 
       $("#sitePwErr").textContent=
-        data.error||"密碼錯誤";
+        data.error || "密碼錯誤";
 
       $("#sitePwBtn").disabled=false;
 
-      $("#sitePwBtn").textContent=
-        "進入";
+      $("#sitePwBtn").textContent="進入";
 
       return;
     }
@@ -1540,27 +1564,25 @@ $("#sitePwBtn").onclick=async ()=>{
 
     $("#sitePwBtn").disabled=false;
 
-    $("#sitePwBtn").textContent=
-      "進入";
+    $("#sitePwBtn").textContent="進入";
   }
 };
 
 
-$("#sitePwInput")
-  .addEventListener(
-    "keydown",
-    e=>{
-      if(e.key==="Enter")
-        $("#sitePwBtn").click();
-    }
-  );
+$("#sitePwInput").addEventListener(
+  "keydown",
+  e=>{
+    if(e.key==="Enter")
+      $("#sitePwBtn").click();
+  }
+);
 
 
 /* ============================================================
    入口
    ============================================================ */
 
-$("#entryApply").onclick=async ()=>{
+$("#entryApply").onclick=async()=>{
 
   if(state.applyPw){
 
@@ -1593,7 +1615,7 @@ $("#entryApply").onclick=async ()=>{
 };
 
 
-$("#entryQuery").onclick=async ()=>{
+$("#entryQuery").onclick=async()=>{
 
   showPageLoading(
     "載入資料中…"
@@ -1614,10 +1636,9 @@ $("#entryQuery").onclick=async ()=>{
    申請密碼
    ============================================================ */
 
-$("#applyPwBtn").onclick=async ()=>{
+$("#applyPwBtn").onclick=async()=>{
 
-  const pw=
-    $("#applyPwInput").value;
+  const pw=$("#applyPwInput").value;
 
   if(!pw){
 
@@ -1636,23 +1657,21 @@ $("#applyPwBtn").onclick=async ()=>{
 
   try{
 
-    const data=
-      await apiPost(
-        "checkApplyLogin",
-        {
-          applyPw:pw
-        }
-      );
+    const data=await apiPost(
+      "checkApplyLogin",
+      {
+        applyPw:pw
+      }
+    );
 
     if(!data.ok){
 
       $("#applyPwErr").textContent=
-        data.error||"密碼錯誤";
+        data.error || "密碼錯誤";
 
       $("#applyPwBtn").disabled=false;
 
-      $("#applyPwBtn").textContent=
-        "確認";
+      $("#applyPwBtn").textContent="確認";
 
       return;
     }
@@ -1679,8 +1698,7 @@ $("#applyPwBtn").onclick=async ()=>{
 
     $("#applyPwBtn").disabled=false;
 
-    $("#applyPwBtn").textContent=
-      "確認";
+    $("#applyPwBtn").textContent="確認";
 
     $("#applyPwInput").value="";
 
@@ -1693,20 +1711,18 @@ $("#applyPwBtn").onclick=async ()=>{
 
     $("#applyPwBtn").disabled=false;
 
-    $("#applyPwBtn").textContent=
-      "確認";
+    $("#applyPwBtn").textContent="確認";
   }
 };
 
 
-$("#applyPwInput")
-  .addEventListener(
-    "keydown",
-    e=>{
-      if(e.key==="Enter")
-        $("#applyPwBtn").click();
-    }
-  );
+$("#applyPwInput").addEventListener(
+  "keydown",
+  e=>{
+    if(e.key==="Enter")
+      $("#applyPwBtn").click();
+  }
+);
 
 
 /* ============================================================
@@ -1718,14 +1734,11 @@ async function loadBootstrapForApply(){
   try{
 
     const data=
-      await apiPost(
-        "bootstrap",
-        {}
-      );
+      await apiPost("bootstrap",{});
 
     if(!data.ok)
       throw new Error(
-        data.error||"讀取失敗"
+        data.error || "讀取失敗"
       );
 
     state.deptUsers=
@@ -1753,14 +1766,11 @@ async function loadBootstrapForQuery(){
   try{
 
     const data=
-      await apiPost(
-        "bootstrap",
-        {}
-      );
+      await apiPost("bootstrap",{});
 
     if(!data.ok)
       throw new Error(
-        data.error||"讀取失敗"
+        data.error || "讀取失敗"
       );
 
     state.deptUsers=
@@ -1785,11 +1795,10 @@ function fillDeptUserSelect(){
 
   sel.innerHTML=
     '<option value="">請選擇</option>'+
-    state.deptUsers
-      .map(d=>
+    state.deptUsers.map(
+      d =>
         `<option>${escapeHtml(d)}</option>`
-      )
-      .join("");
+    ).join("");
 }
 
 
@@ -1800,17 +1809,39 @@ function fillQueryDeptUserSelect(){
 
   sel.innerHTML=
     '<option value="">全部</option>'+
-    state.deptUsers
-      .map(d=>
+    state.deptUsers.map(
+      d =>
         `<option>${escapeHtml(d)}</option>`
-      )
-      .join("");
+    ).join("");
 }
 
 
 /* ============================================================
-   搜尋式分類下拉
+   ★ 搜尋式分類下拉
+   ★ 這裡是本次主要修改
    ============================================================ */
+
+function closeCategoryList(){
+
+  const list=
+    $("#categorySearchList");
+
+  if(list){
+    list.classList.remove("show");
+  }
+}
+
+
+function openCategoryList(){
+
+  const list=
+    $("#categorySearchList");
+
+  if(list){
+    list.classList.add("show");
+  }
+}
+
 
 function fillCategorySelect(){
 
@@ -1820,16 +1851,111 @@ function fillCategorySelect(){
   const list=
     $("#categorySearchList");
 
+
+  /* 重置狀態 */
+
   input.value="";
 
   state.currentCat="";
 
   $("#toDetailBtn").disabled=true;
 
-  renderCategorySearchList("");
+  closeCategoryList();
 
 
-  /* focus：打開 */
+  /* ----------------------------------------------------------
+     顯示分類
+     ---------------------------------------------------------- */
+
+  function renderCategorySearchList(keyword){
+
+    const kw=
+      String(keyword || "")
+        .trim()
+        .toLowerCase();
+
+    const categories=
+      state.categories.filter(c =>
+        String(c.category)
+          .toLowerCase()
+          .includes(kw)
+      );
+
+
+    if(!categories.length){
+
+      list.innerHTML=
+        '<div class="search-select-empty">找不到符合的分類</div>';
+
+      openCategoryList();
+
+      return;
+    }
+
+
+    list.innerHTML=
+      categories.map(c=>`
+
+        <div
+          class="search-select-option"
+          data-value="${escapeHtml(c.category)}">
+
+          ${escapeHtml(c.category)}
+
+        </div>
+
+      `).join("");
+
+
+    /* --------------------------------------------------------
+       ★ 使用 pointerdown，不用 click
+       手機觸控時可以避免 focus → click → focus
+       造成下拉選單重新打開
+       -------------------------------------------------------- */
+
+    list
+      .querySelectorAll(".search-select-option")
+      .forEach(opt=>{
+
+        opt.addEventListener(
+          "pointerdown",
+          e=>{
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            const value=
+              opt.dataset.value;
+
+
+            /* 設定選取結果 */
+
+            input.value=value;
+
+            state.currentCat=value;
+
+            $("#toDetailBtn").disabled=false;
+
+
+            /* ★ 先關閉 */
+
+            closeCategoryList();
+
+
+            /* ★ 讓輸入框失去 focus */
+
+            input.blur();
+
+          }
+        );
+
+      });
+  }
+
+
+  /* ----------------------------------------------------------
+     點輸入框
+     ---------------------------------------------------------- */
 
   input.onfocus=()=>{
 
@@ -1837,102 +1963,66 @@ function fillCategorySelect(){
       input.value
     );
 
-    list.classList.add("show");
+    openCategoryList();
+
   };
 
 
-  /* 輸入：重新搜尋 */
+  /* ----------------------------------------------------------
+     輸入文字
+     ---------------------------------------------------------- */
 
   input.oninput=()=>{
+
+    /*
+     * 使用者開始修改文字時，
+     * 代表原本選取的分類已經不再有效。
+     */
 
     state.currentCat="";
 
     $("#toDetailBtn").disabled=true;
 
+
     renderCategorySearchList(
       input.value
     );
 
-    list.classList.add("show");
+    openCategoryList();
+
   };
-
-}
-
-
-function renderCategorySearchList(keyword){
-
-  const list=
-    $("#categorySearchList");
-
-  const kw=
-    String(keyword||"")
-      .trim()
-      .toLowerCase();
-
-  const categories=
-    state.categories.filter(c=>
-      String(c.category)
-        .toLowerCase()
-        .includes(kw)
-    );
-
-
-  if(!categories.length){
-
-    list.innerHTML=
-      '<div class="search-select-empty">找不到符合的分類</div>';
-
-    return;
-  }
-
-
-  list.innerHTML=
-    categories.map(c=>`
-
-      <div
-        class="search-select-option"
-        data-value="${escapeHtml(c.category)}">
-
-        ${escapeHtml(c.category)}
-
-      </div>
-
-    `).join("");
 
 
   /*
-     選取後立即關閉下拉。
-     使用正常 click，避免手機上的
-     pointerdown + preventDefault 造成無法點選。
-  */
+   * blur 時也關閉。
+   *
+   * 使用 200ms 是因為手機點選選項時，
+   * blur 可能會比 pointerdown/click 事件先發生。
+   */
 
-  list
-    .querySelectorAll(
-      ".search-select-option"
-    )
-    .forEach(opt=>{
+  input.addEventListener(
+    "blur",
+    ()=>{
 
-      opt.onclick=()=>{
+      setTimeout(
+        ()=>{
+          closeCategoryList();
+        },
+        200
+      );
 
-        const value=
-          opt.dataset.value;
+    }
+  );
 
-        input.value=value;
 
-        state.currentCat=value;
+  /*
+   * 第一次載入時先畫一次內容，
+   * 但不要顯示。
+   */
 
-        $("#toDetailBtn")
-          .disabled=false;
+  renderCategorySearchList("");
 
-        /* 立即關閉下拉 */
-        list.classList.remove("show");
-
-        /* 選取完成後失去焦點 */
-        input.blur();
-
-      };
-
-    });
+  closeCategoryList();
 }
 
 
@@ -1954,14 +2044,15 @@ function validateHeader(){
       $("#needDate").value,
 
     reason:
-      $("#reason").value.trim()
+      $("#reason").value.trim(),
 
   };
 
+
   if(
-    !h.deptUser||
-    !h.applyDate||
-    !h.needDate||
+    !h.deptUser ||
+    !h.applyDate ||
+    !h.needDate ||
     !h.reason
   ){
 
@@ -1982,8 +2073,7 @@ $('[data-next="items"]').onclick=()=>{
   const h=
     validateHeader();
 
-  if(!h)
-    return;
+  if(!h) return;
 
   state.header=h;
 
@@ -2007,7 +2097,7 @@ $("#toDetailBtn").onclick=()=>{
     return;
   }
 
-  closeAllSearchLists();
+  closeCategoryList();
 
   initDetailPage(
     state.currentCat
@@ -2019,7 +2109,7 @@ $("#toDetailBtn").onclick=()=>{
 
 $("#catViewAddedBtn").onclick=()=>{
 
-  closeAllSearchLists();
+  closeCategoryList();
 
   renderAddedList();
 
@@ -2032,6 +2122,7 @@ $("#catViewAddedBtn").onclick=()=>{
    ============================================================ */
 
 const UNIT_FALLBACK=[
+
   "支",
   "組",
   "瓶",
@@ -2044,13 +2135,11 @@ const UNIT_FALLBACK=[
   "把",
   "台",
   "其他"
+
 ];
 
 
-function findItemInCat(
-  cat,
-  name
-){
+function findItemInCat(cat,name){
 
   const found=
     state.categories.find(
@@ -2062,7 +2151,7 @@ function findItemInCat(
 
   return found.items.find(
     it=>it.name===name
-  )||null;
+  ) || null;
 }
 
 
@@ -2074,25 +2163,18 @@ function itemOptionsHTML(cat){
     );
 
   const items=
-    found
-      ? found.items
-      : [];
+    found ? found.items : [];
 
-  return (
-    '<option value="">請選擇貨品</option>'+
-    items
-      .map(it=>
-        `<option value="${escapeHtml(it.name)}">
-          ${escapeHtml(it.name)}
-        </option>`
-      )
-      .join("")
-  );
+  return '<option value="">請選擇貨品</option>'+
+    items.map(
+      it=>
+        `<option value="${escapeHtml(it.name)}">${escapeHtml(it.name)}</option>`
+    ).join("");
 }
 
 
 /* ============================================================
-   貨品搜尋式下拉
+   ★ 貨品搜尋式下拉
    ============================================================ */
 
 function makeDetailRow(cat){
@@ -2113,7 +2195,9 @@ function makeDetailRow(cat){
       <button
         class="row-del"
         type="button">
+
         移除這筆
+
       </button>
 
     </div>
@@ -2122,10 +2206,15 @@ function makeDetailRow(cat){
     <label class="fld">
 
       <span class="lbl">
+
         貨品名稱<span class="req">*</span>
+
       </span>
 
-      <div class="search-select-wrap r-item-wrap">
+
+      <div
+        class="search-select-wrap r-item-wrap">
+
 
         <input
           type="text"
@@ -2133,20 +2222,24 @@ function makeDetailRow(cat){
           placeholder="請選擇或搜尋貨品"
           autocomplete="off">
 
+
         <span class="search-select-arrow">
           ⌄
         </span>
 
+
         <div
           class="search-select-list r-item-list">
         </div>
+
 
       </div>
 
     </label>
 
 
-    <div class="unit-display r-unit-display hidden">
+    <div
+      class="unit-display r-unit-display hidden">
 
       <span class="lbl">
         單位
@@ -2199,6 +2292,7 @@ function makeDetailRow(cat){
   const itemWrap=
     div.querySelector(".r-item-wrap");
 
+
   const unitDisplay=
     div.querySelector(".r-unit-display");
 
@@ -2217,6 +2311,36 @@ function makeDetailRow(cat){
       : [];
 
 
+  /* ----------------------------------------------------------
+     關閉這一列的貨品下拉
+     ---------------------------------------------------------- */
+
+  function closeItemList(){
+
+    itemList.classList.remove(
+      "show"
+    );
+
+  }
+
+
+  /* ----------------------------------------------------------
+     開啟這一列的貨品下拉
+     ---------------------------------------------------------- */
+
+  function openItemList(){
+
+    itemList.classList.add(
+      "show"
+    );
+
+  }
+
+
+  /* ----------------------------------------------------------
+     顯示單位
+     ---------------------------------------------------------- */
+
   function updateUnit(value){
 
     const found=
@@ -2224,6 +2348,7 @@ function makeDetailRow(cat){
         cat,
         value
       );
+
 
     if(found && found.unit){
 
@@ -2241,19 +2366,24 @@ function makeDetailRow(cat){
         .add("hidden");
 
     }
+
   }
 
+
+  /* ----------------------------------------------------------
+     渲染貨品選單
+     ---------------------------------------------------------- */
 
   function renderItemList(keyword){
 
     const kw=
-      String(keyword||"")
+      String(keyword || "")
         .trim()
         .toLowerCase();
 
 
     const filtered=
-      items.filter(it=>
+      items.filter(it =>
         String(it.name)
           .toLowerCase()
           .includes(kw)
@@ -2264,6 +2394,8 @@ function makeDetailRow(cat){
 
       itemList.innerHTML=
         '<div class="search-select-empty">找不到符合的貨品</div>';
+
+      openItemList();
 
       return;
     }
@@ -2283,11 +2415,9 @@ function makeDetailRow(cat){
       `).join("");
 
 
-    /*
-       選取後立即關閉下拉。
-       使用正常 click，避免手機上的
-       pointerdown + preventDefault 造成無法點選。
-    */
+    /* --------------------------------------------------------
+       ★ 貨品選項使用 pointerdown
+       -------------------------------------------------------- */
 
     itemList
       .querySelectorAll(
@@ -2295,46 +2425,49 @@ function makeDetailRow(cat){
       )
       .forEach(opt=>{
 
-        opt.onclick=()=>{
+        opt.addEventListener(
+          "pointerdown",
+          e=>{
 
-          const value=
-            opt.dataset.value;
-
-
-          /* 設定選取值 */
-
-          itemInput.value=
-            value;
+            e.preventDefault();
+            e.stopPropagation();
 
 
-          /* 更新單位 */
-
-          updateUnit(value);
-
-
-          /* 立即關閉目前下拉 */
-
-          itemList
-            .classList
-            .remove("show");
+            const value=
+              opt.dataset.value;
 
 
-          /* 確保其他搜尋下拉也關閉 */
+            /* 設定貨品 */
 
-          closeAllSearchLists();
+            itemInput.value=
+              value;
 
 
-          /* 選取完成後失去焦點 */
+            /* 更新單位 */
 
-          itemInput.blur();
+            updateUnit(value);
 
-        };
+
+            /* ★ 關閉下拉 */
+
+            closeItemList();
+
+
+            /* ★ 取消輸入框 focus */
+
+            itemInput.blur();
+
+          }
+        );
 
       });
+
   }
 
 
-  /* 點輸入框 → 開啟 */
+  /* ----------------------------------------------------------
+     點擊／focus 輸入框
+     ---------------------------------------------------------- */
 
   itemInput.onfocus=()=>{
 
@@ -2342,27 +2475,21 @@ function makeDetailRow(cat){
       itemInput.value
     );
 
-    itemList.classList.add("show");
+    openItemList();
 
   };
 
 
-  /* 輸入文字 → 搜尋 */
+  /* ----------------------------------------------------------
+     輸入文字
+     ---------------------------------------------------------- */
 
   itemInput.oninput=()=>{
 
     /*
-       使用者重新輸入時，
-       原本選取的貨品已經不一定有效，
-       所以重新搜尋。
-    */
-
-    renderItemList(
-      itemInput.value
-    );
-
-    itemList.classList.add("show");
-
+     * 使用者開始輸入新的文字時，
+     * 如果不是完整有效貨品，先隱藏單位。
+     */
 
     const found=
       findItemInCat(
@@ -2388,15 +2515,19 @@ function makeDetailRow(cat){
 
     }
 
+
+    renderItemList(
+      itemInput.value
+    );
+
+    openItemList();
+
   };
 
 
-  /*
-     blur 時關閉。
-
-     保留原本的延遲，
-     確保 click 選項事件可以正常完成。
-  */
+  /* ----------------------------------------------------------
+     blur 保險機制
+     ---------------------------------------------------------- */
 
   itemInput.addEventListener(
     "blur",
@@ -2404,28 +2535,18 @@ function makeDetailRow(cat){
 
       setTimeout(
         ()=>{
-
-          if(
-            !itemWrap.contains(
-              document.activeElement
-            )
-          ){
-
-            itemList
-              .classList
-              .remove("show");
-
-          }
-
+          closeItemList();
         },
-        100
+        200
       );
 
     }
   );
 
 
-  /* 移除這一筆 */
+  /* ----------------------------------------------------------
+     移除這一筆
+     ---------------------------------------------------------- */
 
   div.querySelector(
     ".row-del"
@@ -2465,7 +2586,9 @@ function renumberRows(){
   rows.forEach(r=>{
 
     const del=
-      r.querySelector(".row-del");
+      r.querySelector(
+        ".row-del"
+      );
 
     del.disabled=
       rows.length<=1;
@@ -2480,8 +2603,6 @@ function renumberRows(){
 
 function initDetailPage(cat){
 
-  closeAllSearchLists();
-
   $("#detailCatHint").textContent=
     "類別："+cat+
     "（可連續新增多筆）";
@@ -2489,6 +2610,7 @@ function initDetailPage(cat){
 
   const box=
     $("#detailRows");
+
 
   box.innerHTML="";
 
@@ -2508,15 +2630,14 @@ function initDetailPage(cat){
 
 $("#addRowBtn").onclick=()=>{
 
-  closeAllSearchLists();
+  const newRow=
+    makeDetailRow(
+      state.currentCat
+    );
 
 
   $("#detailRows")
-    .appendChild(
-      makeDetailRow(
-        state.currentCat
-      )
-    );
+    .appendChild(newRow);
 
 
   renumberRows();
@@ -2531,6 +2652,7 @@ $("#addRowBtn").onclick=()=>{
       behavior:"smooth",
       block:"center"
     });
+
 };
 
 
@@ -2542,6 +2664,7 @@ function collectDetailRows(){
 
   const rows=
     $$("#detailRows .detail-row");
+
 
   const collected=[];
 
@@ -2610,7 +2733,7 @@ function collectDetailRows(){
 
 
     if(
-      !/^\d*\.?\d+$/.test(qty)||
+      !/^\d*\.?\d+$/.test(qty) ||
       parseFloat(qty)<=0
     ){
 
@@ -2632,15 +2755,16 @@ function collectDetailRows(){
 
       purpose,
 
-      quantity:qty,
+      quantity:
+        qty,
 
       unit:
-        (found && found.unit)||"",
+        (found && found.unit) || "",
 
       vendors:
         found
           ? found.vendors.slice()
-          : []
+          : [],
 
     });
 
@@ -2660,11 +2784,12 @@ $("#addItemBtn").onclick=()=>{
   const collected=
     collectDetailRows();
 
+
   if(!collected)
     return;
 
 
-  collected.forEach(it=>
+  collected.forEach(it =>
     state.items.push(it)
   );
 
@@ -2674,6 +2799,7 @@ $("#addItemBtn").onclick=()=>{
   renderAddedList();
 
   show("continue");
+
 };
 
 
@@ -2684,10 +2810,10 @@ $("#addItemBtn").onclick=()=>{
 function vendorLabel(it){
 
   if(
-    !it.vendors||
+    !it.vendors ||
     !it.vendors.length
   )
-    return it.vendor||"";
+    return it.vendor || "";
 
 
   return it.vendors.join("/");
@@ -2698,6 +2824,7 @@ function renderAddedList(){
 
   const ul=
     $("#addedList");
+
 
   ul.innerHTML="";
 
@@ -2753,7 +2880,9 @@ function renderAddedList(){
       <button
         class="del"
         data-i="${i}">
+
         移除
+
       </button>
 
     `;
@@ -2764,33 +2893,35 @@ function renderAddedList(){
   });
 
 
-  ul.querySelectorAll(".del")
-    .forEach(b=>{
+  ul.querySelectorAll(
+    ".del"
+  ).forEach(b=>{
 
-      b.onclick=()=>{
+    b.onclick=()=>{
 
-        state.items.splice(
-          +b.dataset.i,
-          1
-        );
+      state.items.splice(
+        +b.dataset.i,
+        1
+      );
 
-        renderAddedList();
+      renderAddedList();
 
-        updateAddedCounts();
+      updateAddedCounts();
 
-      };
+    };
 
-    });
+  });
+
 }
 
 
 function updateAddedCounts(){
 
-  $("#catViewAddedBtn")
-    .textContent=
-      "查看已加入品項 ("+
-      state.items.length+
-      ")";
+  $("#catViewAddedBtn").textContent=
+    "查看已加入品項 ("+
+    state.items.length+
+    ")";
+
 }
 
 
@@ -2800,17 +2931,16 @@ function updateAddedCounts(){
 
 $("#contOtherCat").onclick=()=>{
 
-  closeAllSearchLists();
+  closeCategoryList();
 
-  $("#categorySearchInput")
-    .value="";
+  $("#categorySearchInput").value="";
 
   state.currentCat="";
 
-  $("#toDetailBtn")
-    .disabled=true;
+  $("#toDetailBtn").disabled=true;
 
   show("category");
+
 };
 
 
@@ -2834,6 +2964,7 @@ $("#toReview").onclick=()=>{
   renderReview();
 
   show("review");
+
 };
 
 
@@ -2850,12 +2981,9 @@ function renderReview(){
   $("#reviewHeader").innerHTML=[
 
     ["部門-申請人",h.deptUser],
-
     ["申請日期",h.applyDate],
-
     ["需求日期",h.needDate],
-
-    ["請購事由",h.reason]
+    ["請購事由",h.reason],
 
   ].map(([k,v])=>`
 
@@ -2896,10 +3024,8 @@ function renderReview(){
 
           類別：
           ${escapeHtml(it.category)}
-
           ．用途：
           ${escapeHtml(it.purpose)}
-
           ．廠商：
           ${escapeHtml(vendorLabel(it))}
 
@@ -2908,6 +3034,7 @@ function renderReview(){
       </div>
 
     `).join("");
+
 }
 
 
@@ -2933,7 +3060,6 @@ async function submitForm(){
       await apiPost(
         "submit",
         {
-
           applyPw:
             state.applyPw,
 
@@ -2941,21 +3067,21 @@ async function submitForm(){
             state.header,
 
           items:
-            state.items
-
+            state.items,
         }
       );
 
 
     if(!data.ok)
       throw new Error(
-        data.error||"送出失敗"
+        data.error || "送出失敗"
       );
 
 
     renderDone(
       data.orderNo
     );
+
 
     show("done");
 
@@ -2972,7 +3098,9 @@ async function submitForm(){
 
     btn.textContent=
       "確認無誤，送出申請單";
+
   }
+
 }
 
 
@@ -2981,7 +3109,7 @@ $("#submitBtn").onclick=
 
 
 /* ============================================================
-   完成後返回
+   完成
    ============================================================ */
 
 $("#doneBackBtn").onclick=()=>{
@@ -2992,20 +3120,17 @@ $("#doneBackBtn").onclick=()=>{
 
   state.currentCat="";
 
-  closeAllSearchLists();
+  closeCategoryList();
 
   show("entry");
+
 };
 
 
-/* ============================================================
-   完成頁
-   ============================================================ */
-
 function renderDone(orderNo){
 
-  $("#doneOrderNo")
-    .textContent=orderNo;
+  $("#doneOrderNo").textContent=
+    orderNo;
 
 
   const h=
@@ -3015,12 +3140,9 @@ function renderDone(orderNo){
   $("#doneHeader").innerHTML=[
 
     ["部門-申請人",h.deptUser],
-
     ["申請日期",h.applyDate],
-
     ["需求日期",h.needDate],
-
-    ["請購事由",h.reason]
+    ["請購事由",h.reason],
 
   ].map(([k,v])=>`
 
@@ -3061,10 +3183,8 @@ function renderDone(orderNo){
 
           類別：
           ${escapeHtml(it.category)}
-
           ．用途：
           ${escapeHtml(it.purpose)}
-
           ．廠商：
           ${escapeHtml(vendorLabel(it))}
 
@@ -3073,6 +3193,7 @@ function renderDone(orderNo){
       </div>
 
     `).join("");
+
 }
 
 
@@ -3080,7 +3201,7 @@ function renderDone(orderNo){
    查詢
    ============================================================ */
 
-$("#queryBtn").onclick=async ()=>{
+$("#queryBtn").onclick=async()=>{
 
   const btn=
     $("#queryBtn");
@@ -3106,7 +3227,7 @@ $("#queryBtn").onclick=async ()=>{
             $("#queryFrom").value,
 
           toDate:
-            $("#queryTo").value
+            $("#queryTo").value,
 
         }
       );
@@ -3114,7 +3235,7 @@ $("#queryBtn").onclick=async ()=>{
 
     if(!data.ok)
       throw new Error(
-        data.error||"查詢失敗"
+        data.error || "查詢失敗"
       );
 
 
@@ -3129,19 +3250,16 @@ $("#queryBtn").onclick=async ()=>{
       "查詢失敗："+err.message,
       true
     );
+
   }
 
 
   btn.disabled=false;
 
-  btn.textContent=
-    "查詢";
+  btn.textContent="查詢";
+
 };
 
-
-/* ============================================================
-   查詢結果
-   ============================================================ */
 
 function renderQueryResults(records){
 
@@ -3180,8 +3298,7 @@ function renderQueryResults(records){
 
     }
 
-    byOrder[r.orderNo]
-      .push(r);
+    byOrder[r.orderNo].push(r);
 
   });
 
@@ -3214,10 +3331,8 @@ function renderQueryResults(records){
 
               類別：
               ${escapeHtml(r.category)}
-
               ．用途：
               ${escapeHtml(r.purpose)}
-
               ．廠商：
               ${escapeHtml(r.vendor)}
 
@@ -3236,10 +3351,8 @@ function renderQueryResults(records){
 
             單號
             ${escapeHtml(ordNo)}
-
             ．申請日期
             ${escapeHtml(head.applyDate)}
-
             ．需求日期
             ${escapeHtml(head.needDate)}
 
@@ -3272,6 +3385,7 @@ function renderQueryResults(records){
       `;
 
     }).join("");
+
 }
 
 
@@ -3291,7 +3405,7 @@ document.addEventListener(
 
     if(back){
 
-      closeAllSearchLists();
+      closeCategoryList();
 
       show(
         back.dataset.back
@@ -3305,48 +3419,42 @@ document.addEventListener(
 
 
 /* ============================================================
-   點畫面其他地方 → 關閉搜尋下拉
+   ★ 點擊頁面其他地方 → 關閉分類下拉
    ============================================================ */
 
 document.addEventListener(
   "pointerdown",
   e=>{
 
-    /*
-       如果點到搜尋選單本身，
-       不要關閉。
+    const categoryWrap=
+      $("#categorySearchWrap");
 
-       選項自己的 click
-       會負責處理選取。
-    */
 
     if(
-      e.target.closest(
-        ".search-select-wrap"
-      )
+      categoryWrap &&
+      !categoryWrap.contains(e.target)
     ){
-      return;
-    }
 
-    closeAllSearchLists();
+      closeCategoryList();
+
+    }
 
   }
 );
 
 
 /* ============================================================
-   Logo 載入失敗
+   Logo
    ============================================================ */
 
-$("#logoImg")
-  .addEventListener(
-    "error",
-    function(){
+$("#logoImg").addEventListener(
+  "error",
+  function(){
 
-      this.style.display="none";
+    this.style.display="none";
 
-    }
-  );
+  }
+);
 
 
 /* ============================================================
