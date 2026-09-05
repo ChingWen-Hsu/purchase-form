@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
@@ -37,7 +38,6 @@
 
   .wrap{max-width:640px;margin:0 auto;padding:20px 16px 48px}
 
-  /* 密碼牆：純淨、無品牌痕跡 */
   .gate-wrap{
     min-height:100vh;display:flex;align-items:flex-start;justify-content:center;
     padding:56px 24px 24px;
@@ -58,7 +58,6 @@
     text-align:center;min-height:18px
   }
 
-  /* 頁首 */
   header.top{
     display:flex;align-items:center;gap:12px;
     padding:8px 2px 18px;
@@ -168,7 +167,6 @@
   .btn[disabled]{opacity:.5;cursor:not-allowed}
   .btn-row{display:flex;flex-direction:column;gap:10px;margin-top:6px}
 
-  /* 起始選單 */
   .entry-grid{display:grid;gap:12px}
 
   .entry-btn{
@@ -359,7 +357,23 @@
     font-size:15px;font-weight:700;color:var(--brand)
   }
 
-  /* 查詢結果 */
+  /* 直接搜尋全部貨品時顯示的分類 */
+  .category-display{
+    display:flex;align-items:baseline;gap:8px;
+    margin-top:-4px;margin-bottom:14px;
+    padding:7px 12px;
+    background:var(--brand-soft);
+    border-radius:10px;
+  }
+
+  .category-display .lbl{
+    font-size:13px;font-weight:600;color:var(--ink-soft)
+  }
+
+  .category-display .category-val{
+    font-size:14px;font-weight:700;color:var(--brand)
+  }
+
   .query-result{
     border:1.5px solid var(--brand);
     border-left-width:5px;border-radius:10px;
@@ -565,7 +579,6 @@
 
 <body>
 
-<!-- ============ 密碼牆 ============ -->
 <div class="gate-wrap" id="gateWrap">
   <div class="gate-card">
     <h1>請輸入密碼</h1>
@@ -583,7 +596,6 @@
 </div>
 
 
-<!-- ============ 登入後正式頁面 ============ -->
 <div class="wrap hidden" id="appWrap">
 
   <header class="top">
@@ -599,7 +611,6 @@
   <div class="steps hidden" id="steps"></div>
 
 
-  <!-- ============ 頁面 0：新申請 / 查詢 ============ -->
   <section id="page-entry" class="page">
 
     <div class="card">
@@ -630,7 +641,6 @@
   </section>
 
 
-  <!-- ============ 頁面 0-1：申請密碼 ============ -->
   <section id="page-applygate" class="page hidden">
 
     <button class="backlink" data-back="entry">← 返回</button>
@@ -660,7 +670,6 @@
   </section>
 
 
-  <!-- ============ 頁面 1：基本資料 ============ -->
   <section id="page-header" class="page hidden">
 
     <button class="backlink" data-back="entry">← 返回</button>
@@ -722,7 +731,6 @@
   </section>
 
 
-  <!-- ============ 頁面 2：選分類 ============ -->
   <section id="page-category" class="page hidden">
 
     <button class="backlink" data-back="header">
@@ -745,39 +753,9 @@
         </span>
 
 
-        <!-- 搜尋式分類選單 -->
         <div
           class="search-select"
           id="categorySearchSelect">
-
-          <button
-            type="button"
-            class="search-select-trigger placeholder"
-            id="categorySelectTrigger">
-            請選擇分類
-          </button>
-
-          <div
-            class="search-select-panel hidden"
-            id="categorySelectPanel">
-
-            <div class="search-select-search">
-
-              <input
-                type="text"
-                id="categorySearchInput"
-                placeholder="搜尋分類..."
-                autocomplete="off">
-
-            </div>
-
-            <div
-              class="search-select-options"
-              id="categorySelectOptions">
-            </div>
-
-          </div>
-
         </div>
 
       </label>
@@ -806,7 +784,6 @@
   </section>
 
 
-  <!-- ============ 頁面 3：選貨品＋明細 ============ -->
   <section id="page-detail" class="page hidden">
 
     <button class="backlink" data-back="category">
@@ -844,7 +821,6 @@
   </section>
 
 
-  <!-- ============ 頁面 4：是否繼續 ============ -->
   <section id="page-continue" class="page hidden">
 
     <div class="card">
@@ -885,7 +861,6 @@
   </section>
 
 
-  <!-- ============ 頁面 5：確認送出 ============ -->
   <section id="page-review" class="page hidden">
 
     <button class="backlink" data-back="continue">
@@ -933,7 +908,6 @@
   </section>
 
 
-  <!-- ============ 頁面 6：完成 ============ -->
   <section id="page-done" class="page hidden">
 
     <div class="card success-wrap">
@@ -990,7 +964,6 @@
   </section>
 
 
-  <!-- ============ 頁面 7：查詢 ============ -->
   <section id="page-query" class="page hidden">
 
     <button class="backlink" data-back="entry">
@@ -1132,6 +1105,14 @@ const state = {
 };
 
 
+/*
+  特殊值：
+  代表「不知道分類，直接搜尋全部貨品」
+*/
+
+const DIRECT_ITEM_SEARCH = "__DIRECT_ITEM_SEARCH__";
+
+
 /* ---------- 小工具 ---------- */
 
 const $ = (s)=>document.querySelector(s);
@@ -1245,18 +1226,6 @@ async function apiPost(action, extra){
 /* ============================================================
    搜尋式下拉選單共用元件
    ============================================================ */
-
-/*
-  這裡是這次新增的主要功能。
-
-  使用方式：
-  - 點外框 → 開啟
-  - 開啟後可以直接滑
-  - 也可以搜尋
-  - 點選後立即關閉
-  - 點其他地方也會關閉
-*/
-
 
 function closeSearchSelect(wrapper){
 
@@ -1402,6 +1371,8 @@ function createSearchSelect(config){
 
   let currentValue="";
 
+  let currentItem=null;
+
 
   function renderOptions(keyword=""){
 
@@ -1416,7 +1387,7 @@ function createSearchSelect(config){
         .filter(item=>{
 
           const text =
-            String(item.label);
+            String(item.searchText || item.label);
 
           return !kw ||
             text.toLowerCase().includes(kw);
@@ -1476,9 +1447,11 @@ function createSearchSelect(config){
         currentValue=
           String(item.value);
 
+        currentItem=item;
+
 
         trigger.textContent=
-          item.label;
+          item.displayLabel || item.label;
 
 
         trigger.classList.remove(
@@ -1563,11 +1536,6 @@ function createSearchSelect(config){
   );
 
 
-  /*
-    防止搜尋框的點擊事件往外冒泡，
-    避免被 document click 提前關掉。
-  */
-
   searchInput.addEventListener(
     "click",
     function(e){
@@ -1578,10 +1546,6 @@ function createSearchSelect(config){
   );
 
 
-  /*
-    提供給外部使用的 API
-  */
-
   wrapper._getValue=function(){
 
     return currentValue;
@@ -1589,10 +1553,20 @@ function createSearchSelect(config){
   };
 
 
-  wrapper._setValue=function(value,label){
+  wrapper._getSelectedItem=function(){
+
+    return currentItem;
+
+  };
+
+
+  wrapper._setValue=function(value,label,item){
 
     currentValue =
       value == null ? "" : String(value);
+
+    currentItem =
+      item || null;
 
 
     if(currentValue){
@@ -2105,10 +2079,6 @@ function fillCategorySelect(){
     $("#categorySearchSelect");
 
 
-  /*
-    如果已經建立過，先清除
-  */
-
   container.innerHTML="";
 
 
@@ -2119,14 +2089,35 @@ function fillCategorySelect(){
 
       searchPlaceholder:"搜尋分類...",
 
+
       getOptions:()=>{
 
-        return state.categories.map(
-          c=>({
-            value:c.category,
-            label:c.category
-          })
-        );
+        /*
+          第一個永遠放：
+          不知道分類／直接搜尋貨品
+        */
+
+        const directOption={
+          value:DIRECT_ITEM_SEARCH,
+          label:"不知道分類／直接搜尋貨品",
+          searchText:"不知道分類 直接搜尋貨品"
+        };
+
+
+        const categoryOptions =
+          state.categories.map(
+            c=>({
+              value:c.category,
+              label:c.category,
+              searchText:c.category
+            })
+          );
+
+
+        return [
+          directOption,
+          ...categoryOptions
+        ];
 
       },
 
@@ -2261,6 +2252,11 @@ const UNIT_FALLBACK = [
 ];
 
 
+/*
+  原本的：
+  指定分類 + 貨品名稱
+*/
+
 function findItemInCat(cat,name){
 
   const found=
@@ -2276,6 +2272,77 @@ function findItemInCat(cat,name){
   return found.items.find(
     it=>it.name===name
   ) || null;
+
+}
+
+
+/*
+  新增：
+  從全部分類尋找貨品
+
+  回傳時會把 category 一起帶出，
+  讓後面的請購資料可以自動知道分類。
+*/
+
+function findItemGlobal(name,category){
+
+  if(category){
+
+    const catFound=
+      state.categories.find(
+        c=>c.category===category
+      );
+
+
+    if(catFound){
+
+      const item=
+        catFound.items.find(
+          it=>it.name===name
+        );
+
+
+      if(item){
+
+        return Object.assign(
+          {},
+          item,
+          {
+            category:catFound.category
+          }
+        );
+
+      }
+
+    }
+
+  }
+
+
+  for(const c of state.categories){
+
+    const item=
+      c.items.find(
+        it=>it.name===name
+      );
+
+
+    if(item){
+
+      return Object.assign(
+        {},
+        item,
+        {
+          category:c.category
+        }
+      );
+
+    }
+
+  }
+
+
+  return null;
 
 }
 
@@ -2317,6 +2384,18 @@ function makeDetailRow(cat){
       <div class="r-item-search"></div>
 
     </label>
+
+
+    <div
+      class="category-display r-category-display hidden">
+
+      <span class="lbl">
+        分類
+      </span>
+
+      <span class="category-val"></span>
+
+    </div>
 
 
     <div
@@ -2371,8 +2450,7 @@ function makeDetailRow(cat){
 
 
   /*
-    每一筆 detail-row 都建立
-    自己獨立的搜尋式貨品選單
+    建立搜尋式貨品選單
   */
 
   const itemSearch =
@@ -2382,10 +2460,75 @@ function makeDetailRow(cat){
         "請選擇貨品",
 
       searchPlaceholder:
-        "搜尋貨品...",
+        cat===DIRECT_ITEM_SEARCH
+          ? "搜尋全部貨品..."
+          : "搜尋貨品...",
 
 
       getOptions:()=>{
+
+        /*
+          如果選擇：
+          不知道分類／直接搜尋貨品
+
+          → 把所有分類的貨品全部整理出來
+        */
+
+        if(cat===DIRECT_ITEM_SEARCH){
+
+          const allItems=[];
+
+
+          state.categories.forEach(c=>{
+
+            c.items.forEach(it=>{
+
+              allItems.push({
+
+                /*
+                  用分類 + 貨品名稱組成唯一值，
+                  避免不同分類剛好有同名貨品
+                */
+
+                value:
+                  c.category+
+                  "|||"+
+                  it.name,
+
+                label:
+                  it.name+
+                  "（"+c.category+"）",
+
+                displayLabel:
+                  it.name,
+
+                searchText:
+                  it.name+
+                  " "+
+                  c.category,
+
+                category:
+                  c.category,
+
+                rawItem:
+                  it
+
+              });
+
+            });
+
+          });
+
+
+          return allItems;
+
+        }
+
+
+        /*
+          原本的分類 → 貨品
+          流程完全保留
+        */
 
         const found =
           state.categories.find(
@@ -2401,22 +2544,26 @@ function makeDetailRow(cat){
 
         return items.map(
           it=>({
+
             value:it.name,
-            label:it.name
+
+            label:it.name,
+
+            displayLabel:it.name,
+
+            searchText:it.name,
+
+            category:cat,
+
+            rawItem:it
+
           })
         );
 
       },
 
 
-      onChange:(value)=>{
-
-        const found =
-          findItemInCat(
-            cat,
-            value
-          );
-
+      onChange:(value,item)=>{
 
         const unitDisplay =
           div.querySelector(
@@ -2429,6 +2576,82 @@ function makeDetailRow(cat){
             ".unit-val"
           );
 
+
+        const categoryDisplay =
+          div.querySelector(
+            ".r-category-display"
+          );
+
+
+        const categoryVal =
+          div.querySelector(
+            ".category-val"
+          );
+
+
+        let found=null;
+
+        let selectedCategory=cat;
+
+
+        /*
+          不知道分類：
+          從搜尋結果本身取得分類
+        */
+
+        if(cat===DIRECT_ITEM_SEARCH){
+
+          found =
+            item && item.rawItem
+              ? item.rawItem
+              : null;
+
+          selectedCategory =
+            item && item.category
+              ? item.category
+              : "";
+
+        }else{
+
+          found =
+            findItemInCat(
+              cat,
+              value
+            );
+
+          selectedCategory=cat;
+
+        }
+
+
+        /*
+          顯示自動判斷出的分類
+        */
+
+        if(
+          cat===DIRECT_ITEM_SEARCH &&
+          selectedCategory
+        ){
+
+          categoryVal.textContent=
+            selectedCategory;
+
+          categoryDisplay
+            .classList
+            .remove("hidden");
+
+        }else{
+
+          categoryDisplay
+            .classList
+            .add("hidden");
+
+        }
+
+
+        /*
+          顯示單位
+        */
 
         if(found && found.unit){
 
@@ -2457,95 +2680,6 @@ function makeDetailRow(cat){
   );
 
 
-  /*
-    為了維持原本：
-      r.querySelector(".r-item").value
-
-    的資料流程，
-
-    這裡讓 detail row 擁有一個
-    隱藏的 input.r-item。
-
-    它的 value 永遠同步目前選到的貨品。
-  */
-
-  const hiddenItemInput =
-    document.createElement("input");
-
-  hiddenItemInput.type="hidden";
-
-  hiddenItemInput.className=
-    "r-item";
-
-  hiddenItemInput.value="";
-
-
-  itemSearch._syncHiddenValue=
-    function(){
-
-      hiddenItemInput.value=
-        itemSearch._getValue();
-
-    };
-
-
-  /*
-    包裝 onChange，
-    每次選擇後同步 hidden input。
-  */
-
-  const originalSearchOnChange =
-    itemSearch._syncHiddenValue;
-
-
-  /*
-    透過 Mutation/選擇事件不方便，
-    因此在這裡直接監聽 trigger 的內容
-    並以 getter 保持 value 最新。
-
-    同時覆寫 querySelector 回傳的
-    hidden input value 已經可以正常使用。
-  */
-
-
-  Object.defineProperty(
-    hiddenItemInput,
-    "value",
-    {
-      get:function(){
-
-        return itemSearch._getValue();
-
-      },
-
-      set:function(v){
-
-        this._manualValue =
-          v == null ? "" : String(v);
-
-      }
-    }
-  );
-
-
-  div.appendChild(
-    hiddenItemInput
-  );
-
-
-  /*
-    將搜尋元件的目前值同步到
-    hidden input 的實際屬性。
-  */
-
-  itemSearch._getItemValue=
-    function(){
-
-      return itemSearch._getValue();
-
-    };
-
-
   div.querySelector(
     ".row-del"
   ).onclick=()=>{
@@ -2555,6 +2689,16 @@ function makeDetailRow(cat){
     renumberRows();
 
   };
+
+
+  /*
+    將搜尋元件直接掛到 detail row，
+    後面 collectDetailRows()
+    可以直接取得選到的貨品。
+  */
+
+  div._itemSearch=
+    itemSearch;
 
 
   return div;
@@ -2604,8 +2748,23 @@ function renumberRows(){
 
 function initDetailPage(cat){
 
-  $("#detailCatHint").textContent=
-    "類別："+cat+"（可連續新增多筆）";
+  if(cat===DIRECT_ITEM_SEARCH){
+
+    $("#detailCatHint").textContent=
+      "尚未指定分類，可直接搜尋全部貨品；選擇貨品後會自動帶出分類。";
+
+    $("#addRowBtn").textContent=
+      "＋ 新增一筆品項（可搜尋全部分類）";
+
+  }else{
+
+    $("#detailCatHint").textContent=
+      "類別："+cat+"（可連續新增多筆）";
+
+    $("#addRowBtn").textContent=
+      "＋ 新增一筆同類別品項";
+
+  }
 
 
   const box=
@@ -2677,19 +2836,22 @@ function collectDetailRows(){
     const r=rows[i];
 
 
-    /*
-      新的搜尋式選單
-    */
-
     const searchSelect =
       r.querySelector(
         ".r-item-search .search-select"
       );
 
 
-    const name =
+    const selectedItem =
       searchSelect
-        ? searchSelect._getValue()
+        ? searchSelect._getSelectedItem()
+        : null;
+
+
+    const name =
+      selectedItem &&
+      selectedItem.rawItem
+        ? selectedItem.rawItem.name
         : "";
 
 
@@ -2744,17 +2906,76 @@ function collectDetailRows(){
     }
 
 
-    const found=
-      findItemInCat(
-        state.currentCat,
-        name
+    /*
+      如果是：
+      不知道分類／直接搜尋貨品
+
+      → 從選到的貨品直接取得分類
+
+      如果是一般分類：
+      → 使用目前選擇的分類
+    */
+
+    let itemCategory =
+      state.currentCat;
+
+    let found=null;
+
+
+    if(state.currentCat===DIRECT_ITEM_SEARCH){
+
+      if(
+        selectedItem &&
+        selectedItem.rawItem
+      ){
+
+        found =
+          selectedItem.rawItem;
+
+        itemCategory =
+          selectedItem.category || "";
+
+      }
+
+    }else{
+
+      found=
+        findItemInCat(
+          state.currentCat,
+          name
+        );
+
+      itemCategory=
+        state.currentCat;
+
+    }
+
+
+    /*
+      如果找不到貨品，就不要送出錯誤資料
+    */
+
+    if(!found){
+
+      toast(
+        `第 ${i+1} 筆：找不到貨品資料`,
+        true
       );
+
+      return null;
+
+    }
 
 
     collected.push({
 
+      /*
+        這裡的 category
+        就是最終真正的貨品分類
+      */
+
       category:
-        state.currentCat,
+        itemCategory,
 
       name,
 
@@ -3418,4 +3639,5 @@ $("#logoImg").addEventListener(
 </script>
 
 </body>
-  </html>
+</html>
+```
