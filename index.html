@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>請購申請單</title>
+
 <style>
   :root{
     --ink:#1c2733;
@@ -35,44 +36,101 @@
     padding-bottom:env(safe-area-inset-bottom);
   }
 
-  .wrap{max-width:640px;margin:0 auto;padding:20px 16px 48px}
+  .wrap{
+    max-width:640px;
+    margin:0 auto;
+    padding:20px 16px 48px
+  }
 
-  /* 密碼牆：純淨、無品牌痕跡 */
   .gate-wrap{
-    min-height:100vh;display:flex;align-items:flex-start;justify-content:center;
+    min-height:100vh;
+    display:flex;
+    align-items:flex-start;
+    justify-content:center;
     padding:56px 24px 24px;
   }
 
   .gate-card{
-    width:100%;max-width:360px;background:#fff;border:1px solid var(--line);
-    border-radius:var(--radius);box-shadow:var(--shadow);padding:32px 26px;
+    width:100%;
+    max-width:360px;
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    padding:32px 26px;
   }
 
-  .gate-card h1{font-size:17px;margin:0 0 18px;color:var(--ink);font-weight:800;text-align:center}
-  .gate-card .gate-err{color:var(--danger);font-size:13px;margin-top:10px;text-align:center;min-height:18px}
+  .gate-card h1{
+    font-size:17px;
+    margin:0 0 18px;
+    color:var(--ink);
+    font-weight:800;
+    text-align:center
+  }
 
-  /* 頁首（僅登入後畫面出現） */
+  .gate-card .gate-err{
+    color:var(--danger);
+    font-size:13px;
+    margin-top:10px;
+    text-align:center;
+    min-height:18px
+  }
+
   header.top{
-    display:flex;align-items:center;gap:12px;
+    display:flex;
+    align-items:center;
+    gap:12px;
     padding:8px 2px 18px;
   }
 
-  header.top img.logo{height:34px;width:auto;display:block}
+  header.top img.logo{
+    height:34px;
+    width:auto;
+    display:block
+  }
 
-  header.top .titles{display:flex;flex-direction:column}
-  header.top .mark{font-weight:800;letter-spacing:.02em;font-size:19px;color:var(--brand)}
-  header.top .sub{font-size:12.5px;color:var(--ink-soft)}
+  header.top .titles{
+    display:flex;
+    flex-direction:column
+  }
+
+  header.top .mark{
+    font-weight:800;
+    letter-spacing:.02em;
+    font-size:19px;
+    color:var(--brand)
+  }
+
+  header.top .sub{
+    font-size:12.5px;
+    color:var(--ink-soft)
+  }
 
   .steps{
-    display:flex;gap:6px;margin:0 2px 18px;font-size:12px;color:var(--ink-soft);
+    display:flex;
+    gap:6px;
+    margin:0 2px 18px;
+    font-size:12px;
+    color:var(--ink-soft);
     flex-wrap:wrap;
   }
 
-  .steps .st{display:flex;align-items:center;gap:6px}
+  .steps .st{
+    display:flex;
+    align-items:center;
+    gap:6px
+  }
 
   .steps .dot{
-    width:22px;height:22px;border-radius:50%;background:var(--line);
-    color:#fff;display:grid;place-items:center;font-weight:700;font-size:12px
+    width:22px;
+    height:22px;
+    border-radius:50%;
+    background:var(--line);
+    color:#fff;
+    display:grid;
+    place-items:center;
+    font-weight:700;
+    font-size:12px
   }
 
   .steps .st.active .dot{background:var(--brand)}
@@ -80,32 +138,66 @@
   .steps .arrow{opacity:.4}
 
   .card{
-    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
-    box-shadow:var(--shadow);padding:20px 18px;margin-bottom:16px;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    padding:20px 18px;
+    margin-bottom:16px;
   }
 
-  .card h2{margin:0 0 4px;font-size:17px;font-weight:800;letter-spacing:.01em}
-  .card .hint{margin:0 0 16px;font-size:13px;color:var(--ink-soft)}
+  .card h2{
+    margin:0 0 4px;
+    font-size:17px;
+    font-weight:800;
+    letter-spacing:.01em
+  }
 
-  label.fld{display:block;margin-bottom:14px}
+  .card .hint{
+    margin:0 0 16px;
+    font-size:13px;
+    color:var(--ink-soft)
+  }
+
+  label.fld{
+    display:block;
+    margin-bottom:14px
+  }
 
   label.fld > .lbl{
-    display:block;font-size:13px;font-weight:600;margin-bottom:6px;color:var(--ink)
+    display:block;
+    font-size:13px;
+    font-weight:600;
+    margin-bottom:6px;
+    color:var(--ink)
   }
 
-  label.fld > .lbl .req{color:var(--danger);margin-left:3px}
+  label.fld > .lbl .req{
+    color:var(--danger);
+    margin-left:3px
+  }
 
   input,select,textarea{
-    width:100%;font:inherit;color:var(--ink);
-    padding:11px 12px;border:1px solid var(--line);border-radius:10px;
-    background:#fff;outline:none;transition:border-color .15s,box-shadow .15s;
+    width:100%;
+    font:inherit;
+    color:var(--ink);
+    padding:11px 12px;
+    border:1px solid var(--line);
+    border-radius:10px;
+    background:#fff;
+    outline:none;
+    transition:border-color .15s,box-shadow .15s;
   }
 
   input:focus,select:focus,textarea:focus{
-    border-color:var(--brand);box-shadow:0 0 0 3px var(--brand-soft);
+    border-color:var(--brand);
+    box-shadow:0 0 0 3px var(--brand-soft);
   }
 
-  textarea{resize:vertical;min-height:64px}
+  textarea{
+    resize:vertical;
+    min-height:64px
+  }
 
   select{
     appearance:none;
@@ -116,9 +208,17 @@
   }
 
   .btn{
-    display:inline-flex;align-items:center;justify-content:center;gap:8px;
-    width:100%;padding:13px 16px;border:none;border-radius:11px;
-    font:inherit;font-weight:700;cursor:pointer;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    width:100%;
+    padding:13px 16px;
+    border:none;
+    border-radius:11px;
+    font:inherit;
+    font-weight:700;
+    cursor:pointer;
     transition:transform .05s,background .15s,opacity .15s;
   }
 
@@ -127,198 +227,399 @@
   .btn.primary:hover{background:var(--brand-dark)}
   .btn.accent{background:var(--accent);color:#fff}
   .btn.accent:hover{background:#b0561a}
-  .btn.ghost{background:#fff;color:var(--brand);border:1.5px solid var(--brand)}
+  .btn.ghost{
+    background:#fff;
+    color:var(--brand);
+    border:1.5px solid var(--brand)
+  }
   .btn.ghost:hover{background:var(--brand-soft)}
-  .btn.subtle{background:var(--line-soft);color:var(--ink)}
+  .btn.subtle{
+    background:var(--line-soft);
+    color:var(--ink)
+  }
   .btn.subtle:hover{background:#e5ebf1}
-  .btn[disabled]{opacity:.5;cursor:not-allowed}
-  .btn-row{display:flex;flex-direction:column;gap:10px;margin-top:6px}
+  .btn[disabled]{
+    opacity:.5;
+    cursor:not-allowed
+  }
 
-  /* 起始選單（新申請／查詢） */
-  .entry-grid{display:grid;gap:12px}
+  .btn-row{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    margin-top:6px
+  }
+
+  .entry-grid{
+    display:grid;
+    gap:12px
+  }
 
   .entry-btn{
-    display:flex;align-items:center;justify-content:space-between;
-    text-align:left;padding:20px 18px;border:1px solid var(--line);
-    background:#fff;border-radius:12px;cursor:pointer;transition:.15s;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    text-align:left;
+    padding:20px 18px;
+    border:1px solid var(--line);
+    background:#fff;
+    border-radius:12px;
+    cursor:pointer;
+    transition:.15s;
     box-shadow:var(--shadow);
   }
 
-  .entry-btn:hover{border-color:var(--brand);background:var(--brand-soft)}
-  .entry-btn .vn{font-size:17px;font-weight:700}
+  .entry-btn:hover{
+    border-color:var(--brand);
+    background:var(--brand-soft)
+  }
+
+  .entry-btn .vn{
+    font-size:17px;
+    font-weight:700
+  }
 
   .entry-btn .vn small{
-    display:block;font-size:12.5px;font-weight:400;
-    color:var(--ink-soft);margin-top:3px
+    display:block;
+    font-size:12.5px;
+    font-weight:400;
+    color:var(--ink-soft);
+    margin-top:3px
   }
 
-  .entry-btn .chev{color:var(--brand);font-size:20px}
+  .entry-btn .chev{
+    color:var(--brand);
+    font-size:20px
+  }
 
-  .item-list{margin:0 0 14px;padding:0;list-style:none}
+  .item-list{
+    margin:0 0 14px;
+    padding:0;
+    list-style:none
+  }
 
   .item-list li{
-    display:flex;justify-content:space-between;gap:10px;align-items:flex-start;
-    padding:11px 12px;border:1px solid var(--line-soft);border-radius:10px;
-    margin-bottom:8px;background:#fbfcfd;font-size:14px;
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    align-items:flex-start;
+    padding:11px 12px;
+    border:1px solid var(--line-soft);
+    border-radius:10px;
+    margin-bottom:8px;
+    background:#fbfcfd;
+    font-size:14px;
   }
 
-  .item-list .meta{color:var(--ink-soft);font-size:12.5px}
+  .item-list .meta{
+    color:var(--ink-soft);
+    font-size:12.5px
+  }
 
   .item-list .cat-tag{
-    display:inline-block;font-size:11px;color:var(--brand);
-    background:var(--brand-soft);padding:1px 8px;border-radius:20px;margin-bottom:3px;
+    display:inline-block;
+    font-size:11px;
+    color:var(--brand);
+    background:var(--brand-soft);
+    padding:1px 8px;
+    border-radius:20px;
+    margin-bottom:3px;
   }
 
   .item-list .del{
-    border:none;background:none;color:var(--danger);cursor:pointer;
-    font-size:13px;padding:2px 4px;white-space:nowrap;
+    border:none;
+    background:none;
+    color:var(--danger);
+    cursor:pointer;
+    font-size:13px;
+    padding:2px 4px;
+    white-space:nowrap
   }
 
   .empty-note{
-    font-size:13px;color:var(--ink-soft);
-    text-align:center;padding:8px 0 14px
+    font-size:13px;
+    color:var(--ink-soft);
+    text-align:center;
+    padding:8px 0 14px
   }
 
-  .review-head{font-size:13px;color:var(--ink-soft);margin-bottom:4px}
+  .review-head{
+    font-size:13px;
+    color:var(--ink-soft);
+    margin-bottom:4px
+  }
 
   .review-row{
-    display:flex;gap:10px;padding:6px 0;
-    border-bottom:1px dashed var(--line-soft);font-size:14px
+    display:flex;
+    gap:10px;
+    padding:6px 0;
+    border-bottom:1px dashed var(--line-soft);
+    font-size:14px
   }
 
-  .review-row .k{color:var(--ink-soft);width:96px;flex:none}
-  .review-row .v{font-weight:600}
+  .review-row .k{
+    color:var(--ink-soft);
+    width:96px;
+    flex:none
+  }
+
+  .review-row .v{
+    font-weight:600
+  }
 
   .review-item{
-    border:1px solid var(--line-soft);border-radius:10px;
-    padding:12px;margin-bottom:10px;background:#fbfcfd
+    border:1px solid var(--line-soft);
+    border-radius:10px;
+    padding:12px;
+    margin-bottom:10px;
+    background:#fbfcfd
   }
 
-  .review-item .ri-name{font-weight:700;margin-bottom:4px}
-  .review-item .ri-meta{font-size:13px;color:var(--ink-soft)}
+  .review-item .ri-name{
+    font-weight:700;
+    margin-bottom:4px
+  }
+
+  .review-item .ri-meta{
+    font-size:13px;
+    color:var(--ink-soft)
+  }
 
   .toast{
-    position:fixed;left:50%;bottom:24px;transform:translateX(-50%);
-    background:var(--ink);color:#fff;padding:11px 18px;border-radius:10px;
-    font-size:14px;box-shadow:var(--shadow);opacity:0;pointer-events:none;
-    transition:opacity .25s,transform .25s;z-index:50;max-width:90vw;
+    position:fixed;
+    left:50%;
+    bottom:24px;
+    transform:translateX(-50%);
+    background:var(--ink);
+    color:#fff;
+    padding:11px 18px;
+    border-radius:10px;
+    font-size:14px;
+    box-shadow:var(--shadow);
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .25s,transform .25s;
+    z-index:50;
+    max-width:90vw;
   }
 
-  .toast.show{opacity:1;transform:translateX(-50%) translateY(-4px)}
-  .toast.err{background:var(--danger)}
+  .toast.show{
+    opacity:1;
+    transform:translateX(-50%) translateY(-4px)
+  }
+
+  .toast.err{
+    background:var(--danger)
+  }
 
   .loading{
-    display:flex;align-items:center;gap:10px;
-    color:var(--ink-soft);font-size:14px;padding:6px 0
+    display:flex;
+    align-items:center;
+    gap:10px;
+    color:var(--ink-soft);
+    font-size:14px;
+    padding:6px 0
   }
 
   .spinner{
-    width:18px;height:18px;border:2.5px solid var(--line);
-    border-top-color:var(--brand);border-radius:50%;
+    width:18px;
+    height:18px;
+    border:2.5px solid var(--line);
+    border-top-color:var(--brand);
+    border-radius:50%;
     animation:spin .8s linear infinite
   }
 
-  @keyframes spin{to{transform:rotate(360deg)}}
-
-  .backlink{
-    background:#fff;border:1.5px solid var(--brand);color:var(--brand);
-    font:inherit;font-size:16px;font-weight:700;cursor:pointer;
-    padding:9px 16px;margin-bottom:14px;border-radius:10px;
-    display:inline-flex;gap:6px;align-items:center
+  @keyframes spin{
+    to{transform:rotate(360deg)}
   }
 
-  .backlink:hover{background:var(--brand-soft)}
+  .backlink{
+    background:#fff;
+    border:1.5px solid var(--brand);
+    color:var(--brand);
+    font:inherit;
+    font-size:16px;
+    font-weight:700;
+    cursor:pointer;
+    padding:9px 16px;
+    margin-bottom:14px;
+    border-radius:10px;
+    display:inline-flex;
+    gap:6px;
+    align-items:center
+  }
 
-  .success-wrap{text-align:center;padding:20px 6px}
-  .success-wrap .big{font-size:40px;margin-bottom:6px;color:var(--brand)}
-  .success-wrap h2{margin:0 0 8px}
+  .backlink:hover{
+    background:var(--brand-soft)
+  }
+
+  .success-wrap{
+    text-align:center;
+    padding:20px 6px
+  }
+
+  .success-wrap .big{
+    font-size:40px;
+    margin-bottom:6px;
+    color:var(--brand)
+  }
+
+  .success-wrap h2{
+    margin:0 0 8px
+  }
 
   .success-wrap .ordno{
-    font-family:ui-monospace,monospace;background:var(--line-soft);
-    padding:3px 10px;border-radius:6px;font-size:14px
+    font-family:ui-monospace,monospace;
+    background:var(--line-soft);
+    padding:3px 10px;
+    border-radius:6px;
+    font-size:14px
   }
 
   .detail-row{
-    border:1px solid var(--line);border-radius:12px;padding:14px 14px 4px;
-    margin-bottom:12px;background:#fbfcfd;position:relative;
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:14px 14px 4px;
+    margin-bottom:12px;
+    background:#fbfcfd;
+    position:relative;
   }
 
   .detail-row .row-head{
-    display:flex;justify-content:space-between;
-    align-items:center;margin-bottom:10px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:10px;
   }
 
   .detail-row .row-no{
-    font-size:13px;font-weight:700;color:var(--brand)
+    font-size:13px;
+    font-weight:700;
+    color:var(--brand)
   }
 
   .detail-row .row-del{
-    border:none;background:none;color:var(--danger);
-    cursor:pointer;font:inherit;font-size:13px;padding:2px 4px;
+    border:none;
+    background:none;
+    color:var(--danger);
+    cursor:pointer;
+    font:inherit;
+    font-size:13px;
+    padding:2px 4px;
   }
 
   .detail-row .row-del[disabled]{
-    color:var(--ink-soft);opacity:.4;cursor:not-allowed
+    color:var(--ink-soft);
+    opacity:.4;
+    cursor:not-allowed
   }
 
   .add-row-btn{
     border:1.5px dashed var(--line);
-    color:var(--brand);background:#fff
+    color:var(--brand);
+    background:#fff
   }
 
   .add-row-btn:hover{
-    background:var(--brand-soft);border-color:var(--brand)
+    background:var(--brand-soft);
+    border-color:var(--brand)
   }
 
   .unit-display{
-    display:flex;align-items:baseline;gap:8px;margin-bottom:14px;
-    padding:9px 12px;background:var(--brand-soft);border-radius:10px;
+    display:flex;
+    align-items:baseline;
+    gap:8px;
+    margin-bottom:14px;
+    padding:9px 12px;
+    background:var(--brand-soft);
+    border-radius:10px;
   }
 
   .unit-display .lbl{
-    font-size:13px;font-weight:600;color:var(--ink-soft)
+    font-size:13px;
+    font-weight:600;
+    color:var(--ink-soft)
   }
 
   .unit-display .unit-val{
-    font-size:15px;font-weight:700;color:var(--brand)
+    font-size:15px;
+    font-weight:700;
+    color:var(--brand)
   }
 
-  /* 查詢結果：每張單一個明顯區隔的卡片 */
   .query-result{
-    border:1.5px solid var(--brand);border-left-width:5px;border-radius:10px;
-    padding:14px 14px 12px;margin-bottom:16px;background:#fbfcfd;
+    border:1.5px solid var(--brand);
+    border-left-width:5px;
+    border-radius:10px;
+    padding:14px 14px 12px;
+    margin-bottom:16px;
+    background:#fbfcfd;
     box-shadow:var(--shadow);
   }
 
   .query-result .qr-order{
-    font-size:12px;color:#fff;background:var(--brand);
-    display:inline-block;padding:3px 10px;border-radius:20px;
-    margin-bottom:8px;font-weight:700;
+    font-size:12px;
+    color:#fff;
+    background:var(--brand);
+    display:inline-block;
+    padding:3px 10px;
+    border-radius:20px;
+    margin-bottom:8px;
+    font-weight:700;
   }
 
-  .query-result .qr-name{font-weight:800;font-size:15px}
-  .query-result .qr-meta{font-size:13px;color:var(--ink-soft);margin-top:2px}
+  .query-result .qr-name{
+    font-weight:800;
+    font-size:15px
+  }
 
-  .date-row{display:flex;gap:10px}
-  .date-row label.fld{flex:1}
+  .query-result .qr-meta{
+    font-size:13px;
+    color:var(--ink-soft);
+    margin-top:2px
+  }
 
-  .hidden{display:none !important}
+  .date-row{
+    display:flex;
+    gap:10px
+  }
+
+  .date-row label.fld{
+    flex:1
+  }
+
+  .hidden{
+    display:none !important
+  }
 
   .page-loading-overlay{
-    position:fixed;inset:0;background:rgba(244,246,248,.92);
-    display:flex;align-items:center;justify-content:center;z-index:60;
+    position:fixed;
+    inset:0;
+    background:rgba(244,246,248,.92);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:60;
   }
 
   .page-loading-box{
-    display:flex;align-items:center;gap:12px;background:#fff;
-    border:1px solid var(--line);border-radius:12px;
-    box-shadow:var(--shadow);padding:18px 24px;
-    font-size:14px;color:var(--ink-soft);
+    display:flex;
+    align-items:center;
+    gap:12px;
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:12px;
+    box-shadow:var(--shadow);
+    padding:18px 24px;
+    font-size:14px;
+    color:var(--ink-soft);
   }
 
   /* ============================================================
-     搜尋式下拉選單：分類／貨品
+     搜尋式下拉選單
      ============================================================ */
+
   .search-select-wrap{
     position:relative;
     width:100%;
@@ -379,6 +680,10 @@
     cursor:pointer;
     font-size:14px;
     border-bottom:1px solid var(--line-soft);
+
+    /* 手機觸控優化 */
+    -webkit-tap-highlight-color:transparent;
+    user-select:none;
   }
 
   .search-select-option:last-child{
@@ -408,25 +713,35 @@
 
 <body>
 
-<!-- ============ 密碼牆（未登入時只顯示這裡，無任何品牌痕跡） ============ -->
+<!-- 密碼牆 -->
 <div class="gate-wrap" id="gateWrap">
   <div class="gate-card">
     <h1>請輸入密碼</h1>
+
     <label class="fld">
-      <input type="password" id="sitePwInput" placeholder="密碼" autocomplete="off">
+      <input
+        type="password"
+        id="sitePwInput"
+        placeholder="密碼"
+        autocomplete="off">
     </label>
+
     <div class="btn-row">
-      <button class="btn primary" id="sitePwBtn">進入</button>
+      <button class="btn primary" id="sitePwBtn">
+        進入
+      </button>
     </div>
+
     <div class="gate-err" id="sitePwErr"></div>
   </div>
 </div>
 
-<!-- ============ 登入後的正式頁面 ============ -->
+<!-- 登入後正式頁面 -->
 <div class="wrap hidden" id="appWrap">
 
   <header class="top">
     <img src="logo.png" alt="" class="logo" id="logoImg">
+
     <div class="titles">
       <span class="mark">請購申請單</span>
       <span class="sub" id="modeLabel"></span>
@@ -435,18 +750,25 @@
 
   <div class="steps hidden" id="steps"></div>
 
-  <!-- ============ 頁面 0：新申請 / 查詢 ============ -->
+  <!-- 頁面 0 -->
   <section id="page-entry" class="page">
+
     <div class="card">
+
       <h2>請選擇</h2>
-      <p class="hint">要填寫新的請購單，還是查詢先前填過的紀錄？</p>
+
+      <p class="hint">
+        要填寫新的請購單，還是查詢先前填過的紀錄？
+      </p>
 
       <div class="entry-grid">
+
         <button class="entry-btn" id="entryApply">
           <span class="vn">
             新申請
             <small>填寫一張新的請購單</small>
           </span>
+
           <span class="chev">→</span>
         </button>
 
@@ -455,84 +777,142 @@
             查詢紀錄
             <small>查詢先前填過的請購內容</small>
           </span>
+
           <span class="chev">→</span>
         </button>
+
       </div>
     </div>
   </section>
 
-  <!-- ============ 頁面 0-1：申請密碼 ============ -->
+  <!-- 申請密碼 -->
   <section id="page-applygate" class="page hidden">
-    <button class="backlink" data-back="entry">← 返回</button>
+
+    <button class="backlink" data-back="entry">
+      ← 返回
+    </button>
 
     <div class="card">
+
       <h2>輸入申請密碼</h2>
-      <p class="hint">請向採購部門確認目前的申請密碼。</p>
+
+      <p class="hint">
+        請向採購部門確認目前的申請密碼。
+      </p>
 
       <label class="fld">
-        <input type="password" id="applyPwInput"
-               placeholder="申請密碼" autocomplete="off">
+        <input
+          type="password"
+          id="applyPwInput"
+          placeholder="申請密碼"
+          autocomplete="off">
       </label>
 
       <div class="btn-row">
-        <button class="btn primary" id="applyPwBtn">確認</button>
+        <button class="btn primary" id="applyPwBtn">
+          確認
+        </button>
       </div>
 
-      <div class="gate-err" id="applyPwErr" style="margin-top:8px"></div>
+      <div
+        class="gate-err"
+        id="applyPwErr"
+        style="margin-top:8px">
+      </div>
+
     </div>
   </section>
 
-  <!-- ============ 頁面 1：基本資料 ============ -->
+  <!-- 基本資料 -->
   <section id="page-header" class="page hidden">
-    <button class="backlink" data-back="entry">← 返回</button>
+
+    <button class="backlink" data-back="entry">
+      ← 返回
+    </button>
 
     <div class="card">
+
       <h2>基本資料</h2>
-      <p class="hint">這張請購單的共同資訊，只需填一次。</p>
+
+      <p class="hint">
+        這張請購單的共同資訊，只需填一次。
+      </p>
 
       <label class="fld">
-        <span class="lbl">部門-申請人<span class="req">*</span></span>
+        <span class="lbl">
+          部門-申請人<span class="req">*</span>
+        </span>
+
         <select id="deptUserSelect">
           <option value="">請選擇</option>
         </select>
       </label>
 
       <label class="fld">
-        <span class="lbl">申請日期<span class="req">*</span></span>
+        <span class="lbl">
+          申請日期<span class="req">*</span>
+        </span>
+
         <input type="date" id="applyDate">
       </label>
 
       <label class="fld">
-        <span class="lbl">需求日期<span class="req">*</span></span>
+        <span class="lbl">
+          需求日期<span class="req">*</span>
+        </span>
+
         <input type="date" id="needDate">
       </label>
 
       <label class="fld">
-        <span class="lbl">請購事由<span class="req">*</span></span>
-        <textarea id="reason" placeholder="例如：部門日常補貨"></textarea>
+        <span class="lbl">
+          請購事由<span class="req">*</span>
+        </span>
+
+        <textarea
+          id="reason"
+          placeholder="例如：部門日常補貨">
+        </textarea>
       </label>
 
       <div class="btn-row">
-        <button class="btn primary" data-next="items">
+
+        <button
+          class="btn primary"
+          data-next="items">
           下一步：新增品項 →
         </button>
+
       </div>
+
     </div>
   </section>
 
-  <!-- ============ 頁面 2：選分類 ============ -->
+  <!-- 選分類 -->
   <section id="page-category" class="page hidden">
-    <button class="backlink" data-back="header">← 回基本資料</button>
+
+    <button class="backlink" data-back="header">
+      ← 回基本資料
+    </button>
 
     <div class="card">
+
       <h2>選擇品項類別</h2>
-      <p class="hint">先選類別，下一頁再挑貨品與填明細。</p>
+
+      <p class="hint">
+        先選類別，下一頁再挑貨品與填明細。
+      </p>
 
       <label class="fld" id="catField">
-        <span class="lbl">品項分類<span class="req">*</span></span>
 
-        <!-- 修改：搜尋式分類下拉 -->
-        <div class="search-select-wrap" id="categorySearchWrap">
+        <span class="lbl">
+          品項分類<span class="req">*</span>
+        </span>
+
+        <div
+          class="search-select-wrap"
+          id="categorySearchWrap">
+
           <input
             type="text"
             id="categorySearchInput"
@@ -540,83 +920,138 @@
             placeholder="請選擇或輸入分類名稱"
             autocomplete="off">
 
-          <span class="search-select-arrow">⌄</span>
+          <span class="search-select-arrow">
+            ⌄
+          </span>
 
-          <div class="search-select-list" id="categorySearchList"></div>
+          <div
+            class="search-select-list"
+            id="categorySearchList">
+          </div>
+
         </div>
       </label>
 
       <div class="btn-row">
-        <button class="btn primary" id="toDetailBtn"
-                data-next="detail" disabled>
+
+        <button
+          class="btn primary"
+          id="toDetailBtn"
+          data-next="detail"
+          disabled>
           下一步：選貨品與填明細 →
         </button>
 
-        <button class="btn subtle" id="catViewAddedBtn">
+        <button
+          class="btn subtle"
+          id="catViewAddedBtn">
           查看已加入品項 (0)
         </button>
+
       </div>
+
     </div>
   </section>
 
-  <!-- ============ 頁面 3：選貨品＋明細（同類別可多筆） ============ -->
+  <!-- 貨品明細 -->
   <section id="page-detail" class="page hidden">
-    <button class="backlink" data-back="category">← 重選類別</button>
+
+    <button class="backlink" data-back="category">
+      ← 重選類別
+    </button>
 
     <div class="card">
+
       <h2>貨品與明細</h2>
+
       <p class="hint" id="detailCatHint"></p>
 
       <div id="detailRows"></div>
 
-      <button class="btn subtle add-row-btn" id="addRowBtn">
+      <button
+        class="btn subtle add-row-btn"
+        id="addRowBtn">
         ＋ 新增一筆同類別品項
       </button>
 
-      <div class="btn-row" style="margin-top:14px">
-        <button class="btn primary" id="addItemBtn">
+      <div
+        class="btn-row"
+        style="margin-top:14px">
+
+        <button
+          class="btn primary"
+          id="addItemBtn">
           加入並繼續
         </button>
+
       </div>
+
     </div>
   </section>
 
-  <!-- ============ 頁面 4：是否繼續 ============ -->
+  <!-- 是否繼續 -->
   <section id="page-continue" class="page hidden">
+
     <div class="card">
+
       <h2>已加入品項</h2>
-      <p class="hint">確認清單，選擇要繼續新增還是前往送出。</p>
+
+      <p class="hint">
+        確認清單，選擇要繼續新增還是前往送出。
+      </p>
 
       <ul class="item-list" id="addedList"></ul>
 
-      <div class="empty-note hidden" id="addedEmpty">
+      <div
+        class="empty-note hidden"
+        id="addedEmpty">
         目前還沒有品項。
       </div>
 
       <div class="btn-row">
-        <button class="btn ghost" id="contOtherCat">
+
+        <button
+          class="btn ghost"
+          id="contOtherCat">
           是，繼續新增品項
         </button>
 
-        <button class="btn accent" id="toReview">
+        <button
+          class="btn accent"
+          id="toReview">
           否，前往確認與送出 →
         </button>
+
       </div>
+
     </div>
   </section>
 
-  <!-- ============ 頁面 5：確認送出 ============ -->
+  <!-- 確認送出 -->
   <section id="page-review" class="page hidden">
-    <button class="backlink" data-back="continue">
+
+    <button
+      class="backlink"
+      data-back="continue">
       ← 返回修改品項
     </button>
 
     <div class="card">
-      <h2>確認請購內容</h2>
-      <p class="hint">送出前請再檢查一次。送出後會寫入請購紀錄。</p>
 
-      <div class="review-head">基本資料</div>
-      <div id="reviewHeader" style="margin-bottom:16px"></div>
+      <h2>確認請購內容</h2>
+
+      <p class="hint">
+        送出前請再檢查一次。送出後會寫入請購紀錄。
+      </p>
+
+      <div class="review-head">
+        基本資料
+      </div>
+
+      <div
+        id="reviewHeader"
+        style="margin-bottom:16px">
+      </div>
 
       <div class="review-head">
         品項（共 <b id="reviewCount">0</b> 項）
@@ -625,82 +1060,155 @@
       <div id="reviewItems"></div>
 
       <div class="btn-row">
-        <button class="btn primary" id="submitBtn">
+
+        <button
+          class="btn primary"
+          id="submitBtn">
           確認無誤，送出申請單
         </button>
+
       </div>
+
     </div>
   </section>
 
-  <!-- ============ 頁面 6：完成 ============ -->
+  <!-- 完成 -->
   <section id="page-done" class="page hidden">
+
     <div class="card success-wrap">
+
       <div class="big">✓</div>
+
       <h2>已送出</h2>
-      <p class="hint">請購單已寫入請購紀錄。</p>
-      <p>
-        單號：<span class="ordno" id="doneOrderNo"></span>
+
+      <p class="hint">
+        請購單已寫入請購紀錄。
       </p>
+
+      <p>
+        單號：
+        <span
+          class="ordno"
+          id="doneOrderNo">
+        </span>
+      </p>
+
     </div>
 
     <div class="card">
-      <div class="review-head">送出內容</div>
-      <div id="doneHeader" style="margin:6px 0 16px"></div>
+
+      <div class="review-head">
+        送出內容
+      </div>
+
+      <div
+        id="doneHeader"
+        style="margin:6px 0 16px">
+      </div>
 
       <div class="review-head">
         品項（共 <b id="doneCount">0</b> 項）
       </div>
 
       <div id="doneItems"></div>
+
     </div>
 
     <div class="btn-row">
-      <button class="btn primary" id="doneBackBtn">
+
+      <button
+        class="btn primary"
+        id="doneBackBtn">
         回到申請／查詢選擇頁
       </button>
+
     </div>
+
   </section>
 
-  <!-- ============ 頁面 7：查詢 ============ -->
+  <!-- 查詢 -->
   <section id="page-query" class="page hidden">
-    <button class="backlink" data-back="entry">← 返回</button>
+
+    <button class="backlink" data-back="entry">
+      ← 返回
+    </button>
 
     <div class="card">
+
       <h2>查詢請購紀錄</h2>
-      <p class="hint">選擇部門/申請人與日期區間查詢。</p>
+
+      <p class="hint">
+        選擇部門/申請人與日期區間查詢。
+      </p>
 
       <label class="fld">
-        <span class="lbl">部門-申請人</span>
+
+        <span class="lbl">
+          部門-申請人
+        </span>
+
         <select id="queryDeptUser">
           <option value="">全部</option>
         </select>
+
       </label>
 
       <div class="date-row">
+
         <label class="fld">
-          <span class="lbl">申請日期（起）</span>
-          <input type="date" id="queryFrom">
+
+          <span class="lbl">
+            申請日期（起）
+          </span>
+
+          <input
+            type="date"
+            id="queryFrom">
+
         </label>
 
         <label class="fld">
-          <span class="lbl">申請日期（迄）</span>
-          <input type="date" id="queryTo">
+
+          <span class="lbl">
+            申請日期（迄）
+          </span>
+
+          <input
+            type="date"
+            id="queryTo">
+
         </label>
+
       </div>
 
       <div class="btn-row">
-        <button class="btn primary" id="queryBtn">查詢</button>
+
+        <button
+          class="btn primary"
+          id="queryBtn">
+          查詢
+        </button>
+
       </div>
+
     </div>
 
-    <div id="queryResultWrap" class="hidden">
+    <div
+      id="queryResultWrap"
+      class="hidden">
+
       <div class="card">
+
         <div class="review-head">
-          查詢結果（共 <b id="queryCount">0</b> 筆）
+          查詢結果（共
+          <b id="queryCount">0</b>
+          筆）
         </div>
 
         <div id="queryResults"></div>
+
       </div>
+
     </div>
   </section>
 
@@ -708,192 +1216,374 @@
 
 <div class="toast" id="toast"></div>
 
-<div class="page-loading-overlay hidden" id="pageLoadingOverlay">
+<div
+  class="page-loading-overlay hidden"
+  id="pageLoadingOverlay">
+
   <div class="page-loading-box">
+
     <span class="spinner"></span>
-    <span id="pageLoadingText">載入中…</span>
+
+    <span id="pageLoadingText">
+      載入中…
+    </span>
+
   </div>
+
 </div>
 
 <script>
-/* ============================================================
-   設定：把下面換成你部署後的 Apps Script「網頁應用程式」網址
-   ============================================================ */
-const API_URL = "https://script.google.com/macros/s/AKfycbwJsGELoc91W0-Wo_skYOCC1q6tE6CqvUy56-5ysEyjG2fbixWGIDI64v9Ra-OeelMB/exec";
 
-/* ---------- 狀態 ---------- */
+/* ============================================================
+   設定
+   ============================================================ */
+
+const API_URL =
+"https://script.google.com/macros/s/AKfycbwJsGELoc91W0-Wo_skYOCC1q6tE6CqvUy56-5ysEyjG2fbixWGIDI64v9Ra-OeelMB/exec";
+
+
+/* ============================================================
+   狀態
+   ============================================================ */
+
 const state = {
-  sitePw: "",
-  applyPw: "",
-  deptUsers: [],
-  categories: [],   // [{category, items:[{name, unit, vendors:[...]}]}]
-  header: {},
-  items: [],
-  currentCat: "",
+
+  sitePw:"",
+  applyPw:"",
+
+  deptUsers:[],
+
+  categories:[],
+
+  header:{},
+
+  items:[],
+
+  currentCat:"",
+
 };
 
-/* ---------- 小工具 ---------- */
-const $ = (s)=>document.querySelector(s);
-const $$ = (s)=>document.querySelectorAll(s);
+
+/* ============================================================
+   小工具
+   ============================================================ */
+
+const $ = s =>
+  document.querySelector(s);
+
+const $$ = s =>
+  document.querySelectorAll(s);
+
 
 function show(id){
-  $$(".page").forEach(p=>p.classList.add("hidden"));
-  $("#page-"+id).classList.remove("hidden");
-  window.scrollTo({top:0,behavior:"smooth"});
+
+  $$(".page").forEach(p =>
+    p.classList.add("hidden")
+  );
+
+  $("#page-"+id)
+    .classList.remove("hidden");
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
+
   renderSteps(id);
 }
 
+
 function toast(msg,isErr){
+
   const t=$("#toast");
+
   t.textContent=msg;
-  t.className="toast show"+(isErr?" err":"");
+
+  t.className=
+    "toast show"+
+    (isErr ? " err" : "");
+
   clearTimeout(t._t);
-  t._t=setTimeout(()=>t.className="toast",2600);
+
+  t._t=setTimeout(
+    ()=>t.className="toast",
+    2600
+  );
 }
+
 
 function todayStr(){
-  const d=new Date(), p=n=>String(n).padStart(2,"0");
-  return d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate());
+
+  const d=new Date();
+
+  const p=n =>
+    String(n).padStart(2,"0");
+
+  return d.getFullYear()+
+    "-"+
+    p(d.getMonth()+1)+
+    "-"+
+    p(d.getDate());
 }
+
 
 function escapeHtml(s){
-  return String(s).replace(/[&<>]/g,c=>({
-    "&":"&amp;",
-    "<":"&lt;",
-    ">":"&gt;"
-  }[c]));
+
+  return String(s).replace(
+    /[&<>]/g,
+    c=>({
+
+      "&":"&amp;",
+      "<":"&lt;",
+      ">":"&gt;"
+
+    }[c])
+  );
 }
+
 
 function showPageLoading(text){
-  $("#pageLoadingText").textContent = text || "載入中…";
-  $("#pageLoadingOverlay").classList.remove("hidden");
+
+  $("#pageLoadingText").textContent =
+    text || "載入中…";
+
+  $("#pageLoadingOverlay")
+    .classList.remove("hidden");
 }
+
 
 function hidePageLoading(){
-  $("#pageLoadingOverlay").classList.add("hidden");
+
+  $("#pageLoadingOverlay")
+    .classList.add("hidden");
 }
 
-async function apiPost(action, extra){
-  const body = Object.assign(
-    {action, sitePw: state.sitePw},
+
+async function apiPost(action,extra){
+
+  const body=Object.assign(
+    {
+      action,
+      sitePw:state.sitePw
+    },
     extra||{}
   );
 
-  const res = await fetch(API_URL, {
-    method:"POST",
-    headers:{"Content-Type":"text/plain;charset=utf-8"},
-    body: JSON.stringify(body),
-  });
+  const res=await fetch(
+    API_URL,
+    {
+      method:"POST",
+
+      headers:{
+        "Content-Type":
+          "text/plain;charset=utf-8"
+      },
+
+      body:JSON.stringify(body)
+    }
+  );
 
   return res.json();
 }
 
-/* ---------- 進度列（僅新申請流程顯示） ---------- */
-const STEP_MAP = {
+
+/* ============================================================
+   搜尋式下拉：統一關閉所有清單
+   ============================================================ */
+
+function closeAllSearchLists(){
+
+  document
+    .querySelectorAll(".search-select-list.show")
+    .forEach(list=>{
+      list.classList.remove("show");
+    });
+
+}
+
+
+/* ============================================================
+   進度列
+   ============================================================ */
+
+const STEP_MAP={
+
   header:0,
   category:1,
   detail:1,
   continue:1,
   review:2,
   done:2
+
 };
 
-const STEP_LABELS = ["基本資料","品項","送出"];
+
+const STEP_LABELS=[
+  "基本資料",
+  "品項",
+  "送出"
+];
+
 
 function renderSteps(id){
+
   if(!(id in STEP_MAP)){
-    $("#steps").classList.add("hidden");
+
+    $("#steps")
+      .classList.add("hidden");
+
     return;
   }
 
-  $("#steps").classList.remove("hidden");
+  $("#steps")
+    .classList.remove("hidden");
 
-  const cur = STEP_MAP[id];
+  const cur=STEP_MAP[id];
 
-  $("#steps").innerHTML = STEP_LABELS.map((lb,i)=>{
-    const cls = i<cur ? "st done" : (i===cur ? "st active" : "st");
-    const arrow = i<STEP_LABELS.length-1
-      ? '<span class="arrow">›</span>'
-      : '';
+  $("#steps").innerHTML=
+    STEP_LABELS.map((lb,i)=>{
 
-    return `
-      <span class="${cls}">
-        <span class="dot">${i+1}</span>${lb}
-      </span>
-      ${arrow}
-    `;
-  }).join("");
+      const cls=
+        i<cur
+          ? "st done"
+          : i===cur
+            ? "st active"
+            : "st";
+
+      const arrow=
+        i<STEP_LABELS.length-1
+          ? '<span class="arrow">›</span>'
+          : "";
+
+      return `
+        <span class="${cls}">
+          <span class="dot">${i+1}</span>
+          ${lb}
+        </span>
+        ${arrow}
+      `;
+
+    }).join("");
 }
+
 
 /* ============================================================
    密碼牆
    ============================================================ */
-$("#sitePwBtn").onclick = async ()=>{
-  const pw = $("#sitePwInput").value;
+
+$("#sitePwBtn").onclick=async ()=>{
+
+  const pw=
+    $("#sitePwInput").value;
 
   if(!pw){
-    $("#sitePwErr").textContent="請輸入密碼";
+
+    $("#sitePwErr").textContent=
+      "請輸入密碼";
+
     return;
   }
 
   $("#sitePwBtn").disabled=true;
-  $("#sitePwBtn").textContent="驗證中…";
+
+  $("#sitePwBtn").textContent=
+    "驗證中…";
 
   try{
-    const res = await fetch(API_URL,{
-      method:"POST",
-      headers:{"Content-Type":"text/plain;charset=utf-8"},
-      body: JSON.stringify({
-        action:"checkSiteLogin",
-        sitePw: pw
-      }),
-    });
 
-    const data = await res.json();
+    const res=await fetch(
+      API_URL,
+      {
+        method:"POST",
+
+        headers:{
+          "Content-Type":
+            "text/plain;charset=utf-8"
+        },
+
+        body:JSON.stringify({
+          action:"checkSiteLogin",
+          sitePw:pw
+        })
+      }
+    );
+
+    const data=await res.json();
 
     if(!data.ok){
-      $("#sitePwErr").textContent=data.error||"密碼錯誤";
+
+      $("#sitePwErr").textContent=
+        data.error||"密碼錯誤";
+
       $("#sitePwBtn").disabled=false;
-      $("#sitePwBtn").textContent="進入";
+
+      $("#sitePwBtn").textContent=
+        "進入";
+
       return;
     }
 
-    state.sitePw = pw;
+    state.sitePw=pw;
 
-    $("#gateWrap").classList.add("hidden");
-    $("#appWrap").classList.remove("hidden");
+    $("#gateWrap")
+      .classList.add("hidden");
+
+    $("#appWrap")
+      .classList.remove("hidden");
 
     show("entry");
 
   }catch(err){
-    $("#sitePwErr").textContent="連線失敗："+err.message;
+
+    $("#sitePwErr").textContent=
+      "連線失敗："+err.message;
+
     $("#sitePwBtn").disabled=false;
-    $("#sitePwBtn").textContent="進入";
+
+    $("#sitePwBtn").textContent=
+      "進入";
   }
 };
 
-$("#sitePwInput").addEventListener("keydown",e=>{
-  if(e.key==="Enter") $("#sitePwBtn").click();
-});
+
+$("#sitePwInput")
+  .addEventListener(
+    "keydown",
+    e=>{
+      if(e.key==="Enter")
+        $("#sitePwBtn").click();
+    }
+  );
+
 
 /* ============================================================
-   入口：新申請 / 查詢
+   入口
    ============================================================ */
-$("#entryApply").onclick = async ()=>{
+
+$("#entryApply").onclick=async ()=>{
+
   if(state.applyPw){
 
-    // 這個瀏覽階段已驗證過申請密碼，直接進入基本資料，不必重新輸入
-    showPageLoading("載入表單資料中…");
+    showPageLoading(
+      "載入表單資料中…"
+    );
 
-    $("#modeLabel").textContent="· 新申請";
-    $("#applyDate").value = todayStr();
-    $("#needDate").value = "";
-    $("#reason").value = "";
-    $("#deptUserSelect").value = "";
+    $("#modeLabel").textContent=
+      "· 新申請";
+
+    $("#applyDate").value=
+      todayStr();
+
+    $("#needDate").value="";
+
+    $("#reason").value="";
+
+    $("#deptUserSelect").value="";
 
     await loadBootstrapForApply();
 
     hidePageLoading();
+
     show("header");
 
     return;
@@ -902,299 +1592,543 @@ $("#entryApply").onclick = async ()=>{
   show("applygate");
 };
 
-$("#entryQuery").onclick = async ()=>{
-  showPageLoading("載入資料中…");
 
-  $("#modeLabel").textContent="· 查詢紀錄";
+$("#entryQuery").onclick=async ()=>{
+
+  showPageLoading(
+    "載入資料中…"
+  );
+
+  $("#modeLabel").textContent=
+    "· 查詢紀錄";
 
   await loadBootstrapForQuery();
 
   hidePageLoading();
+
   show("query");
 };
 
-/* ---------- 申請密碼 ---------- */
-$("#applyPwBtn").onclick = async ()=>{
-  const pw = $("#applyPwInput").value;
+
+/* ============================================================
+   申請密碼
+   ============================================================ */
+
+$("#applyPwBtn").onclick=async ()=>{
+
+  const pw=
+    $("#applyPwInput").value;
 
   if(!pw){
-    $("#applyPwErr").textContent="請輸入申請密碼";
+
+    $("#applyPwErr").textContent=
+      "請輸入申請密碼";
+
     return;
   }
 
   $("#applyPwBtn").disabled=true;
-  $("#applyPwBtn").textContent="驗證中…";
+
+  $("#applyPwBtn").textContent=
+    "驗證中…";
+
   $("#applyPwErr").textContent="";
 
   try{
-    const data = await apiPost("checkApplyLogin", {
-      applyPw: pw
-    });
+
+    const data=
+      await apiPost(
+        "checkApplyLogin",
+        {
+          applyPw:pw
+        }
+      );
 
     if(!data.ok){
-      $("#applyPwErr").textContent=data.error||"密碼錯誤";
+
+      $("#applyPwErr").textContent=
+        data.error||"密碼錯誤";
+
       $("#applyPwBtn").disabled=false;
-      $("#applyPwBtn").textContent="確認";
+
+      $("#applyPwBtn").textContent=
+        "確認";
+
       return;
     }
 
-    state.applyPw = pw;
+    state.applyPw=pw;
 
-    showPageLoading("載入表單資料中…");
+    showPageLoading(
+      "載入表單資料中…"
+    );
 
-    $("#modeLabel").textContent="· 新申請";
-    $("#applyDate").value = todayStr();
-    $("#needDate").value = "";
+    $("#modeLabel").textContent=
+      "· 新申請";
+
+    $("#applyDate").value=
+      todayStr();
+
+    $("#needDate").value="";
 
     await loadBootstrapForApply();
 
     hidePageLoading();
+
     show("header");
 
     $("#applyPwBtn").disabled=false;
-    $("#applyPwBtn").textContent="確認";
+
+    $("#applyPwBtn").textContent=
+      "確認";
+
     $("#applyPwInput").value="";
 
   }catch(err){
+
     hidePageLoading();
 
-    $("#applyPwErr").textContent="連線失敗："+err.message;
+    $("#applyPwErr").textContent=
+      "連線失敗："+err.message;
+
     $("#applyPwBtn").disabled=false;
-    $("#applyPwBtn").textContent="確認";
+
+    $("#applyPwBtn").textContent=
+      "確認";
   }
 };
 
-$("#applyPwInput").addEventListener("keydown",e=>{
-  if(e.key==="Enter") $("#applyPwBtn").click();
-});
+
+$("#applyPwInput")
+  .addEventListener(
+    "keydown",
+    e=>{
+      if(e.key==="Enter")
+        $("#applyPwBtn").click();
+    }
+  );
+
 
 /* ============================================================
-   載入資料（bootstrap）：部門/申請人清單 ＋ 彙整貨品分類
+   Bootstrap
    ============================================================ */
+
 async function loadBootstrapForApply(){
+
   try{
-    const data = await apiPost("bootstrap", {});
 
-    if(!data.ok) throw new Error(data.error||"讀取失敗");
+    const data=
+      await apiPost(
+        "bootstrap",
+        {}
+      );
 
-    state.deptUsers = data.deptUsers;
-    state.categories = data.categories;
+    if(!data.ok)
+      throw new Error(
+        data.error||"讀取失敗"
+      );
+
+    state.deptUsers=
+      data.deptUsers;
+
+    state.categories=
+      data.categories;
 
     fillDeptUserSelect();
+
     fillCategorySelect();
 
   }catch(err){
-    toast("資料載入失敗："+err.message,true);
+
+    toast(
+      "資料載入失敗："+err.message,
+      true
+    );
   }
 }
 
+
 async function loadBootstrapForQuery(){
+
   try{
-    const data = await apiPost("bootstrap", {});
 
-    if(!data.ok) throw new Error(data.error||"讀取失敗");
+    const data=
+      await apiPost(
+        "bootstrap",
+        {}
+      );
 
-    state.deptUsers = data.deptUsers;
+    if(!data.ok)
+      throw new Error(
+        data.error||"讀取失敗"
+      );
+
+    state.deptUsers=
+      data.deptUsers;
 
     fillQueryDeptUserSelect();
 
   }catch(err){
-    toast("資料載入失敗："+err.message,true);
+
+    toast(
+      "資料載入失敗："+err.message,
+      true
+    );
   }
 }
 
-function fillDeptUserSelect(){
-  const sel=$("#deptUserSelect");
 
-  sel.innerHTML='<option value="">請選擇</option>'+
-    state.deptUsers.map(d=>
-      `<option>${escapeHtml(d)}</option>`
-    ).join("");
+function fillDeptUserSelect(){
+
+  const sel=
+    $("#deptUserSelect");
+
+  sel.innerHTML=
+    '<option value="">請選擇</option>'+
+    state.deptUsers
+      .map(d=>
+        `<option>${escapeHtml(d)}</option>`
+      )
+      .join("");
 }
+
 
 function fillQueryDeptUserSelect(){
-  const sel=$("#queryDeptUser");
 
-  sel.innerHTML='<option value="">全部</option>'+
-    state.deptUsers.map(d=>
-      `<option>${escapeHtml(d)}</option>`
-    ).join("");
+  const sel=
+    $("#queryDeptUser");
+
+  sel.innerHTML=
+    '<option value="">全部</option>'+
+    state.deptUsers
+      .map(d=>
+        `<option>${escapeHtml(d)}</option>`
+      )
+      .join("");
 }
 
+
 /* ============================================================
-   搜尋式分類下拉選單
+   搜尋式分類下拉
    ============================================================ */
+
 function fillCategorySelect(){
 
-  const input=$("#categorySearchInput");
-  const list=$("#categorySearchList");
+  const input=
+    $("#categorySearchInput");
+
+  const list=
+    $("#categorySearchList");
 
   input.value="";
+
   state.currentCat="";
+
   $("#toDetailBtn").disabled=true;
 
   renderCategorySearchList("");
 
+
+  /* focus：打開 */
+
   input.onfocus=()=>{
-    renderCategorySearchList(input.value);
+
+    renderCategorySearchList(
+      input.value
+    );
+
     list.classList.add("show");
   };
+
+
+  /* 輸入：重新搜尋 */
 
   input.oninput=()=>{
+
     state.currentCat="";
+
     $("#toDetailBtn").disabled=true;
 
-    renderCategorySearchList(input.value);
+    renderCategorySearchList(
+      input.value
+    );
+
     list.classList.add("show");
   };
 
-  document.addEventListener("click",e=>{
-    if(!$("#categorySearchWrap").contains(e.target)){
-      list.classList.remove("show");
-    }
-  });
 }
+
 
 function renderCategorySearchList(keyword){
 
-  const list=$("#categorySearchList");
+  const list=
+    $("#categorySearchList");
 
-  const kw=String(keyword||"").trim().toLowerCase();
+  const kw=
+    String(keyword||"")
+      .trim()
+      .toLowerCase();
 
-  const categories=state.categories.filter(c=>{
-    return String(c.category).toLowerCase().includes(kw);
-  });
+  const categories=
+    state.categories.filter(c=>
+      String(c.category)
+        .toLowerCase()
+        .includes(kw)
+    );
+
 
   if(!categories.length){
+
     list.innerHTML=
       '<div class="search-select-empty">找不到符合的分類</div>';
+
     return;
   }
 
-  list.innerHTML=categories.map(c=>`
-    <div class="search-select-option"
-         data-value="${escapeHtml(c.category)}">
-      ${escapeHtml(c.category)}
-    </div>
-  `).join("");
 
-  list.querySelectorAll(".search-select-option").forEach(opt=>{
+  list.innerHTML=
+    categories.map(c=>`
 
-    opt.onclick=()=>{
-      const value=opt.dataset.value;
+      <div
+        class="search-select-option"
+        data-value="${escapeHtml(c.category)}">
 
-      $("#categorySearchInput").value=value;
+        ${escapeHtml(c.category)}
 
-      state.currentCat=value;
+      </div>
 
-      $("#toDetailBtn").disabled=false;
+    `).join("");
 
-      list.classList.remove("show");
-    };
 
-  });
+  /*
+     重要：
+     使用 pointerdown 而不是 click。
+
+     手機上可以避免：
+     pointerdown → blur → click
+     的事件順序造成下拉選單又重新打開。
+  */
+
+  list
+    .querySelectorAll(
+      ".search-select-option"
+    )
+    .forEach(opt=>{
+
+      opt.addEventListener(
+        "pointerdown",
+        e=>{
+
+          e.preventDefault();
+
+          const value=
+            opt.dataset.value;
+
+          input.value=value;
+
+          state.currentCat=value;
+
+          $("#toDetailBtn")
+            .disabled=false;
+
+          /* 立即關閉 */
+          list.classList.remove("show");
+
+          /* 確保其他下拉也關閉 */
+          closeAllSearchLists();
+
+        }
+      );
+
+    });
 }
+
 
 /* ============================================================
    基本資料 → 下一步
    ============================================================ */
+
 function validateHeader(){
 
   const h={
-    deptUser: $("#deptUserSelect").value,
-    applyDate: $("#applyDate").value,
-    needDate: $("#needDate").value,
-    reason: $("#reason").value.trim(),
+
+    deptUser:
+      $("#deptUserSelect").value,
+
+    applyDate:
+      $("#applyDate").value,
+
+    needDate:
+      $("#needDate").value,
+
+    reason:
+      $("#reason").value.trim()
+
   };
 
-  if(!h.deptUser||!h.applyDate||!h.needDate||!h.reason){
-    toast("請填寫所有必填欄位",true);
+  if(
+    !h.deptUser||
+    !h.applyDate||
+    !h.needDate||
+    !h.reason
+  ){
+
+    toast(
+      "請填寫所有必填欄位",
+      true
+    );
+
     return null;
   }
 
   return h;
 }
 
-$('[data-next="items"]').onclick=()=>{
-  const h=validateHeader();
 
-  if(!h) return;
+$('[data-next="items"]').onclick=()=>{
+
+  const h=
+    validateHeader();
+
+  if(!h)
+    return;
 
   state.header=h;
 
   show("category");
 };
 
+
 /* ============================================================
    分類選擇
    ============================================================ */
+
 $("#toDetailBtn").onclick=()=>{
 
   if(!state.currentCat){
-    toast("請先選擇分類",true);
+
+    toast(
+      "請先選擇分類",
+      true
+    );
+
     return;
   }
 
-  initDetailPage(state.currentCat);
+  closeAllSearchLists();
+
+  initDetailPage(
+    state.currentCat
+  );
+
   show("detail");
 };
 
+
 $("#catViewAddedBtn").onclick=()=>{
+
+  closeAllSearchLists();
+
   renderAddedList();
+
   show("continue");
 };
 
+
 /* ============================================================
-   明細（同類別可多筆）
+   明細
    ============================================================ */
-const UNIT_FALLBACK = [
-  "支","組","瓶","盒","顆","個","箱","包","捲","把","台","其他"
+
+const UNIT_FALLBACK=[
+  "支",
+  "組",
+  "瓶",
+  "盒",
+  "顆",
+  "個",
+  "箱",
+  "包",
+  "捲",
+  "把",
+  "台",
+  "其他"
 ];
 
-function findItemInCat(cat, name){
 
-  const found=state.categories.find(
-    c=>c.category===cat
-  );
+function findItemInCat(
+  cat,
+  name
+){
 
-  if(!found) return null;
+  const found=
+    state.categories.find(
+      c=>c.category===cat
+    );
+
+  if(!found)
+    return null;
 
   return found.items.find(
     it=>it.name===name
-  ) || null;
+  )||null;
 }
 
-/* 保留原本函式，不影響其他程式 */
+
 function itemOptionsHTML(cat){
 
-  const found=state.categories.find(
-    c=>c.category===cat
+  const found=
+    state.categories.find(
+      c=>c.category===cat
+    );
+
+  const items=
+    found
+      ? found.items
+      : [];
+
+  return (
+    '<option value="">請選擇貨品</option>'+
+    items
+      .map(it=>
+        `<option value="${escapeHtml(it.name)}">
+          ${escapeHtml(it.name)}
+        </option>`
+      )
+      .join("")
   );
-
-  const items=found?found.items:[];
-
-  return '<option value="">請選擇貨品</option>'+
-    items.map(it=>
-      `<option value="${escapeHtml(it.name)}">${escapeHtml(it.name)}</option>`
-    ).join("");
 }
+
 
 /* ============================================================
    貨品搜尋式下拉
    ============================================================ */
+
 function makeDetailRow(cat){
 
-  const div=document.createElement("div");
+  const div=
+    document.createElement("div");
 
-  div.className="detail-row";
+  div.className=
+    "detail-row";
+
 
   div.innerHTML=`
+
     <div class="row-head">
+
       <span class="row-no"></span>
-      <button class="row-del" type="button">移除這筆</button>
+
+      <button
+        class="row-del"
+        type="button">
+        移除這筆
+      </button>
+
     </div>
 
+
     <label class="fld">
+
       <span class="lbl">
         貨品名稱<span class="req">*</span>
       </span>
@@ -1207,19 +2141,32 @@ function makeDetailRow(cat){
           placeholder="請選擇或搜尋貨品"
           autocomplete="off">
 
-        <span class="search-select-arrow">⌄</span>
+        <span class="search-select-arrow">
+          ⌄
+        </span>
 
-        <div class="search-select-list r-item-list"></div>
+        <div
+          class="search-select-list r-item-list">
+        </div>
 
       </div>
+
     </label>
 
+
     <div class="unit-display r-unit-display hidden">
-      <span class="lbl">單位</span>
+
+      <span class="lbl">
+        單位
+      </span>
+
       <span class="unit-val"></span>
+
     </div>
 
+
     <label class="fld">
+
       <span class="lbl">
         用途<span class="req">*</span>
       </span>
@@ -1228,9 +2175,12 @@ function makeDetailRow(cat){
         type="text"
         class="r-purpose"
         placeholder="例如：現場施工使用">
+
     </label>
 
+
     <label class="fld">
+
       <span class="lbl">
         數量<span class="req">*</span>
       </span>
@@ -1242,250 +2192,500 @@ function makeDetailRow(cat){
         step="any"
         inputmode="decimal"
         placeholder="請輸入大於 0 的數字（可含小數）">
+
     </label>
+
   `;
 
-  const itemInput=div.querySelector(".r-item");
-  const itemList=div.querySelector(".r-item-list");
-  const itemWrap=div.querySelector(".r-item-wrap");
 
-  const unitDisplay=div.querySelector(".r-unit-display");
-  const unitVal=div.querySelector(".unit-val");
+  const itemInput=
+    div.querySelector(".r-item");
 
-  const foundCat=state.categories.find(
-    c=>c.category===cat
-  );
+  const itemList=
+    div.querySelector(".r-item-list");
 
-  const items=foundCat ? foundCat.items : [];
+  const itemWrap=
+    div.querySelector(".r-item-wrap");
 
-  function renderItemList(keyword){
+  const unitDisplay=
+    div.querySelector(".r-unit-display");
 
-    const kw=String(keyword||"").trim().toLowerCase();
+  const unitVal=
+    div.querySelector(".unit-val");
 
-    const filtered=items.filter(it=>{
-      return String(it.name).toLowerCase().includes(kw);
-    });
 
-    if(!filtered.length){
-      itemList.innerHTML=
-        '<div class="search-select-empty">找不到符合的貨品</div>';
-      return;
-    }
+  const foundCat=
+    state.categories.find(
+      c=>c.category===cat
+    );
 
-    itemList.innerHTML=filtered.map(it=>`
-      <div class="search-select-option"
-           data-value="${escapeHtml(it.name)}">
-        ${escapeHtml(it.name)}
-      </div>
-    `).join("");
+  const items=
+    foundCat
+      ? foundCat.items
+      : [];
 
-    itemList.querySelectorAll(".search-select-option").forEach(opt=>{
 
-      opt.onclick=()=>{
+  function updateUnit(value){
 
-        const value=opt.dataset.value;
-
-        itemInput.value=value;
-
-        const found=findItemInCat(cat,value);
-
-        if(found && found.unit){
-
-          unitVal.textContent=found.unit;
-          unitDisplay.classList.remove("hidden");
-
-        }else{
-
-          unitDisplay.classList.add("hidden");
-
-        }
-
-        itemList.classList.remove("show");
-      };
-
-    });
-  }
-
-  itemInput.onfocus=()=>{
-    renderItemList(itemInput.value);
-    itemList.classList.add("show");
-  };
-
-  itemInput.oninput=()=>{
-
-    renderItemList(itemInput.value);
-
-    itemList.classList.add("show");
-
-    const found=findItemInCat(cat,itemInput.value);
+    const found=
+      findItemInCat(
+        cat,
+        value
+      );
 
     if(found && found.unit){
 
-      unitVal.textContent=found.unit;
-      unitDisplay.classList.remove("hidden");
+      unitVal.textContent=
+        found.unit;
+
+      unitDisplay
+        .classList
+        .remove("hidden");
 
     }else{
 
-      unitDisplay.classList.add("hidden");
+      unitDisplay
+        .classList
+        .add("hidden");
 
     }
+  }
+
+
+  function renderItemList(keyword){
+
+    const kw=
+      String(keyword||"")
+        .trim()
+        .toLowerCase();
+
+
+    const filtered=
+      items.filter(it=>
+        String(it.name)
+          .toLowerCase()
+          .includes(kw)
+      );
+
+
+    if(!filtered.length){
+
+      itemList.innerHTML=
+        '<div class="search-select-empty">找不到符合的貨品</div>';
+
+      return;
+    }
+
+
+    itemList.innerHTML=
+      filtered.map(it=>`
+
+        <div
+          class="search-select-option"
+          data-value="${escapeHtml(it.name)}">
+
+          ${escapeHtml(it.name)}
+
+        </div>
+
+      `).join("");
+
+
+    /*
+       ★ 核心修正 ★
+
+       不再使用 onclick。
+
+       改用 pointerdown，
+       選到後直接關閉下拉。
+
+       這對手機尤其重要。
+    */
+
+    itemList
+      .querySelectorAll(
+        ".search-select-option"
+      )
+      .forEach(opt=>{
+
+        opt.addEventListener(
+          "pointerdown",
+          e=>{
+
+            e.preventDefault();
+
+            const value=
+              opt.dataset.value;
+
+
+            /* 設定選取值 */
+
+            itemInput.value=
+              value;
+
+
+            /* 更新單位 */
+
+            updateUnit(value);
+
+
+            /*
+               ★ 立即關閉目前下拉
+            */
+
+            itemList
+              .classList
+              .remove("show");
+
+
+            /*
+               確保其他搜尋下拉
+               也一起關閉
+            */
+
+            closeAllSearchLists();
+
+          }
+        );
+
+      });
+  }
+
+
+  /* 點輸入框 → 開啟 */
+
+  itemInput.onfocus=()=>{
+
+    renderItemList(
+      itemInput.value
+    );
+
+    itemList.classList.add("show");
+
   };
 
-  itemInput.addEventListener("blur",()=>{
 
-    setTimeout(()=>{
+  /* 輸入文字 → 搜尋 */
 
-      if(!itemWrap.contains(document.activeElement)){
-        itemList.classList.remove("show");
-      }
+  itemInput.oninput=()=>{
 
-    },150);
+    /*
+       使用者重新輸入時，
+       原本選取的貨品已經不一定有效，
+       所以重新搜尋。
+    */
 
-  });
+    renderItemList(
+      itemInput.value
+    );
 
-  div.querySelector(".row-del").onclick=()=>{
+    itemList.classList.add("show");
+
+
+    const found=
+      findItemInCat(
+        cat,
+        itemInput.value
+      );
+
+
+    if(found && found.unit){
+
+      unitVal.textContent=
+        found.unit;
+
+      unitDisplay
+        .classList
+        .remove("hidden");
+
+    }else{
+
+      unitDisplay
+        .classList
+        .add("hidden");
+
+    }
+
+  };
+
+
+  /*
+     blur 時關閉。
+
+     使用較短延遲是為了確保
+     pointerdown 選項事件完成。
+  */
+
+  itemInput.addEventListener(
+    "blur",
+    ()=>{
+
+      setTimeout(
+        ()=>{
+
+          if(
+            !itemWrap.contains(
+              document.activeElement
+            )
+          ){
+
+            itemList
+              .classList
+              .remove("show");
+
+          }
+
+        },
+        100
+      );
+
+    }
+  );
+
+
+  /* 移除這一筆 */
+
+  div.querySelector(
+    ".row-del"
+  ).onclick=()=>{
+
     div.remove();
+
     renumberRows();
+
   };
+
 
   return div;
 }
 
+
+/* ============================================================
+   明細編號
+   ============================================================ */
+
 function renumberRows(){
 
-  const rows=$$("#detailRows .detail-row");
+  const rows=
+    $$("#detailRows .detail-row");
+
 
   rows.forEach((r,i)=>{
-    r.querySelector(".row-no").textContent=
+
+    r.querySelector(
+      ".row-no"
+    ).textContent=
       "第 "+(i+1)+" 筆";
+
   });
+
 
   rows.forEach(r=>{
 
-    const del=r.querySelector(".row-del");
+    const del=
+      r.querySelector(".row-del");
 
-    del.disabled = rows.length<=1;
+    del.disabled=
+      rows.length<=1;
 
   });
 }
 
+
+/* ============================================================
+   初始化明細
+   ============================================================ */
+
 function initDetailPage(cat){
 
-  $("#detailCatHint").textContent=
-    "類別："+cat+"（可連續新增多筆）";
+  closeAllSearchLists();
 
-  const box=$("#detailRows");
+  $("#detailCatHint").textContent=
+    "類別："+cat+
+    "（可連續新增多筆）";
+
+
+  const box=
+    $("#detailRows");
 
   box.innerHTML="";
+
 
   box.appendChild(
     makeDetailRow(cat)
   );
 
+
   renumberRows();
 }
 
+
+/* ============================================================
+   新增同類別品項
+   ============================================================ */
+
 $("#addRowBtn").onclick=()=>{
 
-  $("#detailRows").appendChild(
-    makeDetailRow(state.currentCat)
-  );
+  closeAllSearchLists();
+
+
+  $("#detailRows")
+    .appendChild(
+      makeDetailRow(
+        state.currentCat
+      )
+    );
+
 
   renumberRows();
 
-  const rows=$$("#detailRows .detail-row");
 
-  rows[rows.length-1].scrollIntoView({
-    behavior:"smooth",
-    block:"center"
-  });
+  const rows=
+    $$("#detailRows .detail-row");
+
+
+  rows[rows.length-1]
+    .scrollIntoView({
+      behavior:"smooth",
+      block:"center"
+    });
 };
+
+
+/* ============================================================
+   收集明細
+   ============================================================ */
 
 function collectDetailRows(){
 
-  const rows=$$("#detailRows .detail-row");
+  const rows=
+    $$("#detailRows .detail-row");
 
   const collected=[];
+
 
   for(let i=0;i<rows.length;i++){
 
     const r=rows[i];
 
-    const name=r.querySelector(".r-item").value;
-    const purpose=r.querySelector(".r-purpose").value.trim();
-    const qty=r.querySelector(".r-qty").value.trim();
+
+    const name=
+      r.querySelector(
+        ".r-item"
+      ).value;
+
+
+    const purpose=
+      r.querySelector(
+        ".r-purpose"
+      ).value.trim();
+
+
+    const qty=
+      r.querySelector(
+        ".r-qty"
+      ).value.trim();
+
 
     if(!name){
+
       toast(
         `第 ${i+1} 筆：請選擇貨品名稱`,
         true
       );
+
       return null;
     }
 
-    const found=findItemInCat(
-      state.currentCat,
-      name
-    );
+
+    const found=
+      findItemInCat(
+        state.currentCat,
+        name
+      );
+
 
     if(!found){
+
       toast(
         `第 ${i+1} 筆：請從下拉選單選擇有效的貨品`,
         true
       );
+
       return null;
     }
 
+
     if(!purpose){
+
       toast(
         `第 ${i+1} 筆：請填寫用途`,
         true
       );
+
       return null;
     }
 
+
     if(
-      !/^\d*\.?\d+$/.test(qty) ||
+      !/^\d*\.?\d+$/.test(qty)||
       parseFloat(qty)<=0
     ){
+
       toast(
         `第 ${i+1} 筆：數量請填大於 0 的數字（可含小數）`,
         true
       );
+
       return null;
     }
 
+
     collected.push({
 
-      category: state.currentCat,
+      category:
+        state.currentCat,
 
       name,
 
       purpose,
 
-      quantity: qty,
+      quantity:qty,
 
-      unit: (found && found.unit) || "",
+      unit:
+        (found && found.unit)||"",
 
-      vendors: found
-        ? found.vendors.slice()
-        : [],
+      vendors:
+        found
+          ? found.vendors.slice()
+          : []
 
     });
+
   }
+
 
   return collected;
 }
 
+
+/* ============================================================
+   加入品項
+   ============================================================ */
+
 $("#addItemBtn").onclick=()=>{
 
-  const collected=collectDetailRows();
+  const collected=
+    collectDetailRows();
 
-  if(!collected) return;
+  if(!collected)
+    return;
+
 
   collected.forEach(it=>
     state.items.push(it)
   );
+
 
   updateAddedCounts();
 
@@ -1494,42 +2694,61 @@ $("#addItemBtn").onclick=()=>{
   show("continue");
 };
 
+
 /* ============================================================
-   已加入品項清單 ＋ 三選頁
+   已加入品項
    ============================================================ */
+
 function vendorLabel(it){
 
-  if(!it.vendors || !it.vendors.length)
+  if(
+    !it.vendors||
+    !it.vendors.length
+  )
     return it.vendor||"";
+
 
   return it.vendors.join("/");
 }
 
+
 function renderAddedList(){
 
-  const ul=$("#addedList");
+  const ul=
+    $("#addedList");
 
   ul.innerHTML="";
 
+
   if(!state.items.length){
 
-    $("#addedEmpty").classList.remove("hidden");
+    $("#addedEmpty")
+      .classList
+      .remove("hidden");
 
   }else{
 
-    $("#addedEmpty").classList.add("hidden");
+    $("#addedEmpty")
+      .classList
+      .add("hidden");
 
   }
 
+
   state.items.forEach((it,i)=>{
 
-    const li=document.createElement("li");
+    const li=
+      document.createElement("li");
+
 
     li.innerHTML=`
+
       <div>
+
         <span class="cat-tag">
           ${escapeHtml(it.category)}
         </span>
+
         <br>
 
         <b>
@@ -1539,53 +2758,83 @@ function renderAddedList(){
         </b>
 
         <div class="meta">
+
           ${escapeHtml(it.purpose)}
           ．廠商：
           ${escapeHtml(vendorLabel(it))}
+
         </div>
+
       </div>
 
-      <button class="del" data-i="${i}">
+
+      <button
+        class="del"
+        data-i="${i}">
         移除
       </button>
+
     `;
 
+
     ul.appendChild(li);
-  });
-
-  ul.querySelectorAll(".del").forEach(b=>{
-
-    b.onclick=()=>{
-
-      state.items.splice(
-        +b.dataset.i,
-        1
-      );
-
-      renderAddedList();
-      updateAddedCounts();
-    };
 
   });
+
+
+  ul.querySelectorAll(".del")
+    .forEach(b=>{
+
+      b.onclick=()=>{
+
+        state.items.splice(
+          +b.dataset.i,
+          1
+        );
+
+        renderAddedList();
+
+        updateAddedCounts();
+
+      };
+
+    });
 }
+
 
 function updateAddedCounts(){
 
-  $("#catViewAddedBtn").textContent=
-    "查看已加入品項 ("+
-    state.items.length+
-    ")";
+  $("#catViewAddedBtn")
+    .textContent=
+      "查看已加入品項 ("+
+      state.items.length+
+      ")";
 }
+
+
+/* ============================================================
+   繼續新增
+   ============================================================ */
 
 $("#contOtherCat").onclick=()=>{
 
-  $("#categorySearchInput").value="";
+  closeAllSearchLists();
+
+  $("#categorySearchInput")
+    .value="";
+
   state.currentCat="";
 
-  $("#toDetailBtn").disabled=true;
+  $("#toDetailBtn")
+    .disabled=true;
 
   show("category");
 };
+
+
+/* ============================================================
+   前往確認
+   ============================================================ */
 
 $("#toReview").onclick=()=>{
 
@@ -1599,36 +2848,53 @@ $("#toReview").onclick=()=>{
     return;
   }
 
+
   renderReview();
 
   show("review");
 };
 
+
 /* ============================================================
    確認頁
    ============================================================ */
+
 function renderReview(){
 
-  const h=state.header;
+  const h=
+    state.header;
+
 
   $("#reviewHeader").innerHTML=[
 
     ["部門-申請人",h.deptUser],
+
     ["申請日期",h.applyDate],
+
     ["需求日期",h.needDate],
-    ["請購事由",h.reason],
+
+    ["請購事由",h.reason]
 
   ].map(([k,v])=>`
 
     <div class="review-row">
-      <span class="k">${k}</span>
-      <span class="v">${escapeHtml(v)}</span>
+
+      <span class="k">
+        ${k}
+      </span>
+
+      <span class="v">
+        ${escapeHtml(v)}
+      </span>
+
     </div>
 
   `).join("");
 
+
   $("#reviewCount").textContent=
     state.items.length;
+
 
   $("#reviewItems").innerHTML=
     state.items.map((it,i)=>`
@@ -1636,19 +2902,25 @@ function renderReview(){
       <div class="review-item">
 
         <div class="ri-name">
+
           ${i+1}.
           ${escapeHtml(it.name)}，
           ${escapeHtml(String(it.quantity))}
           ${escapeHtml(it.unit)}
+
         </div>
 
         <div class="ri-meta">
+
           類別：
           ${escapeHtml(it.category)}
+
           ．用途：
           ${escapeHtml(it.purpose)}
+
           ．廠商：
           ${escapeHtml(vendorLabel(it))}
+
         </div>
 
       </div>
@@ -1656,36 +2928,55 @@ function renderReview(){
     `).join("");
 }
 
+
 /* ============================================================
    送出
    ============================================================ */
+
 async function submitForm(){
 
-  const btn=$("#submitBtn");
+  const btn=
+    $("#submitBtn");
+
 
   btn.disabled=true;
-  btn.textContent="送出中…";
+
+  btn.textContent=
+    "送出中…";
+
 
   try{
 
-    const data = await apiPost("submit", {
+    const data=
+      await apiPost(
+        "submit",
+        {
 
-      applyPw: state.applyPw,
+          applyPw:
+            state.applyPw,
 
-      header: state.header,
+          header:
+            state.header,
 
-      items: state.items,
+          items:
+            state.items
 
-    });
+        }
+      );
+
 
     if(!data.ok)
       throw new Error(
         data.error||"送出失敗"
       );
 
-    renderDone(data.orderNo);
+
+    renderDone(
+      data.orderNo
+    );
 
     show("done");
+
 
   }catch(err){
 
@@ -1694,46 +2985,81 @@ async function submitForm(){
       true
     );
 
+
     btn.disabled=false;
-    btn.textContent="確認無誤，送出申請單";
+
+    btn.textContent=
+      "確認無誤，送出申請單";
   }
 }
 
-$("#submitBtn").onclick=submitForm;
+
+$("#submitBtn").onclick=
+  submitForm;
+
+
+/* ============================================================
+   完成後返回
+   ============================================================ */
 
 $("#doneBackBtn").onclick=()=>{
 
   state.header={};
+
   state.items=[];
+
   state.currentCat="";
+
+  closeAllSearchLists();
 
   show("entry");
 };
 
+
+/* ============================================================
+   完成頁
+   ============================================================ */
+
 function renderDone(orderNo){
 
-  $("#doneOrderNo").textContent=orderNo;
+  $("#doneOrderNo")
+    .textContent=orderNo;
 
-  const h=state.header;
+
+  const h=
+    state.header;
+
 
   $("#doneHeader").innerHTML=[
 
     ["部門-申請人",h.deptUser],
+
     ["申請日期",h.applyDate],
+
     ["需求日期",h.needDate],
-    ["請購事由",h.reason],
+
+    ["請購事由",h.reason]
 
   ].map(([k,v])=>`
 
     <div class="review-row">
-      <span class="k">${k}</span>
-      <span class="v">${escapeHtml(v)}</span>
+
+      <span class="k">
+        ${k}
+      </span>
+
+      <span class="v">
+        ${escapeHtml(v)}
+      </span>
+
     </div>
 
   `).join("");
 
+
   $("#doneCount").textContent=
     state.items.length;
+
 
   $("#doneItems").innerHTML=
     state.items.map((it,i)=>`
@@ -1741,19 +3067,25 @@ function renderDone(orderNo){
       <div class="review-item">
 
         <div class="ri-name">
+
           ${i+1}.
           ${escapeHtml(it.name)}，
           ${escapeHtml(String(it.quantity))}
           ${escapeHtml(it.unit)}
+
         </div>
 
         <div class="ri-meta">
+
           類別：
           ${escapeHtml(it.category)}
+
           ．用途：
           ${escapeHtml(it.purpose)}
+
           ．廠商：
           ${escapeHtml(vendorLabel(it))}
+
         </div>
 
       </div>
@@ -1761,39 +3093,53 @@ function renderDone(orderNo){
     `).join("");
 }
 
+
 /* ============================================================
    查詢
    ============================================================ */
+
 $("#queryBtn").onclick=async ()=>{
 
-  const btn=$("#queryBtn");
+  const btn=
+    $("#queryBtn");
+
 
   btn.disabled=true;
-  btn.textContent="查詢中…";
+
+  btn.textContent=
+    "查詢中…";
+
 
   try{
 
-    const data = await apiPost("query", {
+    const data=
+      await apiPost(
+        "query",
+        {
 
-      deptUser:
-        $("#queryDeptUser").value,
+          deptUser:
+            $("#queryDeptUser").value,
 
-      fromDate:
-        $("#queryFrom").value,
+          fromDate:
+            $("#queryFrom").value,
 
-      toDate:
-        $("#queryTo").value,
+          toDate:
+            $("#queryTo").value
 
-    });
+        }
+      );
+
 
     if(!data.ok)
       throw new Error(
         data.error||"查詢失敗"
       );
 
+
     renderQueryResults(
       data.records
     );
+
 
   }catch(err){
 
@@ -1803,17 +3149,28 @@ $("#queryBtn").onclick=async ()=>{
     );
   }
 
+
   btn.disabled=false;
-  btn.textContent="查詢";
+
+  btn.textContent=
+    "查詢";
 };
+
+
+/* ============================================================
+   查詢結果
+   ============================================================ */
 
 function renderQueryResults(records){
 
   $("#queryResultWrap")
-    .classList.remove("hidden");
+    .classList
+    .remove("hidden");
+
 
   $("#queryCount").textContent=
     records.length;
+
 
   if(!records.length){
 
@@ -1823,77 +3180,109 @@ function renderQueryResults(records){
     return;
   }
 
-  // 依單號分組顯示
+
   const byOrder={};
+
   const orderList=[];
+
 
   records.forEach(r=>{
 
     if(!byOrder[r.orderNo]){
 
       byOrder[r.orderNo]=[];
-      orderList.push(r.orderNo);
+
+      orderList.push(
+        r.orderNo
+      );
 
     }
 
-    byOrder[r.orderNo].push(r);
+    byOrder[r.orderNo]
+      .push(r);
+
   });
+
 
   $("#queryResults").innerHTML=
     orderList.map(ordNo=>{
 
-      const rs=byOrder[ordNo];
+      const rs=
+        byOrder[ordNo];
 
-      const head=rs[0];
+      const head=
+        rs[0];
 
-      const itemsHtml=rs.map(r=>`
 
-        <div class="review-item">
+      const itemsHtml=
+        rs.map(r=>`
 
-          <div class="ri-name">
-            ${r.seq}.
-            ${escapeHtml(r.name)}，
-            ${escapeHtml(String(r.quantity))}
-            ${escapeHtml(r.unit)}
+          <div class="review-item">
+
+            <div class="ri-name">
+
+              ${r.seq}.
+              ${escapeHtml(r.name)}，
+              ${escapeHtml(String(r.quantity))}
+              ${escapeHtml(r.unit)}
+
+            </div>
+
+            <div class="ri-meta">
+
+              類別：
+              ${escapeHtml(r.category)}
+
+              ．用途：
+              ${escapeHtml(r.purpose)}
+
+              ．廠商：
+              ${escapeHtml(r.vendor)}
+
+            </div>
+
           </div>
 
-          <div class="ri-meta">
-            類別：
-            ${escapeHtml(r.category)}
-            ．用途：
-            ${escapeHtml(r.purpose)}
-            ．廠商：
-            ${escapeHtml(r.vendor)}
-          </div>
+        `).join("");
 
-        </div>
-
-      `).join("");
 
       return `
 
         <div class="query-result">
 
           <div class="qr-order">
+
             單號
             ${escapeHtml(ordNo)}
+
             ．申請日期
             ${escapeHtml(head.applyDate)}
+
             ．需求日期
             ${escapeHtml(head.needDate)}
+
           </div>
+
 
           <div class="qr-name">
+
             ${escapeHtml(head.deptUser)}
+
           </div>
+
 
           <div class="qr-meta">
+
             事由：
             ${escapeHtml(head.reason)}
+
           </div>
 
+
           <div style="margin-top:8px">
+
             ${itemsHtml}
+
           </div>
 
         </div>
@@ -1903,29 +3292,86 @@ function renderQueryResults(records){
     }).join("");
 }
 
+
 /* ============================================================
    返回按鈕
    ============================================================ */
-document.addEventListener("click",e=>{
 
-  const back=e.target.closest("[data-back]");
+document.addEventListener(
+  "click",
+  e=>{
 
-  if(back){
-    show(back.dataset.back);
-    return;
-  }
+    const back=
+      e.target.closest(
+        "[data-back]"
+      );
 
-});
 
-/* ---------- Logo 載入失敗時優雅隱藏 ---------- */
-$("#logoImg").addEventListener(
-  "error",
-  function(){
-    this.style.display="none";
+    if(back){
+
+      closeAllSearchLists();
+
+      show(
+        back.dataset.back
+      );
+
+      return;
+    }
+
   }
 );
 
-/* ---------- 啟動：只顯示密碼牆，其餘什麼都不做 ---------- */
+
+/* ============================================================
+   點畫面其他地方 → 關閉搜尋下拉
+   ============================================================ */
+
+document.addEventListener(
+  "pointerdown",
+  e=>{
+
+    /*
+       如果點到搜尋選單本身，
+       不要關閉。
+
+       選項自己的 pointerdown
+       會負責處理選取。
+    */
+
+    if(
+      e.target.closest(
+        ".search-select-wrap"
+      )
+    ){
+      return;
+    }
+
+    closeAllSearchLists();
+
+  }
+);
+
+
+/* ============================================================
+   Logo 載入失敗
+   ============================================================ */
+
+$("#logoImg")
+  .addEventListener(
+    "error",
+    function(){
+
+      this.style.display="none";
+
+    }
+  );
+
+
+/* ============================================================
+   啟動
+   ============================================================ */
+
 </script>
+
 </body>
 </html>
