@@ -133,6 +133,20 @@
     transition:border-color .15s,box-shadow .15s;
   }
 
+  input[type="date"],
+  input[type="time"] {
+    -webkit-appearance: none;
+    appearance: none;
+    min-width: 0;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  input[type="date"]::-webkit-date-and-time-value {
+    text-align: left;
+    min-height: 1.2em;
+  }
+
 
   input:focus,select:focus,textarea:focus{
     border-color:var(--brand);
