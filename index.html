@@ -1348,6 +1348,18 @@ function initDateDisplays(){
     if(!input)
       return;
 
+    /* 點擊整個日期欄位就開啟日期選擇器（桌機瀏覽器也適用） */
+    input.addEventListener(
+      "click",
+      ()=>{
+        try{
+          if(typeof input.showPicker==="function"){
+            input.showPicker();
+          }
+        }catch(e){}
+      }
+    );
+
     input.addEventListener(
       "input",
       ()=>{
