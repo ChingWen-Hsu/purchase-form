@@ -451,6 +451,14 @@
     font-size:13px;color:var(--ink-soft);margin-top:2px
   }
 
+  .rv-tag{display:inline-block;font-size:13px;font-weight:700;padding:2px 10px;border-radius:999px;margin-left:6px;vertical-align:middle}
+  .rv-tag.ok{background:#e3f4e8;color:#1b7a3a}
+  .rv-tag.no{background:#fde8e8;color:#b42318}
+  .rv-tag.wait{background:#eef0f3;color:#667085}
+  .rv-note{margin-top:6px;font-size:14px;color:#b42318;background:#fff5f5;border-radius:8px;padding:6px 10px}
+  .qr-summary{margin-top:6px;font-size:14px;font-weight:700;color:var(--ink-soft)}
+  .delivery-note{margin:0 0 14px;padding:10px 12px;background:var(--brand-soft);color:var(--brand);border-radius:10px;font-size:14px;font-weight:700}
+
   .date-row{
     display:flex;
     gap:10px;
@@ -948,6 +956,8 @@
       </p>
 
 
+      <div class="delivery-note">申購品項將於申請隔日週五前送達</div>
+
       <div class="review-head">
         基本資料
       </div>
@@ -991,6 +1001,8 @@
       <p class="hint">
         請購單已寫入請購紀錄。
       </p>
+
+      <div class="delivery-note">申購品項將於申請隔日週五前送達</div>
 
       <p>
         單號：
@@ -3730,9 +3742,27 @@ function renderQueryResults(records){
           rs[0];
 
 
+        const stat=r=>
+          r.reviewResult==="允許"?["ok","允許"]:
+          r.reviewResult==="拒絕"?["no","拒絕"]:
+          ["wait","待審核"];
+
+        const cnt={ok:0,no:0,wait:0};
+        rs.forEach(r=>cnt[stat(r)[0]]++);
+
+        const parts=[];
+        if(cnt.ok) parts.push(cnt.ok+" 允許");
+        if(cnt.no) parts.push(cnt.no+" 拒絕");
+        if(cnt.wait) parts.push(cnt.wait+" 待審核");
+
         const itemsHtml=
           rs.map(
-            r=>`
+            r=>{
+              const [cls,txt]=stat(r);
+              const note=(r.reviewNote&&r.reviewResult)
+                ? `<div class="rv-note">審核備註：${escapeHtml(r.reviewNote)}</div>`
+                : "";
+              return `
 
               <div class="review-item">
 
@@ -3741,6 +3771,7 @@ function renderQueryResults(records){
                   ${escapeHtml(r.name)}，
                   ${escapeHtml(String(r.quantity))}
                   ${escapeHtml(r.unit)}
+                  <span class="rv-tag ${cls}">${txt}</span>
                 </div>
 
                 <div class="ri-meta">
@@ -3752,9 +3783,11 @@ function renderQueryResults(records){
                   ${escapeHtml(r.vendor)}
                 </div>
 
+                ${note}
+
               </div>
 
-            `
+            `;}
           ).join("");
 
 
@@ -3778,6 +3811,10 @@ function renderQueryResults(records){
             <div class="qr-meta">
               事由：
               ${escapeHtml(head.reason)}
+            </div>
+
+            <div class="qr-summary">
+              共 ${rs.length} 項：${parts.join("、")}
             </div>
 
             <div style="margin-top:8px">
